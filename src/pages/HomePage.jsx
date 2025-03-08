@@ -1,13 +1,56 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
 import HotelCard from '../components/HotelCard';
 import TourCard from '../components/TourCard';
 import Footer from '../components/Footer';
 import Layout from '../components/Layout';
+import { hotelService } from '../services/hotelService';
+import { tourService } from '../services/tourService';
 
 const HomePage = () => {
     const navigate = useNavigate();
+    const [popularHotels, setPopularHotels] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [popularTours, setPopularTours] = useState([]);
+    const [toursLoading, setToursLoading] = useState(true);
+    const [toursError, setToursError] = useState(null);
+
+    useEffect(() => {
+        fetchPopularHotels();
+        fetchPopularTours();
+    }, []);
+
+    const fetchPopularHotels = async () => {
+        try {
+            setLoading(true);
+            const data = await hotelService.getAllHotels();
+            // İlk 3 oteli al (veya backend'den popüler otelleri çeken özel bir endpoint kullanılabilir)
+            setPopularHotels(data.slice(0, 3));
+            setError(null);
+        } catch (err) {
+            console.error('Oteller yüklenirken hata:', err);
+            setError('Oteller yüklenirken bir hata oluştu');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const fetchPopularTours = async () => {
+        try {
+            setToursLoading(true);
+            const data = await tourService.getAllTours();
+            // İlk 3 turu al
+            setPopularTours(data.slice(0, 3));
+            setToursError(null);
+        } catch (err) {
+            console.error('Turlar yüklenirken hata:', err);
+            setToursError('Turlar yüklenirken bir hata oluştu');
+        } finally {
+            setToursLoading(false);
+        }
+    };
 
     return (
         <Layout>
@@ -128,20 +171,128 @@ const HomePage = () => {
                 {/* Popular Hotels Section */}
                 <div className="p-8">
                     <h2 className="text-2xl font-semibold mb-6 text-gray-800">Popüler Oteller</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <HotelCard />
-                        <HotelCard />
-                        <HotelCard />
+                    
+                    {loading ? (
+                        <div className="flex justify-center items-center py-10">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                        </div>
+                    ) : error ? (
+                        <div className="text-center py-10">
+                            <p className="text-red-500">{error}</p>
+                            <button 
+                                onClick={fetchPopularHotels}
+                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            >
+                                Tekrar Dene
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {popularHotels.map((hotel) => (
+                                <div key={hotel.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                                    <img 
+                                        src={hotel.photoUrl || "/hotel-placeholder.jpg"} 
+                                        alt={hotel.hotelName}
+                                        className="w-full h-48 object-cover"
+                                        onError={(e) => {
+                                            e.target.src = "/hotel-placeholder.jpg";
+                                        }}
+                                    />
+                                    <div className="p-4">
+                                        <h3 className="text-xl font-semibold text-gray-800">
+                                            {hotel.hotelName}
+                                        </h3>
+                                        <p className="text-gray-600 mt-2">
+                                            {hotel.hotelCity}, {hotel.district}
+                                        </p>
+                                        <div className="mt-2">
+                                            {hotel.starRating && (
+                                                <div className="flex items-center text-yellow-400">
+                                                    {'⭐'.repeat(hotel.starRating)}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="mt-4 flex justify-between items-center">
+                                            <Link 
+                                                to={`/hotel/${hotel.id}`}
+                                                className="bg-[#00A9FF] hover:bg-[#0098e5] text-white px-4 py-2 rounded-lg 
+                                                         transition-colors duration-300"
+                                            >
+                                                Detayları Gör
+                                            </Link>
+                                            <Link 
+                                                to={`/reserve/${hotel.id}`}
+                                                className="bg-[#64CCC5] hover:bg-[#53b5af] text-white px-4 py-2 rounded-lg 
+                                                         transition-colors duration-300"
+                                            >
+                                                Rezervasyon
+                                            </Link>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    
+                    {!loading && !error && popularHotels.length === 0 && (
+                        <div className="text-center py-10">
+                            <p className="text-gray-500">Henüz otel bulunmamaktadır.</p>
+                        </div>
+                    )}
+
+                    {/* Tüm Otelleri Gör butonu */}
+                    <div className="text-center mt-8">
+                        <Link 
+                            to="/hotels"
+                            className="inline-block bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
+                                     transition-colors duration-300 shadow-md hover:shadow-lg"
+                        >
+                            Tüm Otelleri Gör
+                        </Link>
                     </div>
                 </div>
 
                 {/* Popular Tours Section */}
                 <div className="p-8 bg-gray-50">
                     <h2 className="text-2xl font-semibold mb-6 text-gray-800">Popüler Turlar</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <TourCard />
-                        <TourCard />
-                        <TourCard />
+                    
+                    {toursLoading ? (
+                        <div className="flex justify-center items-center py-10">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                        </div>
+                    ) : toursError ? (
+                        <div className="text-center py-10">
+                            <p className="text-red-500">{toursError}</p>
+                            <button 
+                                onClick={fetchPopularTours}
+                                className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            >
+                                Tekrar Dene
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {popularTours.map((tour) => (
+                                <TourCard key={tour.id} tour={tour} />
+                            ))}
+                        </div>
+                    )}
+
+                    {!toursLoading && !toursError && popularTours.length === 0 && (
+                        <div className="text-center py-10">
+                            <p className="text-gray-500">Henüz tur bulunmamaktadır.</p>
+                        </div>
+                    )}
+
+                    {/* Tüm Turları Gör butonu */}
+                    <div className="text-center mt-8">
+                        <Link 
+                            to="/tours"
+                            className="inline-block bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
+                                     transition-colors duration-300 shadow-md hover:shadow-lg"
+                        >
+                            Tüm Turları Gör
+                        </Link>
                     </div>
                 </div>
 
