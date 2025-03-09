@@ -17,6 +17,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import TourReservationPage from './pages/TourReservationPage';
+import TouristicPlaceDetailPage from './pages/TouristicPlaceDetailPage';
 
 const App = () => {
     return (
@@ -53,6 +54,7 @@ const App = () => {
                         <Route path="/admin" element={<AdminPanel />} />
                         <Route path="/contact" element={<SupportPage />} />
                         <Route path="/tour-reservation/:id" element={<TourReservationPage />} />
+                        <Route path="/place/:id" element={<TouristicPlaceDetailPage />} />
                     </Routes>
                 </Router>
             </HotelProvider>
