@@ -7,8 +7,10 @@ import Footer from '../components/Footer';
 import Layout from '../components/Layout';
 import { hotelService } from '../services/hotelService';
 import { tourService } from '../services/tourService';
+import { useTranslation } from 'react-i18next';
 
 const HomePage = () => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [popularHotels, setPopularHotels] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -74,13 +76,13 @@ const HomePage = () => {
 
                         {/* Başlık */}
                         <h1 className="text-white text-5xl font-bold mb-4 text-center">
-                            Van'ın Güzelliklerini
-                            <span className="block mt-2 text-green-400">Keşfedin</span>
+                            {t('home.banner.title')}
+                            <span className="block mt-2 text-green-400">{t('home.banner.subtitle')}</span>
                         </h1>
 
                         {/* Alt Başlık */}
                         <p className="text-gray-100 text-xl mb-8 text-center max-w-2xl">
-                            Tarihi, kültürü ve eşsiz doğasıyla Van'da unutulmaz bir deneyim yaşayın
+                            {t('home.banner.description')}
                         </p>
 
                         {/* Butonlar */}
@@ -95,7 +97,7 @@ const HomePage = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
-                                Otel Rezervasyonu
+                                {t('home.banner.hotelButton')}
                             </Link>
                             <Link 
                                 to="/tours" 
@@ -107,7 +109,7 @@ const HomePage = () => {
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
-                                Turları Keşfet
+                                {t('home.banner.tourButton')}
                             </Link>
                         </div>
 
@@ -156,21 +158,20 @@ const HomePage = () => {
                 {/* Search Bar */}
                 <div className="p-4 bg-white shadow-md rounded-lg mx-4 -mt-8 relative z-20">
                     <SearchBar />
-                    {/* Additional Input Fields */}
                     <div className="flex flex-wrap justify-center gap-2 mt-4">
-                        <input type="text" placeholder="Şehir" className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[200px]" />
+                        <input type="text" placeholder={t('home.search.city')} className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[200px]" />
                         <input type="date" className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[200px]" />
                         <input type="date" className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[200px]" />
-                        <input type="number" placeholder="Kişi Sayısı" className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[200px]" />
+                        <input type="number" placeholder={t('home.search.guests')} className="border border-gray-300 rounded-lg p-2 flex-1 min-w-[200px]" />
                         <button className="bg-[#00A9FF] hover:bg-[#0098e5] text-white rounded-lg px-6 py-2 transition-colors">
-                            Hemen Ara
+                            {t('home.search.searchButton')}
                         </button>
                     </div>
                 </div>
 
                 {/* Popular Hotels Section */}
                 <div className="p-8">
-                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Popüler Oteller</h2>
+                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">{t('home.sections.popularHotels')}</h2>
                     
                     {loading ? (
                         <div className="flex justify-center items-center py-10">
@@ -178,12 +179,12 @@ const HomePage = () => {
                         </div>
                     ) : error ? (
                         <div className="text-center py-10">
-                            <p className="text-red-500">{error}</p>
+                            <p className="text-red-500">{t('home.sections.error')}</p>
                             <button 
                                 onClick={fetchPopularHotels}
                                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                             >
-                                Tekrar Dene
+                                {t('home.sections.tryAgain')}
                             </button>
                         </div>
                     ) : (
@@ -236,25 +237,24 @@ const HomePage = () => {
                     
                     {!loading && !error && popularHotels.length === 0 && (
                         <div className="text-center py-10">
-                            <p className="text-gray-500">Henüz otel bulunmamaktadır.</p>
+                            <p className="text-gray-500">{t('home.sections.noHotels')}</p>
                         </div>
                     )}
 
-                    {/* Tüm Otelleri Gör butonu */}
                     <div className="text-center mt-8">
                         <Link 
                             to="/hotels"
                             className="inline-block bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
                                      transition-colors duration-300 shadow-md hover:shadow-lg"
                         >
-                            Tüm Otelleri Gör
+                            {t('home.sections.viewAllHotels')}
                         </Link>
                     </div>
                 </div>
 
                 {/* Popular Tours Section */}
                 <div className="p-8 bg-gray-50">
-                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">Popüler Turlar</h2>
+                    <h2 className="text-2xl font-semibold mb-6 text-gray-800">{t('home.sections.popularTours')}</h2>
                     
                     {toursLoading ? (
                         <div className="flex justify-center items-center py-10">
@@ -267,7 +267,7 @@ const HomePage = () => {
                                 onClick={fetchPopularTours}
                                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                             >
-                                Tekrar Dene
+                                {t('home.sections.tryAgain')}
                             </button>
                         </div>
                     ) : (
@@ -280,18 +280,17 @@ const HomePage = () => {
 
                     {!toursLoading && !toursError && popularTours.length === 0 && (
                         <div className="text-center py-10">
-                            <p className="text-gray-500">Henüz tur bulunmamaktadır.</p>
+                            <p className="text-gray-500">{t('home.sections.noTours')}</p>
                         </div>
                     )}
 
-                    {/* Tüm Turları Gör butonu */}
                     <div className="text-center mt-8">
                         <Link 
                             to="/tours"
                             className="inline-block bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
                                      transition-colors duration-300 shadow-md hover:shadow-lg"
                         >
-                            Tüm Turları Gör
+                            {t('home.sections.viewAllTours')}
                         </Link>
                     </div>
                 </div>
@@ -303,14 +302,14 @@ const HomePage = () => {
                         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg mr-4 
                                  transition-colors shadow-md hover:shadow-lg"
                     >
-                        Giriş Yap
+                        {t('home.auth.login')}
                     </button>
                     <button 
                         onClick={() => navigate('/register')}
                         className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg 
                                  transition-colors shadow-md hover:shadow-lg"
                     >
-                        Kayıt Ol
+                        {t('home.auth.register')}
                     </button>
                 </div>
             </div>

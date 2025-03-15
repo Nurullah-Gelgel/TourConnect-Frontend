@@ -1,0 +1,62 @@
+{
+  "common": {
+    "loading": "در حال بارگذاری...",
+    "error": "خطایی رخ داد",
+    "tryAgain": "دوباره امتحان کنید",
+    "search": "جستجو",
+    "menu": "منو"
+  },
+  "nav": {
+    "home": "صفحه اصلی",
+    "hotels": "هتل‌ها",
+    "tours": "تورها",
+    "places": "مکان‌های گردشگری",
+    "contact": "تماس با ما",
+    "account": "حساب کاربری",
+    "profile": "پروفایل",
+    "reservations": "رزرو های من",
+    "favorites": "علاقه‌مندی‌ها",
+    "logout": "خروج",
+    "hotelTypes": {
+      "luxury": "هتل‌های لوکس",
+      "boutique": "هتل‌های بوتیک",
+      "deals": "هتل‌های تخفیف‌دار"
+    },
+    "tourTypes": {
+      "daily": "تورهای روزانه",
+      "cultural": "تورهای فرهنگی",
+      "nature": "تورهای طبیعت"
+    }
+  },
+  "home": {
+    "banner": {
+      "title": "زیبایی‌های وان را",
+      "subtitle": "کشف کنید",
+      "description": "با تاریخ، فرهنگ و طبیعت بی‌نظیر وان، تجربه‌ای فراموش‌نشدنی داشته باشید",
+      "hotelButton": "رزرو هتل",
+      "tourButton": "کشف تورها"
+    },
+    "search": {
+      "city": "شهر",
+      "startDate": "تاریخ ورود",
+      "endDate": "تاریخ خروج",
+      "guests": "تعداد مهمانان",
+      "searchButton": "جستجو"
+    },
+    "sections": {
+      "popularHotels": "هتل‌های محبوب",
+      "popularTours": "تورهای محبوب",
+      "viewAllHotels": "مشاهده همه هتل‌ها",
+      "viewAllTours": "مشاهده همه تورها",
+      "noHotels": "هنوز هتلی موجود نیست.",
+      "noTours": "هنوز توری موجود نیست.",
+      "loading": "در حال بارگذاری...",
+      "error": "خطایی رخ داد",
+      "tryAgain": "تلاش مجدد"
+    },
+    "auth": {
+      "login": "ورود",
+      "register": "ثبت نام"
+    }
+  }
+} 

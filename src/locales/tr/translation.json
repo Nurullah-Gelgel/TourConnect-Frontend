@@ -1,0 +1,86 @@
+{
+  "common": {
+    "loading": "Yükleniyor...",
+    "error": "Bir hata oluştu",
+    "tryAgain": "Tekrar Dene",
+    "search": "Ara",
+    "menu": "Menü"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "hotels": "Oteller",
+    "tours": "Turlar",
+    "places": "Turistik Yerler",
+    "contact": "İletişim",
+    "account": "Hesabım",
+    "profile": "Profilim",
+    "reservations": "Rezervasyonlarım",
+    "favorites": "Favorilerim",
+    "logout": "Çıkış Yap",
+    "hotelTypes": {
+      "luxury": "Lüks Oteller",
+      "boutique": "Butik Oteller",
+      "deals": "Fırsat Oteller"
+    },
+    "tourTypes": {
+      "daily": "Günlük Turlar",
+      "cultural": "Kültür Turları",
+      "nature": "Doğa Turları"
+    }
+  },
+  "places": {
+    "title": "Van'daki Turistik Yerler",
+    "noResults": "Seçilen kriterlere uygun turistik yer bulunamadı",
+    "details": "Detayları Gör",
+    "about": "Hakkında",
+    "visitInfo": "Ziyaret Bilgileri",
+    "openingHours": "Açılış Saatleri",
+    "transportation": "Ulaşım",
+    "facilities": "Olanaklar",
+    "entryFees": "Giriş Ücretleri",
+    "contact": "İletişim"
+  },
+  "hotels": {
+    "title": "Oteller",
+    "book": "Rezervasyon Yap",
+    "perNight": "Gecelik",
+    "details": "Detayları Gör"
+  },
+  "tours": {
+    "title": "Turlar",
+    "book": "Rezervasyon Yap",
+    "details": "Detayları Gör",
+    "perPerson": "Kişi Başı"
+  },
+  "home": {
+    "banner": {
+      "title": "Van'ın Güzelliklerini",
+      "subtitle": "Keşfedin",
+      "description": "Tarihi, kültürü ve eşsiz doğasıyla Van'da unutulmaz bir deneyim yaşayın",
+      "hotelButton": "Otel Rezervasyonu",
+      "tourButton": "Turları Keşfet"
+    },
+    "search": {
+      "city": "Şehir",
+      "startDate": "Giriş Tarihi",
+      "endDate": "Çıkış Tarihi",
+      "guests": "Kişi Sayısı",
+      "searchButton": "Hemen Ara"
+    },
+    "sections": {
+      "popularHotels": "Popüler Oteller",
+      "popularTours": "Popüler Turlar",
+      "viewAllHotels": "Tüm Otelleri Gör",
+      "viewAllTours": "Tüm Turları Gör",
+      "noHotels": "Henüz otel bulunmamaktadır.",
+      "noTours": "Henüz tur bulunmamaktadır.",
+      "loading": "Yükleniyor...",
+      "error": "Bir hata oluştu",
+      "tryAgain": "Tekrar Dene"
+    },
+    "auth": {
+      "login": "Giriş Yap",
+      "register": "Kayıt Ol"
+    }
+  }
+} 

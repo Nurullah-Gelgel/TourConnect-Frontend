@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
     const location = useLocation();
+    const { t, i18n } = useTranslation();
+    const [isLanguageOpen, setIsLanguageOpen] = useState(false);
 
     // Aktif link kontrolü için yardımcı fonksiyon
     const isActive = (path) => location.pathname === path;
@@ -15,6 +19,16 @@ const Navbar = () => {
         { code: 'en', name: 'English' },
         { code: 'fa', name: 'فارسی' }
     ];
+
+    const changeLanguage = (languageCode) => {
+        i18n.changeLanguage(languageCode);
+        setIsLanguageOpen(false);
+        // Dil tercihini localStorage'a kaydet
+        localStorage.setItem('preferredLanguage', languageCode);
+    };
+
+    // Aktif dili bul
+    const currentLanguage = languages.find(lang => lang.code === i18n.language) || languages[0];
 
     return (
         <nav className="bg-white shadow-md p-4">
@@ -44,7 +58,7 @@ const Navbar = () => {
                                     : 'text-gray-700 hover:bg-blue-50'
                             }`}
                         >
-                            Ana Sayfa
+                            {t('nav.home')}
                         </Link>
                         
                         {/* Oteller Dropdown */}
@@ -55,13 +69,19 @@ const Navbar = () => {
                                     isActive('/hotels') ? 'text-blue-600' : 'text-gray-700'
                                 }`}
                             >
-                                Oteller
+                                {t('nav.hotels')}
                             </Link>
                             <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                 <div className="py-1">
-                                    <Link to="/hotels/luxury" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Lüks Oteller</Link>
-                                    <Link to="/hotels/boutique" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Butik Oteller</Link>
-                                    <Link to="/hotels/deals" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Fırsat Oteller</Link>
+                                    <Link to="/hotels/luxury" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                        {t('nav.hotelTypes.luxury')}
+                            </Link>
+                                    <Link to="/hotels/boutique" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                        {t('nav.hotelTypes.boutique')}
+                                    </Link>
+                                    <Link to="/hotels/deals" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                        {t('nav.hotelTypes.deals')}
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -74,13 +94,19 @@ const Navbar = () => {
                                     isActive('/tours') ? 'text-blue-600' : 'text-gray-700'
                                 }`}
                             >
-                                Turlar
+                                {t('nav.tours')}
                             </Link>
                             <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                 <div className="py-1">
-                                    <Link to="/tours/daily" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Günlük Turlar</Link>
-                                    <Link to="/tours/cultural" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Kültür Turları</Link>
-                                    <Link to="/tours/nature" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Doğa Turları</Link>
+                                    <Link to="/tours/daily" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                        {t('nav.tourTypes.daily')}
+                                    </Link>
+                                    <Link to="/tours/cultural" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                        {t('nav.tourTypes.cultural')}
+                                    </Link>
+                                    <Link to="/tours/nature" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                        {t('nav.tourTypes.nature')}
+                                    </Link>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +119,7 @@ const Navbar = () => {
                                     : 'text-gray-700 hover:bg-blue-50'
                             }`}
                         >
-                            Turistik Yerler
+                            {t('nav.places')}
                         </Link>
 
                         <Link 
@@ -104,26 +130,42 @@ const Navbar = () => {
                                     : 'text-gray-700 hover:bg-blue-50'
                             }`}
                         >
-                            İletişim
+                            {t('nav.contact')}
                         </Link>
 
                         {/* Dil Seçimi */}
-                        <div className="relative group">
-                            <button className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50">
-                                🌐 TR
+                        <div className="relative">
+                            <button
+                                onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+                                className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100"
+                            >
+                                <span>{currentLanguage.name}</span>
+                                <svg
+                                    className={`w-4 h-4 transition-transform ${isLanguageOpen ? 'rotate-180' : ''}`}
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                </svg>
                             </button>
-                            <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <div className="py-1">
-                                    {languages.map((lang) => (
+
+                            {/* Dil Seçenekleri */}
+                            {isLanguageOpen && (
+                                <div className="absolute right-0 mt-2 py-2 w-48 bg-white rounded-lg shadow-xl z-50">
+                                    {languages.map((language) => (
                                         <button
-                                            key={lang.code}
-                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-blue-50"
+                                            key={language.code}
+                                            onClick={() => changeLanguage(language.code)}
+                                            className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${
+                                                currentLanguage.code === language.code ? 'bg-gray-50 text-blue-600' : ''
+                                            }`}
                                         >
-                                            {lang.name}
+                                            {language.name}
                                         </button>
                                     ))}
                                 </div>
-                            </div>
+                            )}
                         </div>
 
                         {/* Profil Dropdown */}
@@ -137,15 +179,23 @@ const Navbar = () => {
                                     alt="Profile" 
                                     className="h-8 w-8 rounded-full"
                                 />*/}
-                                <span className="ml-2">Hesabım</span>
+                                <span className="ml-2">{t('nav.account')}</span>
                             </button>
                             {isProfileDropdownOpen && (
                                 <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                                     <div className="py-1">
-                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Profilim</Link>
-                                        <Link to="/reservations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Rezervasyonlarım</Link>
-                                        <Link to="/favorites" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">Favorilerim</Link>
-                                        <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">Çıkış Yap</button>
+                                        <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                            {t('nav.profile')}
+                                        </Link>
+                                        <Link to="/reservations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                            {t('nav.reservations')}
+                                        </Link>
+                                        <Link to="/favorites" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                            {t('nav.favorites')}
+                                        </Link>
+                                        <button className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                            {t('nav.logout')}
+                                        </button>
                                     </div>
                                 </div>
                             )}
@@ -181,22 +231,22 @@ const Navbar = () => {
                 <div className="md:hidden">
                     <div className="px-2 pt-2 pb-3 space-y-1">
                         <Link to="/" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                            Ana Sayfa
+                            {t('nav.home')}
                         </Link>
                         <Link to="/hotels" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                            Oteller
+                            {t('nav.hotels')}
                         </Link>
                         <Link to="/tours" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                            Turlar
+                            {t('nav.tours')}
                         </Link>
                         <Link to="/touristic-places" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                            Turistik Yerler
+                            {t('nav.places')}
                         </Link>
                         <Link to="/contact" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                            İletişim
+                            {t('nav.contact')}
                         </Link>
                         <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                            Profilim
+                            {t('nav.profile')}
                         </Link>
                     </div>
                 </div>
