@@ -58,5 +58,50 @@
       "login": "ورود",
       "register": "ثبت نام"
     }
+  },
+  "hotels": {
+    "title": "هتل‌ها",
+    "book": "رزرو",
+    "perNight": "هر شب",
+    "details": "مشاهده جزئیات",
+    "location": "موقعیت",
+    "address": "آدرس",
+    "phone": "تلفن",
+    "email": "ایمیل",
+    "starRating": "درجه هتل",
+    "features": "امکانات هتل",
+    "hotelInfo": "اطلاعات هتل",
+    "reservationCard": {
+      "perNight": "هر شب",
+      "bookNow": "رزرو آنلاین",
+      "freeCancellation": "کنسلی رایگان",
+      "instantConfirmation": "تایید آنی",
+      "securePayment": "پرداخت امن"
+    },
+    "search": {
+      "title": "جستجو و رزرو هتل",
+      "city": "شهر",
+      "checkIn": "تاریخ ورود",
+      "checkOut": "تاریخ خروج",
+      "guests": "تعداد مهمانان",
+      "searchButton": "جستجو",
+      "noResults": "هتلی یافت نشد."
+    },
+    "reservation": {
+      "title": "رزرو",
+      "personalInfo": "اطلاعات شخصی",
+      "fullName": "نام و نام خانوادگی",
+      "email": "ایمیل",
+      "phone": "تلفن",
+      "checkIn": "تاریخ ورود",
+      "checkOut": "تاریخ خروج",
+      "guests": "تعداد مهمانان",
+      "paymentMethod": "روش پرداخت",
+      "creditCard": "کارت اعتباری",
+      "bankTransfer": "انتقال بانکی",
+      "specialRequests": "درخواست‌های ویژه",
+      "total": "مجموع",
+      "completeReservation": "تکمیل رزرو"
+    }
   }
 } 

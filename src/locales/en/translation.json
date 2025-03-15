@@ -1,86 +1,125 @@
 {
-  "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "tryAgain": "Try Again",
-    "search": "Search",
-    "menu": "Menu"
-  },
-  "nav": {
-    "home": "Home",
-    "hotels": "Hotels",
-    "tours": "Tours",
-    "places": "Tourist Places",
-    "contact": "Contact",
-    "account": "My Account",
-    "profile": "Profile",
-    "reservations": "My Reservations",
-    "favorites": "Favorites",
-    "logout": "Logout",
-    "hotelTypes": {
-      "luxury": "Luxury Hotels",
-      "boutique": "Boutique Hotels",
-      "deals": "Deal Hotels"
-    },
-    "tourTypes": {
-      "daily": "Daily Tours",
-      "cultural": "Cultural Tours",
-      "nature": "Nature Tours"
-    }
-  },
-  "places": {
-    "title": "Tourist Places in Van",
-    "noResults": "No tourist places found for selected criteria",
-    "details": "View Details",
-    "about": "About",
-    "visitInfo": "Visit Information",
-    "openingHours": "Opening Hours",
-    "transportation": "Transportation",
-    "facilities": "Facilities",
-    "entryFees": "Entry Fees",
-    "contact": "Contact"
-  },
-  "hotels": {
-    "title": "Hotels",
-    "book": "Book Now",
-    "perNight": "Per Night",
-    "details": "View Details"
-  },
-  "tours": {
-    "title": "Tours",
-    "book": "Book Now",
-    "details": "View Details",
-    "perPerson": "Per Person"
-  },
-  "home": {
-    "banner": {
-      "title": "Discover the Beauty",
-      "subtitle": "of Van",
-      "description": "Experience an unforgettable journey with Van's history, culture, and unique nature",
-      "hotelButton": "Book a Hotel",
-      "tourButton": "Explore Tours"
-    },
-    "search": {
-      "city": "City",
-      "startDate": "Check-in Date",
-      "endDate": "Check-out Date",
-      "guests": "Number of Guests",
-      "searchButton": "Search Now"
-    },
-    "sections": {
-      "popularHotels": "Popular Hotels",
-      "popularTours": "Popular Tours",
-      "viewAllHotels": "View All Hotels",
-      "viewAllTours": "View All Tours",
-      "noHotels": "No hotels available yet.",
-      "noTours": "No tours available yet.",
+    "common": {
       "loading": "Loading...",
       "error": "An error occurred",
-      "tryAgain": "Try Again"
+      "tryAgain": "Try Again",
+      "search": "Search",
+      "menu": "Menu"
     },
-    "auth": {
-      "login": "Login",
-      "register": "Register"
+    "nav": {
+      "home": "Home",
+      "hotels": "Hotels",
+      "tours": "Tours",
+      "places": "Tourist Places",
+      "contact": "Contact",
+      "account": "My Account",
+      "profile": "Profile",
+      "reservations": "My Reservations",
+      "favorites": "Favorites",
+      "logout": "Logout",
+      "hotelTypes": {
+        "luxury": "Luxury Hotels",
+        "boutique": "Boutique Hotels",
+        "deals": "Deal Hotels"
+      },
+      "tourTypes": {
+        "daily": "Daily Tours",
+        "cultural": "Cultural Tours",
+        "nature": "Nature Tours"
+      }
+    },
+    "places": {
+      "title": "Tourist Places in Van",
+      "noResults": "No tourist places found for selected criteria",
+      "details": "View Details",
+      "about": "About",
+      "visitInfo": "Visit Information",
+      "openingHours": "Opening Hours",
+      "transportation": "Transportation",
+      "facilities": "Facilities",
+      "entryFees": "Entry Fees",
+      "contact": "Contact"
+    },
+    "hotels": {
+      "title": "Hotels",
+      "book": "Book Now",
+      "perNight": "Per Night",
+      "details": "View Details",
+      "location": "Location",
+      "address": "Address",
+      "phone": "Phone",
+      "email": "Email",
+      "starRating": "Star Rating",
+      "features": "Hotel Features",
+      "hotelInfo": "Hotel Information",
+      "reservationCard": {
+        "perNight": "Per Night",
+        "bookNow": "Book Now",
+        "freeCancellation": "Free Cancellation",
+        "instantConfirmation": "Instant Confirmation",
+        "securePayment": "Secure Payment"
+      },
+      "search": {
+        "title": "Hotel Search and Reservation",
+        "city": "City",
+        "checkIn": "Check-in Date",
+        "checkOut": "Check-out Date",
+        "guests": "Number of Guests",
+        "searchButton": "Search",
+        "noResults": "No hotels found."
+      },
+      "reservation": {
+        "title": "Reservation",
+        "personalInfo": "Personal Information",
+        "fullName": "Full Name",
+        "email": "Email",
+        "phone": "Phone",
+        "checkIn": "Check-in Date",
+        "checkOut": "Check-out Date",
+        "guests": "Number of Guests",
+        "paymentMethod": "Payment Method",
+        "creditCard": "Credit Card",
+        "bankTransfer": "Bank Transfer",
+        "specialRequests": "Special Requests",
+        "total": "Total",
+        "completeReservation": "Complete Reservation"
+      }
+    },
+    "tours": {
+      "title": "Tours",
+      "book": "Book Now",
+      "details": "View Details",
+      "perPerson": "Per Person"
+    },
+    "home": {
+      "banner": {
+        "title": "Discover the Beauty",
+        "subtitle": "of Van",
+        "description": "Experience an unforgettable journey with Van's history, culture, and unique nature",
+        "hotelButton": "Book a Hotel",
+        "tourButton": "Explore Tours"
+      },
+      "search": {
+        "city": "City",
+        "startDate": "Check-in Date",
+        "endDate": "Check-out Date",
+        "guests": "Number of Guests",
+        "searchButton": "Search Now"
+      },
+      "sections": {
+        "popularHotels": "Popular Hotels",
+        "popularTours": "Popular Tours",
+        "viewAllHotels": "View All Hotels",
+        "viewAllTours": "View All Tours",
+        "noHotels": "No hotels available yet.",
+        "noTours": "No tours available yet.",
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "tryAgain": "Try Again"
+      },
+      "auth": {
+        "login": "Login",
+        "register": "Register"
+      }
     }
-  }
-} 
+  } 

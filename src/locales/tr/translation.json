@@ -44,7 +44,46 @@
     "title": "Oteller",
     "book": "Rezervasyon Yap",
     "perNight": "Gecelik",
-    "details": "Detayları Gör"
+    "details": "Detayları Gör",
+    "location": "Konum",
+    "address": "Adres",
+    "phone": "Telefon",
+    "email": "E-posta",
+    "starRating": "Yıldız Sayısı",
+    "features": "Otel Özellikleri",
+    "hotelInfo": "Otel Bilgileri",
+    "reservationCard": {
+      "perNight": "Gecelik",
+      "bookNow": "Hemen Rezervasyon Yap",
+      "freeCancellation": "Ücretsiz İptal",
+      "instantConfirmation": "Hızlı Onay",
+      "securePayment": "Güvenli Ödeme"
+    },
+    "search": {
+      "title": "Otel Arama ve Rezervasyon",
+      "city": "Şehir",
+      "checkIn": "Giriş Tarihi",
+      "checkOut": "Çıkış Tarihi",
+      "guests": "Kişi Sayısı",
+      "searchButton": "Ara",
+      "noResults": "Otel bulunamadı."
+    },
+    "reservation": {
+      "title": "Rezervasyon",
+      "personalInfo": "Kişisel Bilgiler",
+      "fullName": "Ad Soyad",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "checkIn": "Giriş Tarihi",
+      "checkOut": "Çıkış Tarihi",
+      "guests": "Kişi Sayısı",
+      "paymentMethod": "Ödeme Yöntemi",
+      "creditCard": "Kredi Kartı",
+      "bankTransfer": "Banka Havalesi",
+      "specialRequests": "Özel İstekler",
+      "total": "Toplam",
+      "completeReservation": "Rezervasyonu Tamamla"
+    }
   },
   "tours": {
     "title": "Turlar",

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -6,6 +7,7 @@ import { hotelService } from '../services/hotelService';
 import { reservationService } from '../services/reservationService';
 
 const ReservationPage = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
     const [hotel, setHotel] = useState(null);
@@ -85,13 +87,13 @@ const ReservationPage = () => {
                 <div className="container mx-auto p-4">
                     <div className="bg-white rounded-lg shadow-lg p-6">
                         <h1 className="text-2xl font-bold mb-6">
-                            Rezervasyon - {hotel?.hotelName}
+                            {t('hotels.reservation.title')} - {hotel?.hotelName}
                         </h1>
 
                         <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Ad Soyad</label>
+                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.fullName')}</label>
                                     <input
                                         type="text"
                                         name="fullName"
@@ -103,7 +105,7 @@ const ReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">E-posta</label>
+                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.email')}</label>
                                     <input
                                         type="email"
                                         name="email"
@@ -115,7 +117,7 @@ const ReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Telefon</label>
+                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.phone')}</label>
                                     <input
                                         type="tel"
                                         name="phone"
@@ -127,7 +129,7 @@ const ReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Kişi Sayısı</label>
+                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.numberOfGuests')}</label>
                                     <input
                                         type="number"
                                         name="numberOfGuests"
@@ -140,7 +142,7 @@ const ReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Giriş Tarihi</label>
+                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.checkInDate')}</label>
                                     <input
                                         type="date"
                                         name="checkInDate"
@@ -152,7 +154,7 @@ const ReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Çıkış Tarihi</label>
+                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.checkOutDate')}</label>
                                     <input
                                         type="date"
                                         name="checkOutDate"
@@ -164,21 +166,21 @@ const ReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Ödeme Yöntemi</label>
+                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.paymentMethod')}</label>
                                     <select
                                         name="paymentMethod"
                                         value={formData.paymentMethod}
                                         onChange={handleInputChange}
                                         className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
-                                        <option value="credit">Kredi Kartı</option>
-                                        <option value="bank">Banka Havalesi</option>
+                                        <option value="credit">{t('hotels.reservation.creditCard')}</option>
+                                        <option value="bank">{t('hotels.reservation.bankTransfer')}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div>
-                                <label className="block text-gray-700 mb-2">Özel İstekler</label>
+                                <label className="block text-gray-700 mb-2">{t('hotels.reservation.specialRequests')}</label>
                                 <textarea
                                     name="specialRequests"
                                     value={formData.specialRequests}
@@ -190,14 +192,14 @@ const ReservationPage = () => {
 
                             <div className="flex justify-between items-center">
                                 <div className="text-lg font-semibold">
-                                    Toplam: {hotel?.price * formData.numberOfGuests} TL
+                                    {t('hotels.reservation.total')}: {hotel?.price * formData.numberOfGuests} TL
                                 </div>
                                 <button
                                     type="submit"
                                     className="bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
                                              transition-colors duration-300"
                                 >
-                                    Rezervasyonu Tamamla
+                                    {t('hotels.reservation.completeReservation')}
                                 </button>
                             </div>
                         </form>

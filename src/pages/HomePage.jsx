@@ -219,14 +219,14 @@ const HomePage = () => {
                                                 className="bg-[#00A9FF] hover:bg-[#0098e5] text-white px-4 py-2 rounded-lg 
                                                          transition-colors duration-300"
                                             >
-                                                Detayları Gör
+                                                {t('hotels.details')}
                                             </Link>
                                             <Link 
                                                 to={`/reserve/${hotel.id}`}
                                                 className="bg-[#64CCC5] hover:bg-[#53b5af] text-white px-4 py-2 rounded-lg 
                                                          transition-colors duration-300"
                                             >
-                                                Rezervasyon
+                                             {t('hotels.book')}
                                             </Link>
                                         </div>
                                     </div>

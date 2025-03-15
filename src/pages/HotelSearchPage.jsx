@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { hotelService } from '../services/hotelService';
 import Layout from '../components/Layout';
 import HotelCard from '../components/HotelCard';
 
 const HotelSearchPage = () => {
+    const { t } = useTranslation();
     const [hotels, setHotels] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -51,7 +53,7 @@ const HotelSearchPage = () => {
         <Layout>
             <div className="bg-gray-100 min-h-screen">
                 <div className="container mx-auto p-4">
-                    <h1 className="text-3xl font-bold p-4">Otel Arama ve Rezervasyon</h1>
+                    <h1 className="text-3xl font-bold p-4">{t('hotels.search.title')}</h1>
                     
                     {/* Search & Filter Panel */}
                     <form onSubmit={handleSearch} className="bg-white shadow-md rounded-lg p-6 mb-6">
@@ -61,7 +63,7 @@ const HotelSearchPage = () => {
                                 name="city"
                                 value={searchParams.city}
                                 onChange={handleInputChange}
-                                placeholder="Şehir" 
+                                placeholder={t('hotels.search.city')}
                                 className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             />
                             <input 
@@ -69,6 +71,7 @@ const HotelSearchPage = () => {
                                 name="checkIn"
                                 value={searchParams.checkIn}
                                 onChange={handleInputChange}
+                                placeholder={t('hotels.search.checkIn')}
                                 className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
                             />
                             <input 
@@ -76,6 +79,7 @@ const HotelSearchPage = () => {
                                 name="checkOut"
                                 value={searchParams.checkOut}
                                 onChange={handleInputChange}
+                                placeholder={t('hotels.search.checkOut')}
                                 className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
                             />
                             <input 
@@ -83,14 +87,14 @@ const HotelSearchPage = () => {
                                 name="guests"
                                 value={searchParams.guests}
                                 onChange={handleInputChange}
-                                placeholder="Kişi Sayısı" 
+                                placeholder={t('hotels.search.guests')}
                                 className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
                             />
                             <button 
                                 type="submit"
                                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
                             >
-                                Ara
+                                {t('hotels.search.searchButton')}
                             </button>
                         </div>
                     </form>
@@ -110,7 +114,7 @@ const HotelSearchPage = () => {
                                 onClick={fetchHotels}
                                 className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                             >
-                                Tekrar Dene
+                                {t('common.tryAgain')}
                             </button>
                         </div>
                     )}
@@ -124,7 +128,7 @@ const HotelSearchPage = () => {
 
                             {hotels.length === 0 && !loading && (
                                 <div className="col-span-full text-center py-10">
-                                    <p className="text-gray-500">Hiç otel bulunamadı.</p>
+                                    <p className="text-gray-500">{t('hotels.search.noResults')}</p>
                                 </div>
                             )}
                         </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
@@ -6,6 +7,7 @@ import Layout from '../components/Layout';
 import { hotelService } from '../services/hotelService';
 
 const HotelDetailPage = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [hotel, setHotel] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -51,7 +53,7 @@ const HotelDetailPage = () => {
                         onClick={fetchHotelDetails}
                         className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
                     >
-                        Tekrar Dene
+                        {t('common.tryAgain')}
                     </button>
                 </div>
                 <Footer />
@@ -95,22 +97,22 @@ const HotelDetailPage = () => {
                                 {/* Sol Kolon - Otel Bilgileri */}
                                 <div className="md:col-span-2">
                                     <div className="mb-6">
-                                        <h2 className="text-2xl font-semibold mb-4">Otel Bilgileri</h2>
+                                        <h2 className="text-2xl font-semibold mb-4">{t('hotels.hotelInfo')}</h2>
                                         <div className="bg-gray-50 p-4 rounded-lg space-y-3">
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">Adres:</span>
+                                                <span className="w-32 font-medium">{t('hotels.address')}:</span>
                                                 {hotel?.hotelAddress}
                                             </p>
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">Telefon:</span>
+                                                <span className="w-32 font-medium">{t('hotels.phone')}:</span>
                                                 {hotel?.phone}
                                             </p>
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">E-posta:</span>
+                                                <span className="w-32 font-medium">{t('hotels.email')}:</span>
                                                 {hotel?.email}
                                             </p>
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">Yıldız:</span>
+                                                <span className="w-32 font-medium">{t('hotels.starRating')}:</span>
                                                 <span className="text-yellow-400">
                                                     {'⭐'.repeat(hotel?.starRating || 0)}
                                                 </span>
@@ -120,7 +122,7 @@ const HotelDetailPage = () => {
 
                                     {/* Otel Özellikleri */}
                                     <div className="mb-6">
-                                        <h2 className="text-2xl font-semibold mb-4">Otel Özellikleri</h2>
+                                        <h2 className="text-2xl font-semibold mb-4">{t('hotels.features')}</h2>
                                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                             {hotel?.features?.map((feature, index) => (
                                                 <div key={index} className="flex items-center space-x-2 text-gray-600">
@@ -128,14 +130,14 @@ const HotelDetailPage = () => {
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                                     </svg>
                                                     <span>{feature}</span>
-                </div>
-            ))}
+                                                </div>
+                                            ))}
                                         </div>
                                     </div>
 
                                     {/* Konum */}
                                     <div className="mb-6">
-                                        <h2 className="text-2xl font-semibold mb-4">Konum</h2>
+                                        <h2 className="text-2xl font-semibold mb-4">{t('hotels.location')}</h2>
                                         <div className="bg-gray-50 p-4 rounded-lg">
                                             <p className="text-gray-600">
                                                 {hotel?.hotelAddress}
@@ -149,7 +151,7 @@ const HotelDetailPage = () => {
                                 <div className="md:col-span-1">
                                     <div className="bg-gray-50 p-6 rounded-lg sticky top-4">
                                         <div className="text-center">
-                                            <p className="text-gray-600 mb-2">Gecelik</p>
+                                            <p className="text-gray-600 mb-2">{t('hotels.perNight')}</p>
                                             <div className="text-4xl font-bold text-blue-600 mb-4">
                                                 {hotel?.price} TL
                                             </div>
@@ -158,26 +160,26 @@ const HotelDetailPage = () => {
                                                 className="block w-full bg-[#00A9FF] hover:bg-[#0098e5] text-white py-3 px-6 rounded-lg 
                                                          transition-colors duration-300 text-center font-semibold mb-4"
                                             >
-                                                Hemen Rezervasyon Yap
+                                                {t('hotels.reservationCard.bookNow')}
                                             </Link>
                                             <div className="space-y-3 text-left mt-6">
                                                 <div className="flex items-center text-gray-600">
                                                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                                     </svg>
-                                                    Ücretsiz İptal
+                                                    {t('hotels.reservationCard.freeCancellation')}
                                                 </div>
                                                 <div className="flex items-center text-gray-600">
                                                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                                     </svg>
-                                                    Hızlı Onay
+                                                    {t('hotels.reservationCard.instantConfirmation')}
                                                 </div>
                                                 <div className="flex items-center text-gray-600">
                                                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                                                     </svg>
-                                                    Güvenli Ödeme
+                                                    {t('hotels.reservationCard.securePayment')}
                                                 </div>
                                             </div>
                                         </div>
@@ -189,7 +191,7 @@ const HotelDetailPage = () => {
                 </div>
             </div>
             <Footer />
-            </div>
+        </div>
     );
 };
 
