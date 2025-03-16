@@ -103,5 +103,53 @@
       "total": "مجموع",
       "completeReservation": "تکمیل رزرو"
     }
+  },
+  "tours": {
+    "title": "تورها",
+    "book": "رزرو",
+    "perPerson": "نفر",
+    "details": "جزئیات بیشتر",
+    "duration": "مدت زمان",
+    "groupSize": "اندازه گروه",
+    "startingPoint": "نقطه شروع",
+    "endingPoint": "نقطه پایان",
+    "included": "شامل",
+    "notIncluded": "شامل نمی‌شود",
+    "itinerary": "برنامه سفر",
+    "tourInfo": "اطلاعات تور",
+    "tourFeatures": "ویژگی‌های تور",
+    "price": "قیمت",
+    "days": "روز",
+    "hours": "ساعت",
+    "people": "نفر",
+    "search": {
+      "title": "جستجوی تور",
+      "date": "تاریخ",
+      "type": "نوع تور",
+      "duration": "مدت زمان",
+      "people": "تعداد نفرات",
+      "searchButton": "جستجو",
+      "noResults": "توری یافت نشد.",
+      "allTypes": "همه انواع تور",
+      "cultural": "تورهای فرهنگی",
+      "nature": "تورهای طبیعت",
+      "daily": "تورهای روزانه"
+    },
+    "reservation": {
+      "title": "رزرو تور",
+      "personalInfo": "اطلاعات شخصی",
+      "fullName": "نام و نام خانوادگی",
+      "email": "ایمیل",
+      "phone": "تلفن",
+      "date": "تاریخ تور",
+      "participants": "تعداد شرکت‌کنندگان",
+      "specialRequests": "درخواست‌های ویژه",
+      "paymentMethod": "روش پرداخت",
+      "creditCard": "کارت اعتباری",
+      "bankTransfer": "انتقال بانکی",
+      "total": "مجموع",
+      "completeReservation": "تکمیل رزرو",
+      "termsAccept": "شرایط و ضوابط تور را می‌پذیرم"
+    }
   }
 } 

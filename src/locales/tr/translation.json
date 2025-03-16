@@ -88,8 +88,50 @@
   "tours": {
     "title": "Turlar",
     "book": "Rezervasyon Yap",
+    "perPerson": "Kişi Başı",
     "details": "Detayları Gör",
-    "perPerson": "Kişi Başı"
+    "duration": "Süre",
+    "groupSize": "Grup Büyüklüğü",
+    "startingPoint": "Başlangıç Noktası",
+    "endingPoint": "Bitiş Noktası",
+    "included": "Dahil Olanlar",
+    "notIncluded": "Dahil Olmayanlar",
+    "itinerary": "Tur Programı",
+    "tourInfo": "Tur Bilgileri",
+    "tourFeatures": "Tur Özellikleri",
+    "price": "Fiyat",
+    "days": "Gün",
+    "hours": "Saat",
+    "people": "Kişi",
+    "search": {
+      "title": "Tur Arama",
+      "date": "Tarih",
+      "type": "Tur Tipi",
+      "duration": "Süre",
+      "people": "Kişi Sayısı",
+      "searchButton": "Ara",
+      "noResults": "Tur bulunamadı.",
+      "allTypes": "Tüm Tur Tipleri",
+      "cultural": "Kültür Turları",
+      "nature": "Doğa Turları",
+      "daily": "Günlük Turlar"
+    },
+    "reservation": {
+      "title": "Tur Rezervasyonu",
+      "personalInfo": "Kişisel Bilgiler",
+      "fullName": "Ad Soyad",
+      "email": "E-posta",
+      "phone": "Telefon",
+      "date": "Tur Tarihi",
+      "participants": "Katılımcı Sayısı",
+      "specialRequests": "Özel İstekler",
+      "paymentMethod": "Ödeme Yöntemi",
+      "creditCard": "Kredi Kartı",
+      "bankTransfer": "Banka Havalesi",
+      "total": "Toplam",
+      "completeReservation": "Rezervasyonu Tamamla",
+      "termsAccept": "Tur şartlarını ve koşullarını kabul ediyorum"
+    }
   },
   "home": {
     "banner": {

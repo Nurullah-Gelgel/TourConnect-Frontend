@@ -88,8 +88,50 @@
     "tours": {
       "title": "Tours",
       "book": "Book Now",
+      "perPerson": "Per Person",
       "details": "View Details",
-      "perPerson": "Per Person"
+      "duration": "Duration",
+      "groupSize": "Group Size",
+      "startingPoint": "Starting Point",
+      "endingPoint": "Ending Point",
+      "included": "What's Included",
+      "notIncluded": "What's Not Included",
+      "itinerary": "Itinerary",
+      "tourInfo": "Tour Information",
+      "tourFeatures": "Tour Features",
+      "price": "Price",
+      "days": "Days",
+      "hours": "Hours",
+      "people": "People",
+      "search": {
+        "title": "Tour Search",
+        "date": "Date",
+        "type": "Tour Type",
+        "duration": "Duration",
+        "people": "Number of People",
+        "searchButton": "Search",
+        "noResults": "No tours found.",
+        "allTypes": "All Tour Types",
+        "cultural": "Cultural Tours",
+        "nature": "Nature Tours",
+        "daily": "Daily Tours"
+      },
+      "reservation": {
+        "title": "Tour Reservation",
+        "personalInfo": "Personal Information",
+        "fullName": "Full Name",
+        "email": "Email",
+        "phone": "Phone",
+        "date": "Tour Date",
+        "participants": "Number of Participants",
+        "specialRequests": "Special Requests",
+        "paymentMethod": "Payment Method",
+        "creditCard": "Credit Card",
+        "bankTransfer": "Bank Transfer",
+        "total": "Total",
+        "completeReservation": "Complete Reservation",
+        "termsAccept": "I accept the tour terms and conditions"
+      }
     },
     "home": {
       "banner": {

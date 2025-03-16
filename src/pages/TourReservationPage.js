@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, useNavigate } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { tourService } from '../services/tourService';
 
 const TourReservationPage = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const navigate = useNavigate();
     const [tour, setTour] = useState(null);
@@ -65,24 +67,28 @@ const TourReservationPage = () => {
                 <div className="container mx-auto px-4">
                     <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
                         <div className="p-6">
-                            <h1 className="text-2xl font-bold text-gray-800 mb-6">Tur Rezervasyonu</h1>
+                            <h1 className="text-2xl font-bold text-gray-800 mb-6">
+                                {t('tours.reservation.title')}
+                            </h1>
                             
                             {tour && (
                                 <div className="mb-6 p-4 bg-gray-50 rounded-lg">
                                     <h2 className="text-xl font-semibold text-gray-800">{tour.tourName}</h2>
                                     <p className="text-gray-600 mt-2">
-                                        {new Date(tour.startDate).toLocaleDateString('tr-TR')} - 
-                                        {new Date(tour.endDate).toLocaleDateString('tr-TR')}
+                                        {new Date(tour.startDate).toLocaleDateString()} - 
+                                        {new Date(tour.endDate).toLocaleDateString()}
                                     </p>
                                     <p className="text-blue-600 font-semibold mt-2">
-                                        Fiyat: {tour.price} TL / kişi
+                                        {t('tours.price')}: {tour.price} TL / {t('tours.perPerson')}
                                     </p>
                                 </div>
                             )}
 
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Ad Soyad</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        {t('tours.reservation.fullName')}
+                                    </label>
                                     <input
                                         type="text"
                                         name="fullName"
@@ -94,7 +100,9 @@ const TourReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">E-posta</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        {t('tours.reservation.email')}
+                                    </label>
                                     <input
                                         type="email"
                                         name="email"
@@ -106,7 +114,9 @@ const TourReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Telefon</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        {t('tours.reservation.phone')}
+                                    </label>
                                     <input
                                         type="tel"
                                         name="phone"
@@ -118,7 +128,9 @@ const TourReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Kişi Sayısı</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        {t('tours.reservation.participants')}
+                                    </label>
                                     <input
                                         type="number"
                                         name="numberOfPeople"
@@ -131,7 +143,9 @@ const TourReservationPage = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">Özel İstekler</label>
+                                    <label className="block text-gray-700 mb-2">
+                                        {t('tours.reservation.specialRequests')}
+                                    </label>
                                     <textarea
                                         name="specialRequests"
                                         value={formData.specialRequests}
@@ -143,14 +157,14 @@ const TourReservationPage = () => {
 
                                 <div className="flex justify-between items-center">
                                     <div className="text-lg font-semibold">
-                                        Toplam: {tour ? (tour.price * formData.numberOfPeople) : 0} TL
+                                        {t('tours.reservation.total')}: {tour ? (tour.price * formData.numberOfPeople) : 0} TL
                                     </div>
                                     <button
                                         type="submit"
                                         className="bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
                                                  transition-colors duration-300"
                                     >
-                                        Rezervasyonu Tamamla
+                                        {t('tours.reservation.completeReservation')}
                                     </button>
                                 </div>
                             </form>

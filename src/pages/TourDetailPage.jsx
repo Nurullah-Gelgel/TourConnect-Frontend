@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams, Link } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { tourService } from '../services/tourService';
 
 const TourDetailPage = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [tour, setTour] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -46,7 +48,7 @@ const TourDetailPage = () => {
                         onClick={fetchTourDetails}
                         className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
                     >
-                        Tekrar Dene
+                        {t('common.tryAgain')}
                     </button>
                 </div>
             </Layout>
@@ -78,32 +80,24 @@ const TourDetailPage = () => {
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <div className="mb-6">
-                                        <h2 className="text-2xl font-semibold mb-2">Tur Bilgileri</h2>
+                                        <h2 className="text-2xl font-semibold mb-2">{t('tours.tourInfo')}</h2>
                                         <div className="space-y-2 text-gray-600">
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">Başlangıç:</span>
+                                                <span className="w-32 font-medium">{t('tours.startingPoint')}:</span>
                                                 {tour?.tourStartAddress}
                                             </p>
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">Bitiş:</span>
+                                                <span className="w-32 font-medium">{t('tours.endingPoint')}:</span>
                                                 {tour?.tourEndAddress}
                                             </p>
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">Tarih:</span>
-                                                {new Date(tour?.startDate).toLocaleDateString('tr-TR')} - {new Date(tour?.endDate).toLocaleDateString('tr-TR')}
+                                                <span className="w-32 font-medium">{t('tours.duration')}:</span>
+                                                {tour?.duration} {t('tours.hours')}
                                             </p>
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">Katılımcı:</span>
-                                                {tour?.participantCount} kişi
+                                                <span className="w-32 font-medium">{t('tours.groupSize')}:</span>
+                                                {tour?.participantCount} {t('tours.people')}
                                             </p>
-                                            {tour?.starRating && (
-                                                <p className="flex items-center">
-                                                    <span className="w-32 font-medium">Değerlendirme:</span>
-                                                    <span className="text-yellow-400">
-                                                        {'⭐'.repeat(tour.starRating)}
-                                                    </span>
-                                                </p>
-                                            )}
                                         </div>
                                     </div>
 
@@ -118,16 +112,16 @@ const TourDetailPage = () => {
                                 {/* Rezervasyon Kartı */}
                                 <div className="bg-gray-50 p-6 rounded-lg">
                                     <div className="text-center">
-                                        <p className="text-gray-600 mb-2">Kişi Başı</p>
+                                        <p className="text-gray-600 mb-2">{t('tours.perPerson')}</p>
                                         <div className="text-4xl font-bold text-blue-600 mb-4">
                                             {tour?.price} TL
                                         </div>
                                         <Link 
-                                            to={`/tour-reservation/${tour.id}`}
+                                            to={`/tour-reservation/${tour?.id}`}
                                             className="block w-full bg-[#00A9FF] hover:bg-[#0098e5] text-white py-3 px-6 rounded-lg 
                                                      transition-colors duration-300 text-center font-semibold"
                                         >
-                                            Hemen Rezervasyon Yap
+                                            {t('tours.book')}
                                         </Link>
                                     </div>
 
@@ -150,16 +144,16 @@ const TourDetailPage = () => {
 
                             {/* Harita veya Ek Bilgiler */}
                             <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-                                <h2 className="text-2xl font-semibold mb-4">Tur Güzergahı</h2>
+                                <h2 className="text-2xl font-semibold mb-4">{t('tours.itinerary')}</h2>
                                 <div className="space-y-2">
                                     <div className="flex items-center">
                                         <div className="w-3 h-3 bg-green-500 rounded-full mr-3"></div>
-                                        <p>Başlangıç: {tour?.tourStartAddress}</p>
+                                        <p>{t('tours.startingPoint')}: {tour?.tourStartAddress}</p>
                                     </div>
                                     <div className="w-0.5 h-6 bg-gray-300 ml-1.5"></div>
                                     <div className="flex items-center">
                                         <div className="w-3 h-3 bg-red-500 rounded-full mr-3"></div>
-                                        <p>Bitiş: {tour?.tourEndAddress}</p>
+                                        <p>{t('tours.endingPoint')}: {tour?.tourEndAddress}</p>
                                     </div>
                                 </div>
                             </div>
