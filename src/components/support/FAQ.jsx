@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const FAQ = () => {
+    const { t } = useTranslation();
     const faqs = [
         {
-            question: "Rezervasyon nasıl yapabilirim?",
-            answer: "Otel veya tur sayfasından istediğiniz tarihleri seçerek rezervasyon yapabilirsiniz."
+            question: t('support.faq.reservation.question'),
+            answer: t('support.faq.reservation.answer')
         },
         {
-            question: "Rezervasyon iptal politikası nedir?",
-            answer: "Rezervasyonunuzu 24 saat öncesine kadar ücretsiz iptal edebilirsiniz."
+            question: t('support.faq.cancellation.question'),
+            answer: t('support.faq.cancellation.answer')
         },
         {
-            question: "Ödeme seçenekleri nelerdir?",
-            answer: "Kredi kartı ve banka havalesi ile ödeme yapabilirsiniz."
-        },
-        // Daha fazla SSS eklenebilir
+            question: t('support.faq.payment.question'),
+            answer: t('support.faq.payment.answer')
+        }
     ];
 
     const [openIndex, setOpenIndex] = useState(null);

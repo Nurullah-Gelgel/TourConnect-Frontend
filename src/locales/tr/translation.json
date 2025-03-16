@@ -38,7 +38,39 @@
     "transportation": "Ulaşım",
     "facilities": "Olanaklar",
     "entryFees": "Giriş Ücretleri",
-    "contact": "İletişim"
+    "contact": "İletişim",
+    "categories": {
+      "all": "Tüm Kategoriler",
+      "historical": "Tarihi Yerler",
+      "nature": "Doğal Güzellikler",
+      "culture": "Kültürel Mekanlar",
+      "religious": "Dini Mekanlar",
+      "museum": "Müzeler"
+    },
+    "seasons": {
+      "all": "Tüm Sezonlar",
+      "spring": "İlkbahar",
+      "summer": "Yaz",
+      "autumn": "Sonbahar",
+      "winter": "Kış"
+    },
+    "filters": {
+      "category": "Kategori",
+      "season": "Sezon",
+      "date": "Tarih"
+    },
+    "fees": {
+      "adult": "Tam",
+      "student": "Öğrenci",
+      "museumCard": "Müzekart"
+    },
+    "transportTypes": {
+      "car": "Özel Araç",
+      "bus": "Otobüs",
+      "taxi": "Taksi"
+    },
+    "viewAllPhotos": "Tüm Fotoğraflar",
+    "recommendedDuration": "Tavsiye Edilen Süre"
   },
   "hotels": {
     "title": "Oteller",
@@ -162,6 +194,64 @@
     "auth": {
       "login": "Giriş Yap",
       "register": "Kayıt Ol"
+    }
+  },
+  "support": {
+    "title": "Destek ve İletişim",
+    "tabs": {
+      "liveSupport": "Canlı Destek",
+      "faq": "Sıkça Sorulan Sorular",
+      "contactForm": "İletişim Formu"
+    },
+    "chat": {
+      "welcome": "Merhaba! Size nasıl yardımcı olabilirim?",
+      "placeholder": "Mesajınızı yazın...",
+      "send": "Gönder",
+      "autoReply": "Mesajınız alındı. En kısa sürede size yardımcı olacağız."
+    },
+    "faq": {
+      "reservation": {
+        "question": "Rezervasyon nasıl yapabilirim?",
+        "answer": "Otel veya tur sayfasından istediğiniz tarihleri seçerek rezervasyon yapabilirsiniz."
+      },
+      "cancellation": {
+        "question": "Rezervasyon iptal politikası nedir?",
+        "answer": "Rezervasyonunuzu 24 saat öncesine kadar ücretsiz iptal edebilirsiniz."
+      },
+      "payment": {
+        "question": "Ödeme seçenekleri nelerdir?",
+        "answer": "Kredi kartı ve banka havalesi ile ödeme yapabilirsiniz."
+      }
+    },
+    "contact": {
+      "form": {
+        "fullName": "Ad Soyad",
+        "email": "E-posta",
+        "subject": "Konu",
+        "message": "Mesaj",
+        "send": "Gönder"
+      },
+      "info": {
+        "title": "İletişim Bilgileri",
+        "address": {
+          "title": "Adres",
+          "line1": "Van Merkez, Cumhuriyet Caddesi No:123",
+          "line2": "65100 Van/Türkiye"
+        },
+        "contact": {
+          "title": "İletişim",
+          "phone": "Telefon",
+          "email": "E-posta"
+        },
+        "workingHours": {
+          "title": "Çalışma Saatleri",
+          "weekdays": "Pazartesi - Cuma: 09:00 - 18:00",
+          "saturday": "Cumartesi: 09:00 - 13:00"
+        },
+        "socialMedia": {
+          "title": "Sosyal Medya"
+        }
+      }
     }
   }
 } 

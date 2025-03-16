@@ -1,15 +1,21 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 const PlaceCard = ({ place }) => {
+    const { t } = useTranslation();
+
     return (
         <div id={`place-${place.id}`} className="bg-white rounded-lg shadow-md overflow-hidden">
             {/* Resim */}
             <div className="relative h-48">
                 <img
-                    src={place.image}
+                    src={place.image || "/place-placeholder.jpg"}
                     alt={place.name}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                        e.target.src = "/place-placeholder.jpg";
+                    }}
                 />
             </div>
 
@@ -21,26 +27,26 @@ const PlaceCard = ({ place }) => {
 
                 {/* Ziyaret Bilgileri */}
                 <div className="mb-4">
-                    <h3 className="font-semibold mb-2">Ziyaret Saatleri</h3>
+                    <h3 className="font-semibold mb-2">{t('places.openingHours')}</h3>
                     <p className="text-sm">
                         🕒 {place.visitTimes.open} - {place.visitTimes.close}
                     </p>
                     <p className="text-sm">
-                        ⏱️ Tavsiye Edilen Süre: {place.visitTimes.duration}
+                        ⏱️ {t('places.visitInfo')}: {place.visitTimes.duration}
                     </p>
                 </div>
 
                 {/* Giriş Ücretleri */}
                 <div className="mb-4">
-                    <h3 className="font-semibold mb-2">Giriş Ücretleri</h3>
-                    <p className="text-sm">Tam: {place.entryFee.adult}</p>
-                    <p className="text-sm">Öğrenci: {place.entryFee.student}</p>
-                    <p className="text-sm">Müzekart: {place.entryFee.museum_card}</p>
+                    <h3 className="font-semibold mb-2">{t('places.entryFees')}</h3>
+                    <p className="text-sm">{t('places.fees.adult')}: {place.entryFee.adult}</p>
+                    <p className="text-sm">{t('places.fees.student')}: {place.entryFee.student}</p>
+                    <p className="text-sm">{t('places.fees.museumCard')}: {place.entryFee.museum_card}</p>
                 </div>
 
                 {/* Olanaklar */}
                 <div className="mb-4">
-                    <h3 className="font-semibold mb-2">Olanaklar</h3>
+                    <h3 className="font-semibold mb-2">{t('places.facilities')}</h3>
                     <div className="flex flex-wrap gap-2">
                         {place.facilities.map((facility, index) => (
                             <span 
@@ -55,10 +61,10 @@ const PlaceCard = ({ place }) => {
 
                 {/* Ulaşım */}
                 <div className="mb-4">
-                    <h3 className="font-semibold mb-2">Ulaşım</h3>
-                    <p className="text-sm">🚗 {place.transportation.car}</p>
-                    <p className="text-sm">🚌 {place.transportation.bus}</p>
-                    <p className="text-sm">🚕 {place.transportation.taxi}</p>
+                    <h3 className="font-semibold mb-2">{t('places.transportation')}</h3>
+                    <p className="text-sm">🚗 {t('places.transportTypes.car')}: {place.transportation.car}</p>
+                    <p className="text-sm">🚌 {t('places.transportTypes.bus')}: {place.transportation.bus}</p>
+                    <p className="text-sm">🚕 {t('places.transportTypes.taxi')}: {place.transportation.taxi}</p>
                 </div>
 
                 {/* Detay Butonu */}
@@ -66,7 +72,7 @@ const PlaceCard = ({ place }) => {
                     to={`/place/${place.id}`}
                     className="mt-4 bg-blue-500 text-white px-4 py-2 rounded block text-center"
                 >
-                    Detayları Görüntüle
+                    {t('places.details')}
                 </Link>
             </div>
         </div>
@@ -74,20 +80,27 @@ const PlaceCard = ({ place }) => {
 };
 
 // Alt bileşenler
-const ImageGallery = ({ place }) => (
-    <div className="relative h-48">
-        <img
-            src={place.image}
-            alt={place.name}
-            className="w-full h-full object-cover"
-        />
-        <div className="absolute bottom-2 right-2">
-            <button className="bg-white p-1 rounded-full">
-                🖼️ Tüm Fotoğraflar
-            </button>
+const ImageGallery = ({ place }) => {
+    const { t } = useTranslation();
+    
+    return (
+        <div className="relative h-48">
+            <img
+                src={place.image || "/place-placeholder.jpg"}
+                alt={place.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                    e.target.src = "/place-placeholder.jpg";
+                }}
+            />
+            <div className="absolute bottom-2 right-2">
+                <button className="bg-white p-1 rounded-full">
+                    🖼️ {t('places.viewAllPhotos')}
+                </button>
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const BasicInfo = ({ place }) => (
     <>
@@ -96,15 +109,19 @@ const BasicInfo = ({ place }) => (
     </>
 );
 
-const VisitInfo = ({ visitTimes }) => (
-    <div className="mb-4">
-        <h3 className="font-semibold mb-2">Ziyaret Bilgileri</h3>
-        <p className="text-sm">
-            🕒 {visitTimes.open} - {visitTimes.close}
-        </p>
-        <p className="text-sm">⏱️ Tavsiye Edilen Süre: {visitTimes.duration}</p>
-    </div>
-);
+const VisitInfo = ({ visitTimes }) => {
+    const { t } = useTranslation();
+    
+    return (
+        <div className="mb-4">
+            <h3 className="font-semibold mb-2">{t('places.visitInfo')}</h3>
+            <p className="text-sm">
+                🕒 {visitTimes.open} - {visitTimes.close}
+            </p>
+            <p className="text-sm">⏱️ {t('places.recommendedDuration')}: {visitTimes.duration}</p>
+        </div>
+    );
+};
 
 // Diğer alt bileşenler benzer şekilde oluşturulabilir...
 

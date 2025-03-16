@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ContactForm = () => {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -17,7 +19,7 @@ const ContactForm = () => {
     return (
         <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-                <label className="block text-gray-700 mb-2">Ad Soyad</label>
+                <label className="block text-gray-700 mb-2">{t('support.contact.form.fullName')}</label>
                 <input
                     type="text"
                     value={formData.name}
@@ -27,7 +29,7 @@ const ContactForm = () => {
                 />
             </div>
             <div>
-                <label className="block text-gray-700 mb-2">E-posta</label>
+                <label className="block text-gray-700 mb-2">{t('support.contact.form.email')}</label>
                 <input
                     type="email"
                     value={formData.email}
@@ -37,7 +39,7 @@ const ContactForm = () => {
                 />
             </div>
             <div>
-                <label className="block text-gray-700 mb-2">Konu</label>
+                <label className="block text-gray-700 mb-2">{t('support.contact.form.subject')}</label>
                 <input
                     type="text"
                     value={formData.subject}
@@ -47,7 +49,7 @@ const ContactForm = () => {
                 />
             </div>
             <div>
-                <label className="block text-gray-700 mb-2">Mesaj</label>
+                <label className="block text-gray-700 mb-2">{t('support.contact.form.message')}</label>
                 <textarea
                     value={formData.message}
                     onChange={(e) => setFormData({...formData, message: e.target.value})}
@@ -59,7 +61,7 @@ const ContactForm = () => {
                 type="submit"
                 className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
             >
-                Gönder
+                {t('support.contact.form.send')}
             </button>
         </form>
     );

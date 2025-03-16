@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import FilterSection from '../components/tourist-places/FilterSection';
 import MapSection from '../components/tourist-places/MapSection';
 import PlaceCard from '../components/tourist-places/PlaceCard';
@@ -7,6 +8,7 @@ import Layout from '../components/Layout';
 import { touristPlaceService } from '../services/touristPlaceService';
 
 const TouristicPlacesPage = () => {
+    const { t } = useTranslation();
     const [places, setPlaces] = useState([]);
     const [selectedPlace, setSelectedPlace] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState('all');
@@ -100,7 +102,7 @@ const TouristicPlacesPage = () => {
                         onClick={fetchTouristicPlaces}
                         className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
                     >
-                        Tekrar Dene
+                        {t('common.tryAgain')}
                     </button>
                 </div>
             </Layout>
@@ -111,38 +113,55 @@ const TouristicPlacesPage = () => {
         <Layout>
             <div className="bg-gray-100 min-h-screen">
                 <div className="container mx-auto p-4">
-                    <h1 className="text-3xl font-bold mb-6">Van'daki Turistik Yerler</h1>
+                    <h1 className="text-3xl font-bold mb-6">{t('places.title')}</h1>
 
                     {/* Filtreler */}
-                    <FilterSection 
-                        selectedCategory={selectedCategory}
-                        selectedSeason={selectedSeason}
-                        setSelectedCategory={setSelectedCategory}
-                        setSelectedSeason={setSelectedSeason}
-                        categories={categories}
-                        seasons={seasons}
-                    />
+                    <div className="p-4 bg-white shadow-md">
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <select 
+                                value={selectedCategory} 
+                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                className="border p-2 rounded"
+                            >
+                                <option value="all">{t('places.categories.all')}</option>
+                                <option value="historical">{t('places.categories.historical')}</option>
+                                <option value="nature">{t('places.categories.nature')}</option>
+                                <option value="culture">{t('places.categories.culture')}</option>
+                                <option value="religious">{t('places.categories.religious')}</option>
+                                <option value="museum">{t('places.categories.museum')}</option>
+                            </select>
 
-                    {/* Harita 
-                    <MapSection 
-                        center={center}
-                        places={filteredPlaces}
-                        selectedPlace={selectedPlace}
-                        setSelectedPlace={setSelectedPlace}
-                    />*/}
+                            <select 
+                                value={selectedSeason} 
+                                onChange={(e) => setSelectedSeason(e.target.value)}
+                                className="border p-2 rounded"
+                            >
+                                <option value="all">{t('places.seasons.all')}</option>
+                                <option value="spring">{t('places.seasons.spring')}</option>
+                                <option value="summer">{t('places.seasons.summer')}</option>
+                                <option value="autumn">{t('places.seasons.autumn')}</option>
+                                <option value="winter">{t('places.seasons.winter')}</option>
+                            </select>
+
+                            <input 
+                                type="date" 
+                                className="border p-2 rounded"
+                            />
+                        </div>
+                    </div>
 
                     {/* Turistik Yerler Listesi */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         {filteredPlaces.map(place => (
                             <PlaceCard key={place.id} place={place} />
                         ))}
-                    </div>
 
-                    {filteredPlaces.length === 0 && !loading && (
-                        <div className="text-center py-10">
-                            <p className="text-gray-500">Seçilen kriterlere uygun turistik yer bulunamadı.</p>
-                        </div>
-                    )}
+                        {filteredPlaces.length === 0 && (
+                            <div className="col-span-full text-center py-10">
+                                <p className="text-gray-500">{t('places.noResults')}</p>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </Layout>

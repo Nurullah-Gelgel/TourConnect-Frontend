@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ChatBot = () => {
+    const { t } = useTranslation();
     const [messages, setMessages] = useState([
-        { id: 1, text: "Merhaba! Size nasıl yardımcı olabilirim?", isBot: true }
+        { id: 1, text: t('support.chat.welcome'), isBot: true }
     ]);
     const [newMessage, setNewMessage] = useState('');
 
@@ -11,11 +13,10 @@ const ChatBot = () => {
         if (newMessage.trim()) {
             setMessages([...messages, { id: Date.now(), text: newMessage, isBot: false }]);
             setNewMessage('');
-            // Bot yanıtı simülasyonu
             setTimeout(() => {
                 setMessages(prev => [...prev, {
                     id: Date.now(),
-                    text: "Mesajınız alındı. En kısa sürede size yardımcı olacağız.",
+                    text: t('support.chat.autoReply'),
                     isBot: true
                 }]);
             }, 1000);
@@ -43,14 +44,14 @@ const ChatBot = () => {
                     type="text"
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
-                    placeholder="Mesajınızı yazın..."
+                    placeholder={t('support.chat.placeholder')}
                     className="flex-1 p-2 border rounded"
                 />
                 <button
                     type="submit"
                     className="bg-blue-500 text-white px-4 py-2 rounded"
                 >
-                    Gönder
+                    {t('support.chat.send')}
                 </button>
             </form>
         </div>

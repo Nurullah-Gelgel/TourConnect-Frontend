@@ -38,7 +38,39 @@
       "transportation": "Transportation",
       "facilities": "Facilities",
       "entryFees": "Entry Fees",
-      "contact": "Contact"
+      "contact": "Contact",
+      "categories": {
+        "all": "All Categories",
+        "historical": "Historical Places",
+        "nature": "Natural Beauties",
+        "culture": "Cultural Places",
+        "religious": "Religious Places",
+        "museum": "Museums"
+      },
+      "seasons": {
+        "all": "All Seasons",
+        "spring": "Spring",
+        "summer": "Summer",
+        "autumn": "Autumn",
+        "winter": "Winter"
+      },
+      "filters": {
+        "category": "Category",
+        "season": "Season",
+        "date": "Date"
+      },
+      "fees": {
+        "adult": "Adult",
+        "student": "Student",
+        "museumCard": "Museum Card"
+      },
+      "transportTypes": {
+        "car": "By Car",
+        "bus": "By Bus",
+        "taxi": "By Taxi"
+      },
+      "viewAllPhotos": "All Photos",
+      "recommendedDuration": "Recommended Duration"
     },
     "hotels": {
       "title": "Hotels",
@@ -162,6 +194,64 @@
       "auth": {
         "login": "Login",
         "register": "Register"
+      }
+    },
+    "support": {
+      "title": "Support and Contact",
+      "tabs": {
+        "liveSupport": "Live Support",
+        "faq": "FAQ",
+        "contactForm": "Contact Form"
+      },
+      "chat": {
+        "welcome": "Hello! How can I help you?",
+        "placeholder": "Type your message...",
+        "send": "Send",
+        "autoReply": "Your message has been received. We will assist you shortly."
+      },
+      "faq": {
+        "reservation": {
+          "question": "How can I make a reservation?",
+          "answer": "You can make a reservation by selecting your desired dates from the hotel or tour page."
+        },
+        "cancellation": {
+          "question": "What is the cancellation policy?",
+          "answer": "You can cancel your reservation free of charge up to 24 hours in advance."
+        },
+        "payment": {
+          "question": "What are the payment options?",
+          "answer": "You can pay by credit card or bank transfer."
+        }
+      },
+      "contact": {
+        "form": {
+          "fullName": "Full Name",
+          "email": "Email",
+          "subject": "Subject",
+          "message": "Message",
+          "send": "Send"
+        },
+        "info": {
+          "title": "Contact Information",
+          "address": {
+            "title": "Address",
+            "line1": "Van Center, Cumhuriyet Street No:123",
+            "line2": "65100 Van/Turkey"
+          },
+          "contact": {
+            "title": "Contact",
+            "phone": "Phone",
+            "email": "Email"
+          },
+          "workingHours": {
+            "title": "Working Hours",
+            "weekdays": "Monday - Friday: 09:00 - 18:00",
+            "saturday": "Saturday: 09:00 - 13:00"
+          },
+          "socialMedia": {
+            "title": "Social Media"
+          }
+        }
       }
     }
   } 

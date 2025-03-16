@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import Layout from '../components/Layout';
 import { touristPlaceService } from '../services/touristPlaceService';
 
 const TouristicPlaceDetailPage = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [place, setPlace] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -70,7 +72,7 @@ const TouristicPlaceDetailPage = () => {
                         onClick={fetchPlaceDetails}
                         className="mt-4 bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600"
                     >
-                        Tekrar Dene
+                        {t('common.tryAgain')}
                     </button>
                 </div>
             </Layout>
@@ -93,7 +95,7 @@ const TouristicPlaceDetailPage = () => {
                                 }}
                             />
                             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-6">
-                                <h1 className="text-4xl font-bold text-white">{place?.tourName}</h1>
+                                <h1 className="text-4xl font-bold text-white">{place?.name}</h1>
                                 {place?.starRating && (
                                     <div className="flex items-center mt-2">
                                         <span className="text-yellow-400">
@@ -110,7 +112,7 @@ const TouristicPlaceDetailPage = () => {
                                 <div className="md:col-span-2 space-y-6">
                                     {/* Açıklama */}
                                     <section>
-                                        <h2 className="text-2xl font-semibold mb-4">Hakkında</h2>
+                                        <h2 className="text-2xl font-semibold mb-4">{t('places.about')}</h2>
                                         <p className="text-gray-600">
                                             {place?.description || place?.location}
                                         </p>
@@ -118,15 +120,11 @@ const TouristicPlaceDetailPage = () => {
 
                                     {/* Ziyaret Bilgileri */}
                                     <section>
-                                        <h2 className="text-2xl font-semibold mb-4">Ziyaret Bilgileri</h2>
+                                        <h2 className="text-2xl font-semibold mb-4">{t('places.visitInfo')}</h2>
                                         <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                                             <p className="flex items-center">
-                                                <span className="w-32 font-medium">Açılış:</span>
-                                                {place?.visitTimes.open}
-                                            </p>
-                                            <p className="flex items-center">
-                                                <span className="w-32 font-medium">Kapanış:</span>
-                                                {place?.visitTimes.close}
+                                                <span className="w-32 font-medium">{t('places.openingHours')}:</span>
+                                                {place?.visitTimes.open} - {place?.visitTimes.close}
                                             </p>
                                             <p className="flex items-center">
                                                 <span className="w-32 font-medium">Önerilen Süre:</span>
@@ -137,26 +135,26 @@ const TouristicPlaceDetailPage = () => {
 
                                     {/* Ulaşım */}
                                     <section>
-                                        <h2 className="text-2xl font-semibold mb-4">Ulaşım</h2>
+                                        <h2 className="text-2xl font-semibold mb-4">{t('places.transportation')}</h2>
                                         <div className="bg-gray-50 p-4 rounded-lg space-y-2">
                                             <p className="flex items-center">
                                                 <span className="w-8">🚗</span>
-                                                {place?.transportation.car}
+                                                {t('places.transportTypes.car')}: {place?.transportation.car}
                                             </p>
                                             <p className="flex items-center">
                                                 <span className="w-8">🚌</span>
-                                                {place?.transportation.bus}
+                                                {t('places.transportTypes.bus')}: {place?.transportation.bus}
                                             </p>
                                             <p className="flex items-center">
                                                 <span className="w-8">🚕</span>
-                                                {place?.transportation.taxi}
+                                                {t('places.transportTypes.taxi')}: {place?.transportation.taxi}
                                             </p>
                                         </div>
                                     </section>
 
                                     {/* Olanaklar */}
                                     <section>
-                                        <h2 className="text-2xl font-semibold mb-4">Olanaklar</h2>
+                                        <h2 className="text-2xl font-semibold mb-4">{t('places.facilities')}</h2>
                                         <div className="flex flex-wrap gap-2">
                                             {place?.facilities.map((facility, index) => (
                                                 <span 
@@ -173,24 +171,24 @@ const TouristicPlaceDetailPage = () => {
                                 {/* Sağ Kolon - Giriş Ücretleri ve Diğer Bilgiler */}
                                 <div className="md:col-span-1">
                                     <div className="bg-gray-50 p-6 rounded-lg sticky top-4">
-                                        <h2 className="text-2xl font-semibold mb-4">Giriş Ücretleri</h2>
+                                        <h2 className="text-2xl font-semibold mb-4">{t('places.entryFees')}</h2>
                                         <div className="space-y-4">
                                             <div className="flex justify-between items-center">
-                                                <span>Tam</span>
-                                                <span className="font-semibold">{place?.entryFeeAdult}</span>
+                                                <span>{t('places.fees.adult')}</span>
+                                                <span className="font-semibold">{place?.entryFee.adult}</span>
                                             </div>
                                             <div className="flex justify-between items-center">
-                                                <span>Öğrenci</span>
-                                                <span className="font-semibold">{place?.entryFeeStudent}</span>
+                                                <span>{t('places.fees.student')}</span>
+                                                <span className="font-semibold">{place?.entryFee.student}</span>
                                             </div>
                                             <div className="flex justify-between items-center">
-                                                <span>Müzekart</span>
-                                                <span className="font-semibold">{place?.entryFeeMuseum}</span>
+                                                <span>{t('places.fees.museumCard')}</span>
+                                                <span className="font-semibold">{place?.entryFee.museum_card}</span>
                                             </div>
                                         </div>
 
                                         <div className="mt-6 pt-6 border-t">
-                                            <h3 className="font-semibold mb-2">İletişim</h3>
+                                            <h3 className="font-semibold mb-2">{t('places.contact')}</h3>
                                             <p className="text-gray-600">{place?.phone}</p>
                                         </div>
                                     </div>
