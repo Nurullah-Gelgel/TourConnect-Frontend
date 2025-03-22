@@ -4,7 +4,7 @@ export const tourService = {
     getAllTours: async () => {
         try {
             console.log('Turlar çekiliyor...');
-            const response = await api.get('/api/tour/getAllTours');
+            const response = await api.get('/api/tour/public/getAllTours');
             console.log('Gelen turlar:', response.data);
             return response.data;
         } catch (error) {
@@ -15,7 +15,7 @@ export const tourService = {
 
     getTourById: async (id) => {
         try {
-            const response = await api.get(`/api/tour/getTourById?id=${id}`);
+            const response = await api.get(`/api/tour/public/getTourById?id=${id}`);
             return response.data;
         } catch (error) {
             console.error('Tur detayı getirilirken hata oluştu:', error);

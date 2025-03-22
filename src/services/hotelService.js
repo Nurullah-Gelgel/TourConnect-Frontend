@@ -3,7 +3,7 @@ import api from './api';
 export const hotelService = {
     getAllHotels: async () => {
         try {
-            const response = await api.get('/api/hotel/getAllHotels');
+            const response = await api.get('/api/hotel/public/getAllHotels');
             return response.data;
         } catch (error) {
             console.error('Error fetching hotels:', error);
@@ -13,7 +13,7 @@ export const hotelService = {
 
     getHotelById: async (id) => {
         try {
-            const response = await api.get(`/api/hotel/getHotelById?id=${id}`);
+            const response = await api.get(`/api/hotel/public/getHotelById?id=${id}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching hotel details:', error);

@@ -28,31 +28,16 @@ const App = () => {
                     <Routes>
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<RegisterPage />} />
-                        
-                        <Route 
-                            path="/" 
-                            element={
-                                <ProtectedRoute>
-                                    <HomePage />
-                                </ProtectedRoute>
-                            } 
-                        />
-                        <Route 
-                            path="/hotels" 
-                            element={
-                                <ProtectedRoute>
-                                    <HotelSearchPage />
-                                </ProtectedRoute>
-                            } 
-                        />
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/hotels" element={<HotelSearchPage />} />
                         <Route path="/hotel/:id" element={<HotelDetailPage />} />
                         <Route path="/reserve/:id" element={<ReservationPage />} />
                         <Route path="/touristic-places" element={<TouristicPlacesPage />} />
                         <Route path="/tours" element={<TourListPage />} />
                         <Route path="/tour/:id" element={<TourDetailPage />} />
                         <Route path="/tour-reserve/:id" element={<ReservationPage />} />
-                        <Route path="/profile" element={<UserProfilePage />} />
-                        <Route path="/admin" element={<AdminPanel />} />
+                        <Route path="/profile" element={<ProtectedRoute><UserProfilePage /></ProtectedRoute>} />
+                        <Route path="/admin" element={<ProtectedRoute><AdminPanel /></ProtectedRoute>} />
                         <Route path="/contact" element={<SupportPage />} />
                         <Route path="/tour-reservation/:id" element={<TourReservationPage />} />
                         <Route path="/place/:id" element={<TouristicPlaceDetailPage />} />

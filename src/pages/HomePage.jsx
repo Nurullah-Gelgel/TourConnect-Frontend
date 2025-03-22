@@ -8,6 +8,7 @@ import Layout from '../components/Layout';
 import { hotelService } from '../services/hotelService';
 import { tourService } from '../services/tourService';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
 
 const HomePage = () => {
     const { t } = useTranslation();
@@ -18,6 +19,7 @@ const HomePage = () => {
     const [popularTours, setPopularTours] = useState([]);
     const [toursLoading, setToursLoading] = useState(true);
     const [toursError, setToursError] = useState(null);
+    const { isAuthenticated } = useAuth();
 
     useEffect(() => {
         fetchPopularHotels();
@@ -295,23 +297,25 @@ const HomePage = () => {
                     </div>
                 </div>
 
-                {/* User Login/Register Buttons */}
-                <div className="p-8 text-center">
-                    <button 
-                        onClick={() => navigate('/login')}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg mr-4 
-                                 transition-colors shadow-md hover:shadow-lg"
-                    >
-                        {t('home.auth.login')}
-                    </button>
-                    <button 
-                        onClick={() => navigate('/register')}
-                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg 
-                                 transition-colors shadow-md hover:shadow-lg"
-                    >
-                        {t('home.auth.register')}
-                    </button>
-                </div>
+                {/* User Login/Register Buttons - Sadece giriş yapmamış kullanıcılara göster */}
+                {!isAuthenticated && (
+                    <div className="p-8 text-center">
+                        <button 
+                            onClick={() => navigate('/login')}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg mr-4 
+                                     transition-colors shadow-md hover:shadow-lg"
+                        >
+                            {t('home.auth.login')}
+                        </button>
+                        <button 
+                            onClick={() => navigate('/register')}
+                            className="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg 
+                                     transition-colors shadow-md hover:shadow-lg"
+                        >
+                            {t('home.auth.register')}
+                        </button>
+                    </div>
+                )}
             </div>
         </Layout>
     );
