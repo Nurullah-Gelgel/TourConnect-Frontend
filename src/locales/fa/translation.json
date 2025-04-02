@@ -70,6 +70,7 @@
     "email": "ایمیل",
     "starRating": "درجه هتل",
     "features": "امکانات هتل",
+    "advancePayment": "پرداخت مقدم",
     "hotelInfo": "اطلاعات هتل",
     "reservationCard": {
       "perNight": "هر شب",
@@ -101,7 +102,18 @@
       "bankTransfer": "انتقال بانکی",
       "specialRequests": "درخواست‌های ویژه",
       "total": "مجموع",
-      "completeReservation": "تکمیل رزرو"
+      "completeReservation": "تکمیل رزرو",
+      "rooms": "اتاق‌ها",
+      "roomTypes": {
+        "single": "اتاق یک نفره",
+        "double": "اتاق دو نفره",
+        "suite": "اتاق سوئیت"
+      },
+      "roomQuantity": "تعداد",
+      "addRoom": "افزودن اتاق",
+      "removeRoom": "حذف اتاق",
+      "successMessage": "رزرو با موفقیت ایجاد شد!",
+      "errorMessage": "خطا در ایجاد رزرو. لطفا دوباره تلاش کنید."
     }
   },
   "tours": {

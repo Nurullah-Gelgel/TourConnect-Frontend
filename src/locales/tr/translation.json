@@ -114,7 +114,19 @@
       "bankTransfer": "Banka Havalesi",
       "specialRequests": "Özel İstekler",
       "total": "Toplam",
-      "completeReservation": "Rezervasyonu Tamamla"
+      "completeReservation": "Rezervasyonu Tamamla",
+      "advancePayment": "Ön Ödeme",
+      "rooms": "Odalar",
+      "roomTypes": {
+        "single": "Tek Kişilik Oda",
+        "double": "Çift Kişilik Oda",
+        "suite": "Suit Oda"
+      },
+      "roomQuantity": "Adet",
+      "addRoom": "Oda Ekle",
+      "removeRoom": "Odayı Kaldır",
+      "successMessage": "Rezervasyon başarıyla oluşturuldu!",
+      "errorMessage": "Rezervasyon oluşturulurken bir hata oluştu. Lütfen tekrar deneyin."
     }
   },
   "tours": {

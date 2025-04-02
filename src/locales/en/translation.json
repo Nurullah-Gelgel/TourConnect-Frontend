@@ -83,6 +83,7 @@
       "email": "Email",
       "starRating": "Star Rating",
       "features": "Hotel Features",
+      "advancePayment": "Advance Payment",
       "hotelInfo": "Hotel Information",
       "reservationCard": {
         "perNight": "Per Night",
@@ -114,7 +115,18 @@
         "bankTransfer": "Bank Transfer",
         "specialRequests": "Special Requests",
         "total": "Total",
-        "completeReservation": "Complete Reservation"
+        "completeReservation": "Complete Reservation",
+        "rooms": "Rooms",
+        "roomTypes": {
+          "single": "Single Room",
+          "double": "Double Room",
+          "suite": "Suite Room"
+        },
+        "roomQuantity": "Quantity",
+        "addRoom": "Add Room",
+        "removeRoom": "Remove Room",
+        "successMessage": "Reservation created successfully!",
+        "errorMessage": "Error creating reservation. Please try again."
       }
     },
     "tours": {

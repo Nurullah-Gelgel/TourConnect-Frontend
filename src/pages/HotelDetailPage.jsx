@@ -153,10 +153,10 @@ const HotelDetailPage = () => {
                                         <div className="text-center">
                                             <p className="text-gray-600 mb-2">{t('hotels.perNight')}</p>
                                             <div className="text-4xl font-bold text-blue-600 mb-4">
-                                                {hotel?.price} TL
+                                                {hotel?.advancePayment} TL
                                             </div>
                                             <Link 
-                                                to={`/hotel-reservation/${hotel?.id}`}
+                                                to={`/reserve/${hotel?.id}`}
                                                 className="block w-full bg-[#00A9FF] hover:bg-[#0098e5] text-white py-3 px-6 rounded-lg 
                                                          transition-colors duration-300 text-center font-semibold mb-4"
                                             >

@@ -13,7 +13,14 @@ export const hotelService = {
 
     getHotelById: async (id) => {
         try {
+            console.log('Fetching hotel with ID:', id); // Debug için log
             const response = await api.get(`/api/hotel/public/getHotelById?id=${id}`);
+            console.log('Hotel API response:', response.data); // Debug için log
+            
+            if (!response.data || !response.data.id) {
+                throw new Error('Invalid hotel data received from API');
+            }
+            
             return response.data;
         } catch (error) {
             console.error('Error fetching hotel details:', error);
