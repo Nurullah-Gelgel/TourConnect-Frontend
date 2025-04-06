@@ -95,16 +95,13 @@ const ReservationPage = () => {
                 throw new Error('Çıkış tarihi giriş tarihinden sonra olmalıdır');
             }
 
-            // Toplam tutarı hesapla
-            const totalAmount = formData.rooms.reduce((total, room) => {
-                const roomPrice = hotel?.price || 0;
-                return total + (roomPrice * room.quantity * numberOfNights);
-            }, 0);
+            // Toplam tutarı advance payment'dan hesapla
+            const totalAmount = hotel.advancePayment * formData.numberOfGuests;
 
             const reservationData = {
                 hotelId: hotel.id,
                 status: "PENDING",
-                totalAmount: totalAmount || 0,
+                totalAmount: totalAmount,
                 reservationGuests: parseInt(formData.numberOfGuests),
                 checkIn: formData.checkInDate,
                 checkOut: formData.checkOutDate,

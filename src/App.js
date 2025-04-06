@@ -18,6 +18,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import TourReservationPage from './pages/TourReservationPage';
 import TouristicPlaceDetailPage from './pages/TouristicPlaceDetailPage';
+
 import './i18n';
 
 const App = () => {

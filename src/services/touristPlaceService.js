@@ -6,7 +6,7 @@ export const touristPlaceService = {
             const response = await api.get('/api/tour/public/getAllPlaces');
             return response.data;
         } catch (error) {
-            console.error('Error fetching touristic places:', error);
+            console.error('Error fetching places:', error);
             throw error;
         }
     },
@@ -16,7 +16,7 @@ export const touristPlaceService = {
             const response = await api.get(`/api/tour/public/getPlaceById?id=${id}`);
             return response.data;
         } catch (error) {
-            console.error('Error fetching place details:', error);
+            console.error('Error fetching place:', error);
             throw error;
         }
     },
@@ -46,6 +46,15 @@ export const touristPlaceService = {
             await api.delete(`/api/tour/deletePlace?id=${id}`);
         } catch (error) {
             console.error('Error deleting place:', error);
+            throw error;
+        }
+    },
+
+    deleteAllPlaces: async () => {
+        try {
+            await api.delete('/api/tour/deleteAllPlaces');
+        } catch (error) {
+            console.error('Error deleting all places:', error);
             throw error;
         }
     }
