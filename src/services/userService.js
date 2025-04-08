@@ -23,7 +23,15 @@ export const userService = {
 
     createUser: async (userData) => {
         try {
-            const response = await api.post('/api/users/createUser', userData);
+            const response = await api.post('/api/users/createUser', {
+                name: userData.name,
+                email: userData.email,
+                password: userData.password,
+                role: userData.role,
+                languagePreference: userData.languagePreference,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            });
             return response.data;
         } catch (error) {
             console.error('Error creating user:', error);
@@ -33,7 +41,21 @@ export const userService = {
 
     updateUser: async (id, userData) => {
         try {
-            const response = await api.put(`/api/users/updateUser?id=${id}`, userData);
+            // Include both the ID and the update data in the request body
+            const updateData = {
+                id: id,
+                name: userData.name || '',
+                email: userData.email || '',
+                role: userData.role || 'USER',
+                languagePreference: userData.languagePreference || 'TR',
+                updatedAt: new Date().toISOString()
+            };
+
+            if (userData.password) {
+                updateData.password = userData.password;
+            }
+
+            const response = await api.put('/api/users/updateUser', updateData);
             return response.data;
         } catch (error) {
             console.error('Error updating user:', error);

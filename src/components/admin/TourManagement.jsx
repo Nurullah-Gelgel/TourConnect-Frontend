@@ -7,15 +7,16 @@ const TourManagement = () => {
     const [selectedTour, setSelectedTour] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
-        name: '',
-        description: '',
+        tourName: '',
+        tourStartAddress: '',
+        tourEndAddress: '',
+        price: 0,
+        photoUrl: '',
+        participantCount: 0,
         startDate: '',
         endDate: '',
-        price: '',
-        capacity: '',
-        location: '',
-        imageUrl: '',
-        category: ''
+        starRating: 0,
+        phone: ''
     });
 
     useEffect(() => {
@@ -80,15 +81,16 @@ const TourManagement = () => {
         setIsEditing(false);
         setSelectedTour(null);
         setFormData({
-            name: '',
-            description: '',
+            tourName: '',
+            tourStartAddress: '',
+            tourEndAddress: '',
+            price: 0,
+            photoUrl: '',
+            participantCount: 0,
             startDate: '',
             endDate: '',
-            price: '',
-            capacity: '',
-            location: '',
-            imageUrl: '',
-            category: ''
+            starRating: 0,
+            phone: ''
         });
     };
 
