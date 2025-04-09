@@ -48,8 +48,17 @@ const ReservationManagement = () => {
             console.error('Error fetching hotels:', error);
         }
     };
-
     const handleEdit = (reservation) => {
+        // Eğer reservation.hotelId bir otel adıysa, ID'ye çevir
+        let resolvedHotelId = reservation.hotelId;
+    
+        // Eğer hotelId UUID formatında değilse (yani otel adıysa), otellerden eşleşeni bul
+        const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+        if (!uuidRegex.test(reservation.hotelId)) {
+            const matchedHotel = hotels.find(h => h.hotelName === reservation.hotelId);
+            resolvedHotelId = matchedHotel ? matchedHotel.id : '';
+        }
+    
         setSelectedReservation(reservation);
         setFormData({
             status: reservation.status,
@@ -63,7 +72,7 @@ const ReservationManagement = () => {
             guestEmail: reservation.guestEmail,
             guestPhone: reservation.guestPhone,
             specialRequests: reservation.specialRequests || '',
-            hotelId: reservation.hotelId,
+            hotelId: resolvedHotelId, 
             roomType: reservation.roomType,
             roomCount: reservation.roomCount,
             userId: reservation.userId,
@@ -71,6 +80,8 @@ const ReservationManagement = () => {
         });
         setIsEditing(true);
     };
+    
+    
 
     const handleDelete = async (reservationId) => {
         if (window.confirm('Are you sure you want to delete this reservation?')) {
@@ -82,22 +93,28 @@ const ReservationManagement = () => {
             }
         }
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
+        // Eğer otel adı geldiyse ID'ye çevir
+        const matchedHotel = hotels.find(h => h.hotelName === formData.hotelId);
+        const resolvedHotelId = matchedHotel ? matchedHotel.id : formData.hotelId;
+    
         try {
             const reservationData = {
                 ...formData,
+                id: selectedReservation.id, 
+                hotelId: resolvedHotelId, // burada artık UUID olacak
                 checkIn: formData.checkIn,
                 checkOut: formData.checkOut,
                 totalAmount: parseFloat(formData.totalAmount),
                 reservationGuests: parseInt(formData.reservationGuests),
                 roomCount: parseInt(formData.roomCount)
             };
-
+    
             if (isEditing && selectedReservation) {
                 await reservationService.updateReservation(selectedReservation.id, reservationData);
-                setReservations(reservations.map(res => 
+                setReservations(reservations.map(res =>
                     res.id === selectedReservation.id ? { ...res, ...reservationData } : res
                 ));
             } else {
@@ -109,7 +126,7 @@ const ReservationManagement = () => {
             console.error('Error saving reservation:', error);
         }
     };
-
+    
     const resetForm = () => {
         setIsEditing(false);
         setSelectedReservation(null);
@@ -256,8 +273,8 @@ const ReservationManagement = () => {
                             >
                                 <option value="">Select a hotel</option>
                                 {hotels.map(hotel => (
-                                    <option key={hotel.id} value={hotel.id}>
-                                        {hotel.id}
+                                    <option key={hotel.hotelName} value={hotel.hotelName}>
+                                        {hotel.hotelName}
                                     </option>
                                 ))}
                             </select>
@@ -400,12 +417,18 @@ const ReservationManagement = () => {
                                 {reservations.map((reservation) => (
                                     <tr key={reservation.id}>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-sm font-medium text-gray-900">{reservation.guestName}</div>
-                                            <div className="text-sm text-gray-500">{reservation.guestEmail}</div>
-                                            <div className="text-sm text-gray-500">{reservation.guestPhone}</div>
+                                            <div>
+                                                <span className="font-semibold text-blue-700">Name:</span> {reservation.guestName}
+                                            </div>
+                                            <div>
+                                                <span className="font-semibold text-blue-700">Email:</span> {reservation.guestEmail}
+                                            </div>
+                                            <div>
+                                                <span className="font-semibold text-blue-700">Phone:</span> {reservation.guestPhone}
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            {hotels.find(h => h.id === reservation.hotelId)?.hotelName || 'Unknown Hotel'}                                            }
+                                            {hotels.find(h => h.id === reservation.hotelId)?.hotelName || 'Unknown Hotel'}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm text-gray-900">
