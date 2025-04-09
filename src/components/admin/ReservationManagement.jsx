@@ -273,7 +273,10 @@ const ReservationManagement = () => {
                             >
                                 <option value="">Select a hotel</option>
                                 {hotels.map(hotel => (
-                                    <option key={hotel.hotelName} value={hotel.hotelName}>
+                                    <option 
+                                        key={hotel.id} 
+                                        value={hotel.id}
+                                    >
                                         {hotel.hotelName}
                                     </option>
                                 ))}
