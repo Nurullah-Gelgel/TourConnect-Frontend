@@ -3,7 +3,7 @@ import api from './api';
 export const reservationService = {
     getAllReservations: async () => {
         try {
-            const response = await api.get('/api/reservation/getAllReservations');
+            const response = await api.get('/api/reservation/public/getAllReservations');
             return response.data;
         } catch (error) {
             console.error('Error fetching reservations:', error);
@@ -13,7 +13,7 @@ export const reservationService = {
 
     getReservationById: async (id) => {
         try {
-            const response = await api.get(`/api/reservation/getReservationById?id=${id}`);
+            const response = await api.get(`/api/reservation/public/getReservationById?id=${id}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching reservation:', error);
@@ -33,7 +33,7 @@ export const reservationService = {
 
     updateReservation: async (id, reservationData) => {
         try {
-            const response = await api.put(`/api/reservation/updateReservation?id=${id}`, reservationData);
+            const response = await api.put(`/api/reservation/public/updateReservation?id=${id}`, reservationData);
             return response.data;
         } catch (error) {
             console.error('Error updating reservation:', error);
@@ -43,7 +43,7 @@ export const reservationService = {
 
     deleteReservation: async (id) => {
         try {
-            await api.delete(`/api/reservation/deleteReservation?id=${id}`);
+            await api.delete(`/api/reservation/public/deleteReservation?id=${id}`);
         } catch (error) {
             console.error('Error deleting reservation:', error);
             throw error;

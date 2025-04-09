@@ -11,7 +11,9 @@ const UserManagement = () => {
         email: '',
         password: '',
         role: 'USER',
-        languagePreference: 'TR'
+        languagePreference: 'TR',
+        createdAt: '',
+        updatedAt: ''
     });
 
     useEffect(() => {
@@ -30,12 +32,13 @@ const UserManagement = () => {
     const handleEdit = (user) => {
         setSelectedUser(user);
         setFormData({
-            name: user.name,
-            email: user.email,
-            role: user.role,
+            name: user.name || '',
+            email: user.email || '',
+            password: '',
+            role: user.role || 'USER',
             languagePreference: user.languagePreference || 'TR',
-            // Password is not included in edit form for security
-            password: ''
+            createdAt: user.createdAt || new Date().toISOString(),
+            updatedAt: new Date().toISOString()
         });
         setIsEditing(true);
     };
@@ -54,17 +57,34 @@ const UserManagement = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            const currentDate = new Date().toISOString();
+            
             if (isEditing && selectedUser) {
-                const updateData = { ...formData };
-                if (!updateData.password) {
-                    delete updateData.password; // Don't update password if not provided
+                const updateData = {
+                    id: selectedUser.id,
+                    name: formData.name,
+                    email: formData.email,
+                    role: formData.role,
+                    languagePreference: formData.languagePreference,
+                    createdAt: selectedUser.createdAt || currentDate,
+                    updatedAt: currentDate
+                };
+
+                if (formData.password) {
+                    updateData.password = formData.password;
                 }
+
                 await userService.updateUser(selectedUser.id, updateData);
                 setUsers(users.map(user => 
                     user.id === selectedUser.id ? { ...user, ...updateData } : user
                 ));
             } else {
-                const newUser = await userService.createUser(formData);
+                const newUserData = {
+                    ...formData,
+                    createdAt: currentDate,
+                    updatedAt: currentDate
+                };
+                const newUser = await userService.createUser(newUserData);
                 setUsers([...users, newUser]);
             }
             resetForm();
@@ -81,7 +101,9 @@ const UserManagement = () => {
             email: '',
             password: '',
             role: 'USER',
-            languagePreference: 'TR'
+            languagePreference: 'TR',
+            createdAt: '',
+            updatedAt: ''
         });
     };
 

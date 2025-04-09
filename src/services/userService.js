@@ -29,8 +29,8 @@ export const userService = {
                 password: userData.password,
                 role: userData.role,
                 languagePreference: userData.languagePreference,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString()
+                createdAt: userData.createdAt,
+                updatedAt: userData.updatedAt
             });
             return response.data;
         } catch (error) {
@@ -41,21 +41,20 @@ export const userService = {
 
     updateUser: async (id, userData) => {
         try {
-            // Include both the ID and the update data in the request body
             const updateData = {
-                id: id,
-                name: userData.name || '',
-                email: userData.email || '',
-                role: userData.role || 'USER',
-                languagePreference: userData.languagePreference || 'TR',
+                name: userData.name,
+                email: userData.email,
+                role: userData.role,
+                languagePreference: userData.languagePreference,
                 updatedAt: new Date().toISOString()
             };
 
+            // Şifre varsa ekle
             if (userData.password) {
                 updateData.password = userData.password;
             }
 
-            const response = await api.put('/api/users/updateUser', updateData);
+            const response = await api.put(`/api/users/updateUser?id=${id}`, updateData);
             return response.data;
         } catch (error) {
             console.error('Error updating user:', error);

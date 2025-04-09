@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { touristPlaceService } from '../../services/touristPlaceService';
+import { FiMapPin, FiClock, FiUsers, FiDollarSign, FiEdit, FiTrash2 } from 'react-icons/fi';
 
 const TouristPlaceManagement = () => {
     const [places, setPlaces] = useState([]);
@@ -32,7 +33,6 @@ const TouristPlaceManagement = () => {
             console.error('Error fetching places:', error);
         }
     };
-
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (['bestSeasons', 'facilities', 'visitDays', 'transportationCars'].includes(name)) {
@@ -47,7 +47,6 @@ const TouristPlaceManagement = () => {
             }));
         }
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -106,12 +105,67 @@ const TouristPlaceManagement = () => {
 
     return (
         <div className="space-y-6">
-            <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow">
-                <h2 className="text-xl font-semibold">
-                    {selectedPlace ? 'Edit Tourist Place' : 'Create New Tourist Place'}
-                </h2>
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                    <div className="p-3 rounded-full bg-blue-500 bg-opacity-10">
+                        <FiMapPin className="h-8 w-8 text-blue-500" />
+                    </div>
+                    <div className="ml-4">
+                        <p className="text-sm text-gray-500">Total Places</p>
+                        <p className="text-2xl font-semibold text-gray-700">{places.length}</p>
+                    </div>
+                </div>
+            </div>
+            <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                    <div className="p-3 rounded-full bg-green-500 bg-opacity-10">
+                        <FiClock className="h-8 w-8 text-green-500" />
+                    </div>
+                    <div className="ml-4">
+                        <p className="text-sm text-gray-500">Open Places</p>
+                        <p className="text-2xl font-semibold text-gray-700">
+                            {places.filter(place => place.visitDays.includes(new Date().toLocaleDateString('en-US', { weekday: 'long' }))).length}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                    <div className="p-3 rounded-full bg-purple-500 bg-opacity-10">
+                        <FiUsers className="h-8 w-8 text-purple-500" />
+                    </div>
+                    <div className="ml-4">
+                        <p className="text-sm text-gray-500">With Facilities</p>
+                        <p className="text-2xl font-semibold text-gray-700">
+                            {places.filter(place => place.facilities.length > 0).length}
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div className="bg-white rounded-lg shadow p-6">
+                <div className="flex items-center">
+                    <div className="p-3 rounded-full bg-yellow-500 bg-opacity-10">
+                        <FiDollarSign className="h-8 w-8 text-yellow-500" />
+                    </div>
+                    <div className="ml-4">
+                        <p className="text-sm text-gray-500">Avg. Entry Fee</p>
+                        <p className="text-2xl font-semibold text-gray-700">
+                            ${places.reduce((acc, place) => acc + place.entryFeeAdult, 0) / (places.length || 1)}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                <div className="grid grid-cols-2 gap-4">
+        {/* Form Section */}
+        <div className="bg-white rounded-lg shadow p-6">
+            <h2 className="text-lg font-semibold mb-4">
+                {selectedPlace ? 'Edit Tourist Place' : 'Add New Tourist Place'}
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-gray-700">Name</label>
                         <input
@@ -136,7 +190,19 @@ const TouristPlaceManagement = () => {
                         />
                     </div>
 
-                    <div className="col-span-2">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Image URL</label>
+                        <input
+                            type="text"
+                            name="image"
+                            value={formData.image}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div className="col-span-full">
                         <label className="block text-sm font-medium text-gray-700">Description</label>
                         <textarea
                             name="description"
@@ -149,11 +215,23 @@ const TouristPlaceManagement = () => {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700">Image URL</label>
+                        <label className="block text-sm font-medium text-gray-700">Visit Open Time</label>
                         <input
-                            type="text"
-                            name="image"
-                            value={formData.image}
+                            type="time"
+                            name="visitOpenTime"
+                            value={formData.visitOpenTime}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Visit Close Time</label>
+                        <input
+                            type="time"
+                            name="visitCloseTime"
+                            value={formData.visitCloseTime}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                             required
@@ -167,15 +245,89 @@ const TouristPlaceManagement = () => {
                             name="bestSeasons"
                             value={formData.bestSeasons}
                             onChange={handleInputChange}
+                            placeholder="Spring, Summer, etc."
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                             required
                         />
                     </div>
 
-                    {/* Add other form fields similarly */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Facilities (comma-separated)</label>
+                        <input
+                            type="text"
+                            name="facilities"
+                            value={formData.facilities}
+                            onChange={handleInputChange}
+                            placeholder="WC, Cafe, Parking, etc."
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Visit Days (comma-separated)</label>
+                        <input
+                            type="text"
+                            name="visitDays"
+                            value={formData.visitDays}
+                            onChange={handleInputChange}
+                            placeholder="Monday, Tuesday, etc."
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Adult Entry Fee</label>
+                        <input
+                            type="number"
+                            name="entryFeeAdult"
+                            value={formData.entryFeeAdult}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Student Entry Fee</label>
+                        <input
+                            type="number"
+                            name="entryFeeStudent"
+                            value={formData.entryFeeStudent}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Museum Card Fee</label>
+                        <input
+                            type="number"
+                            name="entryFeeMuseum"
+                            value={formData.entryFeeMuseum}
+                            onChange={handleInputChange}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Transportation (comma-separated)</label>
+                        <input
+                            type="text"
+                            name="transportationCars"
+                            value={formData.transportationCars}
+                            onChange={handleInputChange}
+                            placeholder="Bus, Taxi, etc."
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
                 </div>
 
-                <div className="flex justify-end space-x-3">
+                <div className="flex justify-end space-x-3 mt-4">
                     <button
                         type="button"
                         onClick={resetForm}
@@ -187,48 +339,59 @@ const TouristPlaceManagement = () => {
                         type="submit"
                         className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
                     >
-                        {selectedPlace ? 'Update' : 'Create'}
+                        {selectedPlace ? 'Update Place' : 'Create Place'}
                     </button>
                 </div>
             </form>
+        </div>
 
-            <div className="bg-white shadow rounded-lg overflow-hidden">
-                <table className="min-w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                        <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Entry Fee (Adult)</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-200">
-                        {places.map(place => (
-                            <tr key={place.id}>
-                                <td className="px-6 py-4 whitespace-nowrap">{place.name}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">{place.location}</td>
-                                <td className="px-6 py-4 whitespace-nowrap">{place.entryFeeAdult}</td>
-                                <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                                    <button
-                                        onClick={() => handleEdit(place)}
-                                        className="text-blue-600 hover:text-blue-900"
-                                    >
-                                        Edit
-                                    </button>
-                                    <button
-                                        onClick={() => handleDelete(place.id)}
-                                        className="text-red-600 hover:text-red-900"
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
+        {/* Table Section */}
+        <div className="bg-white shadow rounded-lg overflow-hidden">
+            <div className="p-6">
+                <h2 className="text-lg font-semibold mb-4">Tourist Places List</h2>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Visit Hours</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Adult Fee</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {places.map(place => (
+                                <tr key={place.id}>
+                                    <td className="px-6 py-4 whitespace-nowrap">{place.name}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{place.location}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        {place.visitOpenTime} - {place.visitCloseTime}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">${place.entryFeeAdult}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap space-x-2">
+                                        <button
+                                            onClick={() => handleEdit(place)}
+                                            className="text-indigo-600 hover:text-indigo-900"
+                                        >
+                                            <FiEdit className="h-5 w-5 inline" />
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(place.id)}
+                                            className="text-red-600 hover:text-red-900"
+                                        >
+                                            <FiTrash2 className="h-5 w-5 inline" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    );
+    </div>
+);
 };
 
-export default TouristPlaceManagement; 
+export default TouristPlaceManagement;

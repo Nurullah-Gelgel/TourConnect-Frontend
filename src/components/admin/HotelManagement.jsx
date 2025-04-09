@@ -7,16 +7,16 @@ const HotelManagement = () => {
     const [selectedHotel, setSelectedHotel] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
-        name: '',
-        address: '',
-        city: '',
+        hotelName: '',
+        hotelAddress: '',
+        hotelCity: '',
         district: '',
-        starRating: '',
+        starRating: 1,
         phone: '',
         photoUrl: '',
         apiUrl: '',
         apiKey: '',
-        advancePayment: ''
+        advancePayment: 0.0
     });
 
     useEffect(() => {
@@ -26,7 +26,6 @@ const HotelManagement = () => {
     const fetchHotels = async () => {
         try {
             const data = await hotelService.getAllHotels();
-            console.log('Fetched hotels:', data);
             setHotels(data);
         } catch (error) {
             console.error('Error fetching hotels:', error);
@@ -44,9 +43,9 @@ const HotelManagement = () => {
     const handleEdit = (hotel) => {
         setSelectedHotel(hotel);
         setFormData({
-            name: hotel.name,
-            address: hotel.address,
-            city: hotel.city,
+            hotelName: hotel.hotelName,
+            hotelAddress: hotel.hotelAddress,
+            hotelCity: hotel.hotelCity,
             district: hotel.district,
             starRating: hotel.starRating,
             phone: hotel.phone,
@@ -91,19 +90,18 @@ const HotelManagement = () => {
         setIsEditing(false);
         setSelectedHotel(null);
         setFormData({
-            name: '',
-            address: '',
-            city: '',
+            hotelName: '',
+            hotelAddress: '',
+            hotelCity: '',
             district: '',
-            starRating: '',
+            starRating: 1,
             phone: '',
             photoUrl: '',
             apiUrl: '',
             apiKey: '',
-            advancePayment: ''
+            advancePayment: 0.0
         });
     };
-
     return (
         <div className="space-y-6">
             {/* Quick Stats */}
@@ -171,8 +169,8 @@ const HotelManagement = () => {
                             <label className="block text-sm font-medium text-gray-700">Hotel Name</label>
                             <input
                                 type="text"
-                                name="name"
-                                value={formData.name}
+                                name="hotelName"
+                                value={formData.hotelName}
                                 onChange={handleInputChange}
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 required
@@ -183,8 +181,8 @@ const HotelManagement = () => {
                             <label className="block text-sm font-medium text-gray-700">City</label>
                             <input
                                 type="text"
-                                name="city"
-                                value={formData.city}
+                                name="hotelCity"
+                                value={formData.hotelCity}
                                 onChange={handleInputChange}
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                                 required
@@ -244,8 +242,8 @@ const HotelManagement = () => {
                         <div className="col-span-2">
                             <label className="block text-sm font-medium text-gray-700">Address</label>
                             <textarea
-                                name="address"
-                                value={formData.address}
+                                name="hotelAddress"
+                                value={formData.hotelAddress}
                                 onChange={handleInputChange}
                                 rows="2"
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
@@ -324,8 +322,8 @@ const HotelManagement = () => {
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {hotels.map((hotel) => (
                                     <tr key={hotel.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap">{hotel.name}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">{`${hotel.city}, ${hotel.district}`}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">{hotel.hotelName}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">{`${hotel.hotelCity}, ${hotel.district}`}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             {hotel.starRating} <FiStar className="inline text-yellow-400" />
                                         </td>

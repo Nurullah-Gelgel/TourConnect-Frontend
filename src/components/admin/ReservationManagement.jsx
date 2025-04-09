@@ -52,21 +52,22 @@ const ReservationManagement = () => {
     const handleEdit = (reservation) => {
         setSelectedReservation(reservation);
         setFormData({
-            hotelId: reservation.hotelId,
-            checkIn: reservation.checkInDate.split('T')[0],
-            checkOut: reservation.checkOutDate.split('T')[0],
-            guestCount: reservation.guestCount,
             status: reservation.status,
-            specialRequests: reservation.specialRequests || '',
-            totalPrice: reservation.totalPrice,
+            totalAmount: reservation.totalAmount,
+            reservationGuests: reservation.reservationGuests,
+            checkIn: reservation.checkIn,
+            checkOut: reservation.checkOut,
+            reservationCreatedAt: reservation.reservationCreatedAt,
+            reservationUpdatedAt: reservation.reservationUpdatedAt,
             guestName: reservation.guestName,
             guestEmail: reservation.guestEmail,
             guestPhone: reservation.guestPhone,
-            reservationCreatedAt: reservation.reservationCreatedAt,
-            reservationUpdatedAt: reservation.reservationUpdatedAt,
+            specialRequests: reservation.specialRequests || '',
+            hotelId: reservation.hotelId,
             roomType: reservation.roomType,
             roomCount: reservation.roomCount,
-            totalAmount: reservation.totalAmount
+            userId: reservation.userId,
+            advancePayment: reservation.advancePayment
         });
         setIsEditing(true);
     };
@@ -211,10 +212,10 @@ const ReservationManagement = () => {
                 </h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+                        <div>
                             <label className="block text-sm font-medium text-gray-700">Guest Name</label>
-                <input
-                    type="text"
+                            <input
+                                type="text"
                                 name="guestName"
                                 value={formData.guestName}
                                 onChange={handleInputChange}
@@ -256,10 +257,10 @@ const ReservationManagement = () => {
                                 <option value="">Select a hotel</option>
                                 {hotels.map(hotel => (
                                     <option key={hotel.id} value={hotel.id}>
-                                        {hotel.name}
+                                        {hotel.id}
                                     </option>
                                 ))}
-                </select>
+                            </select>
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Check-in Date</label>
@@ -274,8 +275,8 @@ const ReservationManagement = () => {
                         </div>
                         <div>
                             <label className="block text-sm font-medium text-gray-700">Check-out Date</label>
-                <input
-                    type="date"
+                            <input
+                                type="date"
                                 name="checkOut"
                                 value={formData.checkOut}
                                 onChange={handleInputChange}
@@ -373,7 +374,7 @@ const ReservationManagement = () => {
                             className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
                         >
                             {isEditing ? 'Save Changes' : 'Add Reservation'}
-                </button>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -382,38 +383,66 @@ const ReservationManagement = () => {
             <div className="bg-white rounded-lg shadow">
                 <div className="p-6">
                     <h2 className="text-lg font-semibold mb-4">Reservation List</h2>
-            <div className="overflow-x-auto">
+                    <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Guest Info</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hotel</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room Details</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Dates</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Guests</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
+                                </tr>
+                            </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
                                 {reservations.map((reservation) => (
                                     <tr key={reservation.id}>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            {hotels.find(h => h.id === reservation.hotelId)?.name || 'Unknown Hotel'}
+                                            <div className="text-sm font-medium text-gray-900">{reservation.guestName}</div>
+                                            <div className="text-sm text-gray-500">{reservation.guestEmail}</div>
+                                            <div className="text-sm text-gray-500">{reservation.guestPhone}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            {new Date(reservation.checkInDate).toLocaleDateString()} - 
-                                            {new Date(reservation.checkOutDate).toLocaleDateString()}
+                                            {hotels.find(h => h.id === reservation.hotelId)?.hotelName || 'Unknown Hotel'}                                            }
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            {reservation.guestCount}
+                                            <div className="text-sm text-gray-900">
+                                                Type: {reservation.roomType}
+                                            </div>
+                                            <div className="text-sm text-gray-500">
+                                                Rooms: {reservation.roomCount}
+                                            </div>
+                                            <div className="text-sm text-gray-500">
+                                                Guests: {reservation.reservationGuests}
+                                            </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`${getStatusColor(reservation.status)}`}>
+                                            <div className="text-sm text-gray-900">
+                                                Check-in: {new Date(reservation.checkIn).toLocaleDateString()}
+                                            </div>
+                                            <div className="text-sm text-gray-500">
+                                                Check-out: {new Date(reservation.checkOut).toLocaleDateString()}
+                                            </div>
+                                            <div className="text-xs text-gray-400">
+                                                Created: {new Date(reservation.reservationCreatedAt).toLocaleDateString()}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <span className={`inline-flex px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(reservation.status)} bg-opacity-10`}>
                                                 {reservation.status}
-                                    </span>
-                                </td>
+                                            </span>
+                                        </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            ${reservation.totalPrice}
+                                            <div className="text-sm text-gray-900">
+                                                ${reservation.totalAmount}
+                                            </div>
+                                            {reservation.advancePayment && (
+                                                <div className="text-xs text-gray-500">
+                                                    Advance: ${reservation.advancePayment}
+                                                </div>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap space-x-2">
                                             <button
@@ -421,18 +450,18 @@ const ReservationManagement = () => {
                                                 className="text-indigo-600 hover:text-indigo-900"
                                             >
                                                 <FiEdit className="h-5 w-5 inline" />
-                                    </button>
+                                            </button>
                                             <button
                                                 onClick={() => handleDelete(reservation.id)}
                                                 className="text-red-600 hover:text-red-900"
                                             >
                                                 <FiTrash2 className="h-5 w-5 inline" />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
