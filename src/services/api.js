@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://rahvan.onrender.com/'; // Backend URL'inizin doğru olduğundan emin olun
+const BASE_URL = 'https://rahvan.onrender.com'; // Backend URL'inizin doğru olduğundan emin olun
 
 // Axios instance oluşturma
 const api = axios.create({
