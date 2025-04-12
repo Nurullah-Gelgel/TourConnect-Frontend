@@ -46,7 +46,7 @@ const TourListPage = () => {
         <Layout>
             <div className="bg-gray-100 min-h-screen">
                 <div className="container mx-auto p-4">
-                    {/* Filter Section */}
+                    {/* Filter Section 
                     <div className="p-4 bg-white shadow-md">
                         <h1 className="text-3xl font-bold mb-4">{t('tours.title')}</h1>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
@@ -88,7 +88,7 @@ const TourListPage = () => {
                                 placeholder={t('tours.search.date')}
                             />
                         </div>
-                    </div>
+                    </div>*/}
 
                     {/* Loading State */}
                     {loading && (

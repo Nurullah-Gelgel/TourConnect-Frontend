@@ -31,7 +31,7 @@ const HomePage = () => {
             setLoading(true);
             const data = await hotelService.getAllHotels();
             // İlk 3 oteli al (veya backend'den popüler otelleri çeken özel bir endpoint kullanılabilir)
-            setPopularHotels(data.slice(0, 3));
+            setPopularHotels(data.slice(0, 4));
             setError(null);
         } catch (err) {
             console.error('Oteller yüklenirken hata:', err);
@@ -46,7 +46,7 @@ const HomePage = () => {
             setToursLoading(true);
             const data = await tourService.getAllTours();
             // İlk 3 turu al
-            setPopularTours(data.slice(0, 3));
+            setPopularTours(data.slice(0, 4));
             setToursError(null);
         } catch (err) {
             console.error('Turlar yüklenirken hata:', err);
@@ -157,7 +157,7 @@ const HomePage = () => {
                     </div>
                 </div>
 
-                {/* Search Bar */}
+                {/* Search Bar 
                 <div className="p-4 bg-white shadow-md rounded-lg mx-4 -mt-8 relative z-20">
                     <SearchBar />
                     <div className="flex flex-wrap justify-center gap-2 mt-4">
@@ -170,7 +170,7 @@ const HomePage = () => {
                         </button>
                     </div>
                 </div>
-
+                */}
                 {/* Popular Hotels Section */}
                 <div className="p-8">
                     <h2 className="text-2xl font-semibold mb-6 text-gray-800">{t('home.sections.popularHotels')}</h2>
@@ -190,7 +190,7 @@ const HomePage = () => {
                             </button>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {popularHotels.map((hotel) => (
                                 <div key={hotel.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
                                     <img 
@@ -273,7 +273,7 @@ const HomePage = () => {
                             </button>
                         </div>
                     ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                             {popularTours.map((tour) => (
                                 <TourCard key={tour.id} tour={tour} />
                             ))}

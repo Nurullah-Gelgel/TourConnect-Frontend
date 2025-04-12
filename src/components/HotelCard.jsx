@@ -23,9 +23,7 @@ const HotelCard = ({ hotel }) => {
                     <p className="text-gray-600">
                         <span className="font-medium">{t('hotels.location')}:</span> {hotel.hotelCity}, {hotel.district}
                     </p>
-                    <p className="text-gray-600">
-                        <span className="font-medium">{t('hotels.address')}:</span> {hotel.hotelAddress}
-                    </p>
+                    
                     {hotel.starRating && (
                         <p className="text-yellow-500">
                             {'⭐'.repeat(hotel.starRating)}

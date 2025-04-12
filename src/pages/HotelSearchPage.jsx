@@ -52,10 +52,10 @@ const HotelSearchPage = () => {
     return (
         <Layout>
             <div className="bg-gray-100 min-h-screen">
-                <div className="container mx-auto p-4">
+                <div className="container mx-auto p-4">{/*
                     <h1 className="text-3xl font-bold p-4">{t('hotels.search.title')}</h1>
                     
-                    {/* Search & Filter Panel */}
+                     Search & Filter Panel 
                     <form onSubmit={handleSearch} className="bg-white shadow-md rounded-lg p-6 mb-6">
                         <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
                             <input 
@@ -97,7 +97,7 @@ const HotelSearchPage = () => {
                                 {t('hotels.search.searchButton')}
                             </button>
                         </div>
-                    </form>
+                    </form>*/}
 
                     {/* Loading State */}
                     {loading && (

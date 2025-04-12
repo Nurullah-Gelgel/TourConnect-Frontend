@@ -15,7 +15,7 @@ const Footer = () => {
                             className="w-8 h-8 object-contain"
                         />
                         <span className="text-sm text-gray-300">
-                            © {new Date().getFullYear()} Van Tour
+                            © {new Date().getFullYear()} Rahvan Tour
                         </span>
                     </div>
 
@@ -43,7 +43,7 @@ const Footer = () => {
                         {/* İletişim */}
                         <span className="flex items-center text-xs text-gray-300">
                             <FaEnvelope className="w-3 h-3 mr-1 text-[#00A9FF]" />
-                            info@vantur.com
+                            info@rahvantour.com
                         </span>
                         
                         {/* Sosyal Medya */}
