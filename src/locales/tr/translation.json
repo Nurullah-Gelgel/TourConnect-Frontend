@@ -208,6 +208,7 @@
       "register": "Kayıt Ol"
     },
     "pnr": {
+      "title": "Rezervasyon Sorgula",
       "searchButton": "Rezervasyon Ara",
       "placeholder": "PNR Kodunuzu Giriniz",
       "checkReservation": "Rezervasyon Sorgula",
