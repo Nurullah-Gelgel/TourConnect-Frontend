@@ -9,6 +9,7 @@ import { hotelService } from '../services/hotelService';
 import { tourService } from '../services/tourService';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
+import { reservationService } from '../services/reservationService';
 
 const HomePage = () => {
     const { t } = useTranslation();
@@ -20,6 +21,10 @@ const HomePage = () => {
     const [toursLoading, setToursLoading] = useState(true);
     const [toursError, setToursError] = useState(null);
     const { isAuthenticated } = useAuth();
+    const [pnrCode, setPnrCode] = useState('');
+    const [pnrReservation, setPnrReservation] = useState(null);
+    const [pnrLoading, setPnrLoading] = useState(false);
+    const [pnrError, setPnrError] = useState(null);
 
     useEffect(() => {
         fetchPopularHotels();
@@ -55,6 +60,97 @@ const HomePage = () => {
             setToursLoading(false);
         }
     };
+
+    const handlePnrSearch = async (e) => {
+        e.preventDefault();
+        if (!pnrCode.trim()) {
+            setPnrError(t('home.pnr.errorEmpty'));
+            return;
+        }
+
+        try {
+            setPnrLoading(true);
+            setPnrError(null);
+            const response = await reservationService.getReservationByPnr(pnrCode);
+            setPnrReservation(response);
+        } catch (error) {
+            console.error('PNR arama hatası:', error);
+            setPnrError(t('home.pnr.errorNotFound'));
+            setPnrReservation(null);
+        } finally {
+            setPnrLoading(false);
+        }
+    };
+
+    const renderPnrSection = () => (
+        <div className="max-w-4xl mx-auto p-8 -mt-8 relative z-20">
+            <div className="bg-white rounded-lg shadow-lg p-6">
+                <h2 className="text-2xl font-semibold mb-4 text-center text-gray-800">
+                    {t('home.pnr.title')}
+                </h2>
+                <form onSubmit={handlePnrSearch} className="flex flex-col items-center gap-4">
+                    <div className="w-full max-w-md">
+                        <input
+                            type="text"
+                            value={pnrCode}
+                            onChange={(e) => setPnrCode(e.target.value.toUpperCase())}
+                            placeholder={t('home.pnr.placeholder')}
+                            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
+                                 transition-colors duration-300 flex items-center gap-2"
+                        disabled={pnrLoading}
+                    >
+                        {pnrLoading ? (
+                            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                        ) : null}
+                        {t('home.pnr.searchButton')}
+                    </button>
+                </form>
+
+                {pnrError && (
+                    <div className="mt-4 text-center text-red-500">
+                        {pnrError}
+                    </div>
+                )}
+
+                {pnrReservation && (
+                    <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                        <h3 className="text-xl font-semibold mb-4">{t('home.pnr.reservationDetails')}</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <p className="text-gray-600">{t('home.pnr.hotelName')}</p>
+                                <p className="font-semibold">{pnrReservation.hotelName}</p>
+                            </div>
+                            <div>
+                                <p className="text-gray-600">{t('home.pnr.guestName')}</p>
+                                <p className="font-semibold">{pnrReservation.guestName}</p>
+                            </div>
+                            <div>
+                                <p className="text-gray-600">{t('home.pnr.checkIn')}</p>
+                                <p className="font-semibold">{pnrReservation.checkIn}</p>
+                            </div>
+                            <div>
+                                <p className="text-gray-600">{t('home.pnr.checkOut')}</p>
+                                <p className="font-semibold">{pnrReservation.checkOut}</p>
+                            </div>
+                            <div>
+                                <p className="text-gray-600">{t('home.pnr.status')}</p>
+                                <p className="font-semibold">{pnrReservation.status}</p>
+                            </div>
+                            <div>
+                                <p className="text-gray-600">{t('home.pnr.totalAmount')}</p>
+                                <p className="font-semibold">{pnrReservation.totalAmount} TL</p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 
     return (
         <Layout>
@@ -113,6 +209,19 @@ const HomePage = () => {
                                 </svg>
                                 {t('home.banner.tourButton')}
                             </Link>
+                            {/* PNR Sorgulama Butonu */}
+                            <button
+                                onClick={() => document.getElementById('pnrModal').showModal()}
+                                className="bg-[#176B87] hover:bg-[#145e75] text-white px-8 py-3 rounded-lg 
+                                          text-lg font-semibold transition duration-300 ease-in-out 
+                                          transform hover:scale-105 hover:shadow-lg
+                                          flex items-center"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                                </svg>
+                                {t('home.pnr.checkReservation')}
+                            </button>
                         </div>
 
                         {/* Scroll Down İndikatörü */}
@@ -156,6 +265,88 @@ const HomePage = () => {
                         </svg>
                     </div>
                 </div>
+
+                {/* PNR Modal */}
+                <dialog id="pnrModal" className="modal rounded-lg shadow-xl p-0 w-full max-w-md">
+                    <div className="bg-white p-6 rounded-lg">
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="text-2xl font-semibold text-gray-800">
+                                {t('home.pnr.title')}
+                            </h3>
+                            <button 
+                                onClick={() => document.getElementById('pnrModal').close()}
+                                className="text-gray-500 hover:text-gray-700"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        
+                        <form onSubmit={handlePnrSearch} className="space-y-4">
+                            <div>
+                                <input
+                                    type="text"
+                                    value={pnrCode}
+                                    onChange={(e) => setPnrCode(e.target.value.toUpperCase())}
+                                    placeholder={t('home.pnr.placeholder')}
+                                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className="w-full bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
+                                         transition-colors duration-300 flex items-center justify-center gap-2"
+                                disabled={pnrLoading}
+                            >
+                                {pnrLoading ? (
+                                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                                ) : null}
+                                {t('home.pnr.searchButton')}
+                            </button>
+                        </form>
+
+                        {pnrError && (
+                            <div className="mt-4 text-center text-red-500">
+                                {pnrError}
+                            </div>
+                        )}
+
+                        {pnrReservation && (
+                            <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                                <h3 className="text-xl font-semibold mb-4">{t('home.pnr.reservationDetails')}</h3>
+                                <div className="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <p className="text-gray-600">{t('home.pnr.hotelName')}</p>
+                                        <p className="font-semibold">{pnrReservation.hotelName}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-600">{t('home.pnr.guestName')}</p>
+                                        <p className="font-semibold">{pnrReservation.guestName}</p>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p className="text-gray-600">{t('home.pnr.checkIn')}</p>
+                                            <p className="font-semibold">{pnrReservation.checkIn}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-gray-600">{t('home.pnr.checkOut')}</p>
+                                            <p className="font-semibold">{pnrReservation.checkOut}</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-600">{t('home.pnr.status')}</p>
+                                        <p className="font-semibold">{pnrReservation.status}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-gray-600">{t('home.pnr.totalAmount')}</p>
+                                        <p className="font-semibold">{pnrReservation.totalAmount} TL</p>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </dialog>
 
                 {/* Search Bar 
                 <div className="p-4 bg-white shadow-md rounded-lg mx-4 -mt-8 relative z-20">

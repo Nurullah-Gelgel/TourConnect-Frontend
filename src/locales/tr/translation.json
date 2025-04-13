@@ -206,6 +206,20 @@
     "auth": {
       "login": "Giriş Yap",
       "register": "Kayıt Ol"
+    },
+    "pnr": {
+      "searchButton": "Rezervasyon Ara",
+      "placeholder": "PNR Kodunuzu Giriniz",
+      "checkReservation": "Rezervasyon Sorgula",
+      "errorEmpty": "Lütfen PNR kodunu giriniz",
+      "errorNotFound": "Rezervasyon bulunamadı",
+      "reservationDetails": "Rezervasyon Detayları",
+      "hotelName": "Otel Adı",
+      "guestName": "Misafir Adı",
+      "checkIn": "Giriş Tarihi",
+      "checkOut": "Çıkış Tarihi",
+      "status": "Durum",
+      "totalAmount": "Toplam Tutar"
     }
   },
   "support": {

@@ -57,6 +57,21 @@
     "auth": {
       "login": "ورود",
       "register": "ثبت نام"
+    },
+    "pnr": {
+      "title": "جستجوی رزرو",
+      "searchButton": "جستجوی رزرو",
+      "placeholder": "کد PNR خود را وارد کنید",
+      "checkReservation": "بررسی رزرو",
+      "errorEmpty": "لطفا کد PNR را وارد کنید",
+      "errorNotFound": "رزروی یافت نشد",
+      "reservationDetails": "جزئیات رزرو",
+      "hotelName": "نام هتل",
+      "guestName": "نام مهمان",
+      "checkIn": "تاریخ ورود",
+      "checkOut": "تاریخ خروج",
+      "status": "وضعیت",
+      "totalAmount": "مبلغ کل"
     }
   },
   "hotels": {

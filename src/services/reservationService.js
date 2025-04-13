@@ -67,5 +67,15 @@ export const reservationService = {
             console.error('Error fetching user reservations:', error);
             throw error;
         }
+    },
+
+    getReservationByPnr: async (pnrCode) => {
+        try {
+            const response = await api.get(`/api/reservation/public/pnr/${pnrCode}`);
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching reservation by PNR:', error);
+            throw error;
+        }
     }
 }; 

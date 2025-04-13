@@ -206,6 +206,21 @@
       "auth": {
         "login": "Login",
         "register": "Register"
+      },
+      "pnr": {
+        "title": "Reservation Lookup",
+        "searchButton": "Search Reservation",
+        "placeholder": "Enter your PNR Code",
+        "checkReservation": "Check Reservation",
+        "errorEmpty": "Please enter a PNR code",
+        "errorNotFound": "Reservation not found",
+        "reservationDetails": "Reservation Details",
+        "hotelName": "Hotel Name",
+        "guestName": "Guest Name",
+        "checkIn": "Check-in Date",
+        "checkOut": "Check-out Date",
+        "status": "Status",
+        "totalAmount": "Total Amount"
       }
     },
     "support": {

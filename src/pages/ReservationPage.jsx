@@ -120,8 +120,10 @@ const ReservationPage = () => {
             
             const response = await reservationService.createReservation(reservationData);
             console.log('Rezervasyon oluşturuldu:', response);
-            alert('Rezervasyon başarıyla oluşturuldu!');
-            navigate('/reservations');
+            
+            // Show success message with PNR code
+            alert(`Rezervasyon başarıyla oluşturuldu!\nPNR Kodunuz: ${response.pnrCode}`);
+            navigate('/');
         } catch (err) {
             console.error('Rezervasyon oluşturma hatası:', err);
             alert(err.message || 'Rezervasyon oluşturulurken bir hata oluştu');
