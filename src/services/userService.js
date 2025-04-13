@@ -3,7 +3,7 @@ import api from './api';
 export const userService = {
     getAllUsers: async () => {
         try {
-            const response = await api.get('/api/users/getAllUsers');
+            const response = await api.get('/api/users/public/getAllUsers');
             return response.data;
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -13,7 +13,7 @@ export const userService = {
 
     getUserById: async (id) => {
         try {
-            const response = await api.get(`/api/users/getUserById?id=${id}`);
+            const response = await api.get(`/api/users/public/getUserById?id=${id}`);
             return response.data;
         } catch (error) {
             console.error('Error fetching user:', error);
@@ -23,7 +23,7 @@ export const userService = {
 
     createUser: async (userData) => {
         try {
-            const response = await api.post('/api/users/createUser', {
+            const response = await api.post('/api/users/public/createUser', {
                 name: userData.name,
                 email: userData.email,
                 password: userData.password,
