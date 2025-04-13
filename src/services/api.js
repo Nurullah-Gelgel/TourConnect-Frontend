@@ -14,10 +14,17 @@ const api = axios.create({
 api.interceptors.request.use(
     (config) => {
         console.log('Giden istek:', config);
-        const token = localStorage.getItem('token');
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
+
+        // Bu endpoint'e istek atılırken token eklenmesini engelle
+        const isPublicCreateReservation = config.url.includes('/api/reservation/public/createReservation');
+
+        if (!isPublicCreateReservation) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
         }
+
         return config;
     },
     (error) => {
@@ -25,6 +32,7 @@ api.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
 
 // Cevap interceptor'ı - Hata yönetimi
 api.interceptors.response.use(
