@@ -21,25 +21,25 @@ export const reservationService = {
         }
     },
 
-    createReservation: async (reservationData) => {
-        try {
-            const response = await api.post(
-                '/api/reservation/public/createReservation',
-                reservationData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json'
-                        // Authorization eklemiyoruz!
-                    }
+ createReservation: async (reservationData) => {
+    try {
+        const response = await api.post(
+            '/api/reservation/public/createReservation',
+            reservationData,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Authorization eklemiyoruz!
                 }
-            );
-            return response.data;
-        } catch (error) {
-            console.error('Error creating reservation:', error);
-            throw error;
-        }
-    },
-    
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('Error creating reservation:', error);
+        throw error;
+    }
+},
+
 
     updateReservation: async (id, reservationData) => {
         try {

@@ -15,7 +15,7 @@ const Footer = () => {
                             className="w-8 h-8 object-contain"
                         />
                         <span className="text-sm text-gray-300">
-                            © {new Date().getFullYear()} Rahvan Tour
+                            © {new Date().getFullYear()} RahVan Tour    
                         </span>
                     </div>
 
