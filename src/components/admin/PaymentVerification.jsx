@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { paymentService } from '../../services/paymentService';
 import { FiCreditCard, FiCheck, FiX, FiDownload, FiEye, FiDollarSign } from 'react-icons/fi';
+import api from '../../services/api';
 
 const PaymentVerification = () => {
     const [payments, setPayments] = useState([]);
@@ -48,9 +49,20 @@ const PaymentVerification = () => {
 
     const handleViewReceipt = async (receiptFilename) => {
         try {
-            // Doğrudan URL'yi oluştur
-            const receiptUrl = `${process.env.REACT_APP_API_URL}/api/file/uploads/${receiptFilename}`;
-            setSelectedReceipt(receiptUrl);
+            // Eğer receiptFilename zaten tam path içeriyorsa, sadece filename kısmını al
+            const filename = receiptFilename.split('/').pop();
+            
+            // Backend endpoint'ine uygun URL oluştur
+            const baseUrl = api.defaults.baseURL.replace(/\/+$/, ''); // Sondaki slash'leri temizle
+            const receiptUrl = `${baseUrl}/api/files/uploads/${filename}`;
+            
+            
+            // iframe için content-disposition ve content-type ayarlarını ekle
+            const response = await fetch(receiptUrl);
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            setSelectedReceipt(url);
+            
         } catch (error) {
             console.error('Dekont görüntüleme hatası:', error);
             alert('Dekont görüntülenirken bir hata oluştu');
@@ -133,7 +145,13 @@ const PaymentVerification = () => {
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="text-xl font-semibold">Dekont Görüntüleme</h3>
                             <button 
-                                onClick={() => setSelectedReceipt(null)}
+                                onClick={() => {
+                                    // URL object'ini temizle
+                                    if (selectedReceipt.startsWith('blob:')) {
+                                        URL.revokeObjectURL(selectedReceipt);
+                                    }
+                                    setSelectedReceipt(null);
+                                }}
                                 className="text-gray-500 hover:text-gray-700"
                             >
                                 <FiX className="h-6 w-6" />
@@ -145,20 +163,25 @@ const PaymentVerification = () => {
                                 src={selectedReceipt}
                                 className="w-full h-full" 
                                 title="Dekont"
+                                sandbox="allow-same-origin"
                             />
                         </div>
                         
                         <div className="flex justify-end mt-4">
                             <a 
                                 href={selectedReceipt}
-                                target="_blank"
-                                rel="noopener noreferrer"
+                                download
                                 className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
                             >
-                                Yeni Sekmede Aç
+                                İndir
                             </a>
                             <button
-                                onClick={() => setSelectedReceipt(null)}
+                                onClick={() => {
+                                    if (selectedReceipt.startsWith('blob:')) {
+                                        URL.revokeObjectURL(selectedReceipt);
+                                    }
+                                    setSelectedReceipt(null);
+                                }}
                                 className="bg-gray-200 text-gray-700 px-4 py-2 rounded"
                             >
                                 Kapat
@@ -203,7 +226,7 @@ const PaymentVerification = () => {
                                     <tr key={payment.id}>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm font-medium text-gray-900">
-                                                {payment.reservation?.pnrCode}
+                                                {payment.id}
                                             </div>
                                             <div className="text-sm text-gray-500">
                                                 {payment.reservation?.guestName}
@@ -301,7 +324,7 @@ const PaymentVerification = () => {
                                     <tr key={payment.id}>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="text-sm text-gray-500">
-                                                {payment.transactionId}
+                                                {payment.id}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
@@ -324,11 +347,12 @@ const PaymentVerification = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                                payment.status === 'PAID' ? 'bg-green-100 text-green-800' :
+                                                payment.status === 'COMPLETED' ? 'bg-green-100 text-green-800' :
                                                 payment.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
                                                 'bg-red-100 text-red-800'
                                             }`}>
                                                 {payment.status === 'PAID' ? 'Ödendi' :
+                                                payment.status === 'COMPLETED' ? 'Ödendi' :
                                                  payment.status === 'PENDING' ? 'Beklemede' :
                                                  payment.status === 'CANCELLED' ? 'İptal Edildi' :
                                                  payment.status === 'REFUNDED' ? 'İade Edildi' : 'Başarısız'}

@@ -38,7 +38,6 @@ const HotelSearchPage = () => {
     const handleSearch = (e) => {
         e.preventDefault();
         // Arama fonksiyonu eklenecek
-        console.log('Arama parametreleri:', searchParams);
     };
 
     const handleInputChange = (e) => {

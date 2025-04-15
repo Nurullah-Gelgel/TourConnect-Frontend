@@ -13,7 +13,6 @@ const ContactForm = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // Form gönderme işlemi burada yapılacak
-        console.log('Form data:', formData);
     };
 
     return (

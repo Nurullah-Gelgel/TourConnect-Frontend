@@ -46,7 +46,6 @@ const ReservationPage = () => {
         try {
             setLoading(true);
             const data = await hotelService.getHotelById(id);
-            console.log('Fetched hotel details:', data);
             setHotel(data);
             setError(null);
         } catch (err) {
@@ -134,10 +133,8 @@ const ReservationPage = () => {
                 advancePayment: parseFloat(hotel?.advancePayment || 0)
             };
 
-            console.log('Rezervasyon verisi gönderiliyor:', reservationData);
             
             const reservationResponse = await reservationService.createReservation(reservationData);
-            console.log('Rezervasyon oluşturuldu:', reservationResponse);
             
             setCreatedReservation(reservationResponse);
             
@@ -193,12 +190,7 @@ const ReservationPage = () => {
                 throw new Error('Sadece JPG, PNG ve PDF dosyaları yüklenebilir');
             }
             
-            console.log('Starting receipt upload:', {
-                file: receiptFile.name,
-                size: receiptFile.size,
-                type: receiptFile.type,
-                paymentId: createdPayment.id
-            });
+            
             
             const result = await paymentService.uploadReceipt(receiptFile, createdPayment.id);
             

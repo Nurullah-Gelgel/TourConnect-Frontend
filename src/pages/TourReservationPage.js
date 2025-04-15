@@ -45,7 +45,6 @@ const TourReservationPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         // Burada rezervasyon API çağrısı yapılacak
-        console.log('Rezervasyon bilgileri:', formData);
         // Başarılı rezervasyon sonrası kullanıcıyı yönlendir
         alert('Rezervasyonunuz alınmıştır. Teşekkür ederiz!');
         navigate('/');

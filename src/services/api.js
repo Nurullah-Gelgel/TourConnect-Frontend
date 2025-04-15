@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-//const BASE_URL = 'https://rahvan.onrender.com/'; // Backend URL'inizin doğru olduğundan emin olun
-const BASE_URL = 'http://localhost:8080/'; // Backend URL'inizin doğru olduğundan emin olun
+const BASE_URL = 'https://rahvan.onrender.com/'; // Backend URL'inizin doğru olduğundan emin olun
+//const BASE_URL = 'http://localhost:8080/'; // Backend URL'inizin doğru olduğundan emin olun
 // Axios instance oluşturma
 const api = axios.create({
     baseURL: BASE_URL,
@@ -13,7 +13,6 @@ const api = axios.create({
 // İstek interceptor'ı - Token ekleme
 api.interceptors.request.use(
     (config) => {
-        console.log('Giden istek:', config);
         const token = localStorage.getItem('token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
@@ -29,7 +28,6 @@ api.interceptors.request.use(
 // Cevap interceptor'ı - Hata yönetimi
 api.interceptors.response.use(
     (response) => {
-        console.log('Gelen cevap:', response);
         return response;
     },
     (error) => {

@@ -36,11 +36,7 @@ export const paymentService = {
             formData.append('file', file);
             formData.append('paymentId', paymentId);
             
-            console.log('Uploading receipt:', {
-                fileName: file.name,
-                paymentId: paymentId,
-                fileSize: file.size
-            });
+            
 
             // 1. Adım: Dosya Yükleme
             const uploadResponse = await api.post('/api/files/upload', formData, {
@@ -51,7 +47,6 @@ export const paymentService = {
                 }
             });
 
-            console.log('File upload response:', uploadResponse);
 
             // Dosya adını al
             let filename;
@@ -76,7 +71,6 @@ export const paymentService = {
                     }
                 );
 
-                console.log('Payment update response:', updateResponse);
                 return true; // Başarılı olduğunu belirt
             } catch (updateError) {
                 console.error('Error updating payment:', updateError);
@@ -112,8 +106,10 @@ export const paymentService = {
     },
 
     getReceiptUrl: async (filename) => {
-        // Return the full URL to view the receipt
-        return `${api.defaults.baseURL}api/files/uploads/${filename}`;
+        // Eğer filename tam path içeriyorsa, sadece filename kısmını al
+        const actualFilename = filename.split('/').pop();
+        const baseUrl = api.defaults.baseURL.replace(/\/+$/, ''); // Sondaki slash'leri temizle
+        return `${baseUrl}/api/files/uploads/${actualFilename}`;
     },
 
     getAllPayments: async () => {

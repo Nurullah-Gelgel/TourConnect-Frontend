@@ -16,11 +16,9 @@ const LoginPage = () => {
         setError('');
 
         try {
-            console.log('Giriş denemesi:', credentials); // Debug için
             await login(credentials);
             navigate('/');
         } catch (err) {
-            console.error('Login error:', err); // Debug için
             setError(err.message || 'Giriş başarısız oldu. Lütfen bilgilerinizi kontrol edin.');
         }
     };
