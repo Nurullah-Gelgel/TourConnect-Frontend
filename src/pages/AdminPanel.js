@@ -9,7 +9,7 @@ import ReservationManagement from '../components/admin/ReservationManagement';
 import ReviewManagement from '../components/admin/ReviewManagement';
 import Statistics from '../components/admin/Statistics';
 import HotelManagement from '../components/admin/HotelManagement';
-import PaymentManagement from '../components/admin/PaymentManagement';
+import PaymentVerification from '../components/admin/PaymentVerification';
 
 const AdminPanel = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -121,7 +121,7 @@ const AdminPanel = () => {
                                     {/*activeTab === 'rooms' && <RoomManagement />*/}
                                      {activeTab === 'reservations' && <ReservationManagement />}
                                     {activeTab === 'reviews' && <ReviewManagement />}
-                                    {activeTab === 'payments' && <PaymentManagement />}
+                                    {activeTab === 'payments' && <PaymentVerification />}
                                 </div>
                             </div>
                     </div>

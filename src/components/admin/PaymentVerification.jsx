@@ -30,22 +30,30 @@ const PaymentVerification = () => {
 
     const handleVerifyPayment = async (paymentId, status) => {
         try {
+            setLoading(true);
             await paymentService.verifyPayment(paymentId, status);
-            // Ödeme listesini güncelle
-            fetchPayments();
+            
+            // Başarı mesajı göster
+            alert(status ? 'Ödeme başarıyla onaylandı!' : 'Ödeme reddedildi!');
+            
+            // Ödeme listesini yenile
+            await fetchPayments();
         } catch (error) {
             console.error('Ödeme doğrulama hatası:', error);
-            alert('Ödeme doğrulanırken bir hata oluştu.');
+            alert('Ödeme doğrulanırken bir hata oluştu');
+        } finally {
+            setLoading(false);
         }
     };
 
-    const handleViewReceipt = async (paymentId) => {
+    const handleViewReceipt = async (receiptFilename) => {
         try {
-            const url = await paymentService.getReceiptUrl(paymentId);
-            setViewReceiptUrl(url);
+            // Doğrudan URL'yi oluştur
+            const receiptUrl = `${process.env.REACT_APP_API_URL}/api/file/uploads/${receiptFilename}`;
+            setSelectedReceipt(receiptUrl);
         } catch (error) {
             console.error('Dekont görüntüleme hatası:', error);
-            alert('Dekont görüntülenirken bir hata oluştu.');
+            alert('Dekont görüntülenirken bir hata oluştu');
         }
     };
 
@@ -178,9 +186,6 @@ const PaymentVerification = () => {
                                     Tutar
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                    Otel
-                                </th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Tarih
                                 </th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -192,73 +197,60 @@ const PaymentVerification = () => {
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
-                            {payments.filter(payment => payment.receipt && payment.status === 'PENDING').length === 0 ? (
-                                <tr>
-                                    <td colSpan="6" className="px-6 py-4 text-center text-gray-500">
-                                        Onay bekleyen dekont bulunmuyor.
-                                    </td>
-                                </tr>
-                            ) : (
-                                payments
-                                    .filter(payment => payment.receipt && payment.status === 'PENDING')
-                                    .map(payment => (
-                                        <tr key={payment.id}>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm font-medium text-gray-900">
-                                                    {payment.reservation?.pnrCode || 'N/A'}
-                                                </div>
-                                                <div className="text-sm text-gray-500">
-                                                    {payment.reservation?.guestName || 'N/A'}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900 font-medium">
-                                                    {payment.amount} {payment.currency}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900">
-                                                    {payment.reservation?.hotel?.hotelName || 'N/A'}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <div className="text-sm text-gray-900">
-                                                    {new Date(payment.paymentDate).toLocaleDateString('tr-TR')}
-                                                </div>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
-                                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
-                                                    Onay Bekliyor
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                                <div className="flex space-x-2 justify-end">
-                                                    <button
-                                                        onClick={() => handleViewReceipt(payment.receipt)}
-                                                        className="text-indigo-600 hover:text-indigo-900 rounded-full p-1 hover:bg-indigo-100"
-                                                        title="Dekontu Görüntüle"
-                                                    >
-                                                        <FiEye className="h-5 w-5" />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleVerifyPayment(payment.id, true)}
-                                                        className="text-green-600 hover:text-green-900 rounded-full p-1 hover:bg-green-100"
-                                                        title="Onayla"
-                                                    >
-                                                        <FiCheck className="h-5 w-5" />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => handleVerifyPayment(payment.id, false)}
-                                                        className="text-red-600 hover:text-red-900 rounded-full p-1 hover:bg-red-100"
-                                                        title="Reddet"
-                                                    >
-                                                        <FiX className="h-5 w-5" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                            )}
+                            {payments
+                                .filter(payment => payment.receipt && !payment.isReceiptVerified)
+                                .map(payment => (
+                                    <tr key={payment.id}>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-sm font-medium text-gray-900">
+                                                {payment.reservation?.pnrCode}
+                                            </div>
+                                            <div className="text-sm text-gray-500">
+                                                {payment.reservation?.guestName}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-sm text-gray-900">
+                                                {payment.amount} {payment.currency}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="text-sm text-gray-900">
+                                                {new Date(payment.paymentDate).toLocaleDateString('tr-TR')}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                Onay Bekliyor
+                                            </span>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <div className="flex space-x-2">
+                                                <button
+                                                    onClick={() => handleViewReceipt(payment.receipt)}
+                                                    className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 rounded-full p-2"
+                                                    title="Dekontu Görüntüle"
+                                                >
+                                                    <FiEye className="h-5 w-5" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleVerifyPayment(payment.id, true)}
+                                                    className="text-green-600 hover:text-green-900 bg-green-50 rounded-full p-2"
+                                                    title="Onayla"
+                                                >
+                                                    <FiCheck className="h-5 w-5" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleVerifyPayment(payment.id, false)}
+                                                    className="text-red-600 hover:text-red-900 bg-red-50 rounded-full p-2"
+                                                    title="Reddet"
+                                                >
+                                                    <FiX className="h-5 w-5" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
                         </tbody>
                     </table>
                 </div>

@@ -1,10 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import { paymentService } from '../../services/paymentService';
-import { FiCreditCard, FiDollarSign, FiCheck, FiX } from 'react-icons/fi';
+import { FiCreditCard, FiDollarSign, FiCheck, FiX, FiClock, FiUpload, FiEye, FiTrash2 } from 'react-icons/fi';
+
+const getStatusBadgeClass = (status) => {
+    switch (status) {
+        case 'COMPLETED':
+            return 'bg-green-100 text-green-800';
+        case 'PENDING':
+            return 'bg-yellow-100 text-yellow-800';
+        case 'RECEIPT_UPLOADED':
+            return 'bg-blue-100 text-blue-800';
+        case 'REJECTED':
+            return 'bg-red-100 text-red-800';
+        default:
+            return 'bg-gray-100 text-gray-800';
+    }
+};
+
+const getStatusText = (status) => {
+    switch (status) {
+        case 'COMPLETED':
+            return 'Tamamlandı';
+        case 'PENDING':
+            return 'Beklemede';
+        case 'RECEIPT_UPLOADED':
+            return 'Dekont Yüklendi';
+        case 'REJECTED':
+            return 'Reddedildi';
+        default:
+            return status;
+    }
+};
 
 const PaymentManagement = () => {
     const [payments, setPayments] = useState([]);
     const [selectedPayment, setSelectedPayment] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        amount: '',
+        currency: 'TRY',
+        provider: 'BANK_TRANSFER',
+        status: 'PENDING',
+        reservationId: '',
+        transactionId: '',
+        paymentDate: new Date().toISOString().split('T')[0]
+    });
+    const [showAddModal, setShowAddModal] = useState(false);
 
     useEffect(() => {
         fetchPayments();
@@ -27,6 +68,30 @@ const PaymentManagement = () => {
             fetchPayments();
         } catch (error) {
             console.error('Error checking payment status:', error);
+        }
+    };
+
+    const handleAddPayment = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            await paymentService.createPayment(formData);
+            alert('Ödeme başarıyla eklendi');
+            setShowAddModal(false);
+            setFormData({
+                amount: '',
+                currency: 'TRY',
+                provider: 'BANK_TRANSFER',
+                status: 'PENDING',
+                reservationId: '',
+                transactionId: '',
+                paymentDate: new Date().toISOString().split('T')[0]
+            });
+            await fetchPayments();
+        } catch (error) {
+            alert('Ödeme eklenirken bir hata oluştu');
+        } finally {
+            setLoading(false);
         }
     };
 
