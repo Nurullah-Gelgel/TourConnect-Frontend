@@ -21,7 +21,7 @@ const Footer = () => {
 
                     {/* Orta: Hızlı Linkler */}
                     <div className="flex space-x-6 text-xs">
-                        <Link to="/about" className="text-gray-300 hover:text-[#00A9FF] transition-colors duration-200">
+                        {/*<Link to="/about" className="text-gray-300 hover:text-[#00A9FF] transition-colors duration-200">
                             Hakkımızda
                         </Link>
                         <Link to="/privacy" className="text-gray-300 hover:text-[#00A9FF] transition-colors duration-200">
@@ -35,7 +35,7 @@ const Footer = () => {
                         </Link>
                         <Link to="/tours" className="text-gray-300 hover:text-[#00A9FF] transition-colors duration-200">
                             Turlar
-                        </Link>
+                        </Link> */}
                     </div>
 
                     {/* Sağ: İletişim ve Sosyal Medya */}
@@ -48,7 +48,7 @@ const Footer = () => {
                         
                         {/* Sosyal Medya */}
                         <div className="flex items-center space-x-2">
-                            <a 
+                            {/*<a 
                                 href="https://facebook.com" 
                                 target="_blank" 
                                 rel="noopener noreferrer" 
@@ -71,7 +71,7 @@ const Footer = () => {
                                 className="w-6 h-6 flex items-center justify-center rounded-full bg-[#2a3142] hover:bg-[#00A9FF] transition-colors duration-200"
                             >
                                 <FaInstagram className="w-3 h-3" />
-                            </a>
+                            </a>*/}
                         </div>
                     </div>
                 </div>

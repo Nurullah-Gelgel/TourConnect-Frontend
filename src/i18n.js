@@ -7,18 +7,18 @@ import translationTR from './locales/tr/translation.json';
 import translationFA from './locales/fa/translation.json';
 
 const resources = {
-  en: {
-    translation: translationEN
+  fa: {
+    translation: translationFA
   },
   tr: {
     translation: translationTR
   },
-  fa: {
-    translation: translationFA
+  en: {
+    translation: translationEN
   }
 };
 
-// Kaydedilmiş dil tercihini al
+// Get saved language preference
 const savedLanguage = localStorage.getItem('preferredLanguage');
 
 i18n
@@ -26,15 +26,19 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: 'tr',
-    lng: savedLanguage || 'tr', // Kaydedilmiş dil varsa onu kullan, yoksa tr
+    fallbackLng: ['fa', 'tr'], // First try Persian, then Turkish if Persian translation is missing
+    lng: savedLanguage || 'fa', // Use Persian as default if no saved preference
     interpolation: {
       escapeValue: false
     },
     detection: {
       order: ['localStorage', 'navigator'],
-      caches: ['localStorage']
-    }
+      caches: ['localStorage'],
+      lookupLocalStorage: 'preferredLanguage'
+    },
+    supportedLngs: ['fa', 'tr'], // Only support Persian and Turkish
+    load: 'languageOnly',
+    debug: process.env.NODE_ENV === 'development'
   });
 
 export default i18n; 

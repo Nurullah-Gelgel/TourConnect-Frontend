@@ -75,7 +75,7 @@ const Navbar = () => {
                             >
                                 {t('nav.hotels')}
                             </Link>
-                            <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                           {/* <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                 <div className="py-1">
                                     <Link to="/hotels/luxury" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
                                         {t('nav.hotelTypes.luxury')}
@@ -87,19 +87,18 @@ const Navbar = () => {
                                         {t('nav.hotelTypes.deals')}
                                     </Link>
                                 </div>
-                            </div>
                         </div>
 
                         <div className="relative group">
-                            <Link 
+                            {/*<Link 
                                 to="/tours" 
                                 className={`px-3 py-2 rounded-md text-sm font-medium group-hover:bg-blue-50 ${
                                     isActive('/tours') ? 'text-blue-600' : 'text-gray-700'
                                 }`}
                             >
                                 {t('nav.tours')}
-                            </Link>
-                            <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                            </Link>*/}
+                            {/*<div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                                 <div className="py-1">
                                     <Link to="/tours/daily" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
                                         {t('nav.tourTypes.daily')}
@@ -111,7 +110,7 @@ const Navbar = () => {
                                         {t('nav.tourTypes.nature')}
                                     </Link>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
 
                         <Link 
@@ -180,15 +179,16 @@ const Navbar = () => {
                                 {isProfileDropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                                         <div className="py-1">
-                                            <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                         {/*   <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
                                                 {t('nav.profile')}
-                                            </Link>
-                                            <Link to="/reservations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                                {t('nav.reservations')}
                                             </Link>
                                             <Link to="/favorites" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
                                                 {t('nav.favorites')}
                                             </Link>
+                                            <Link to="/reservations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
+                                                {t('nav.reservations')}
+                                            </Link>*/}
+                                           
                                             <button 
                                                 onClick={handleLogout}
                                                 className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"

@@ -6,29 +6,31 @@ const LanguageSwitcher = () => {
 
     const changeLanguage = (lng) => {
         i18n.changeLanguage(lng);
+        localStorage.setItem('preferredLanguage', lng);
     };
 
     return (
         <div className="flex items-center space-x-2">
             <button
-                onClick={() => changeLanguage('tr')}
-                className={`px-2 py-1 rounded ${
-                    i18n.language === 'tr' 
-                        ? 'bg-blue-500 text-white' 
-                        : 'bg-gray-200 text-gray-700'
+                onClick={() => changeLanguage('fa')}
+                className={`px-3 py-1.5 rounded-lg font-medium transition-all duration-200 ${
+                    i18n.language === 'fa' 
+                        ? 'bg-[#00A9FF] text-white shadow-md' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
+                dir="rtl"
             >
-                TR
+                فارسی
             </button>
             <button
-                onClick={() => changeLanguage('en')}
-                className={`px-2 py-1 rounded ${
-                    i18n.language === 'en' 
-                        ? 'bg-blue-500 text-white' 
-                        : 'bg-gray-200 text-gray-700'
+                onClick={() => changeLanguage('tr')}
+                className={`px-3 py-1.5 rounded-lg font-medium transition-all duration-200 ${
+                    i18n.language === 'tr' 
+                        ? 'bg-[#00A9FF] text-white shadow-md' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
             >
-                EN
+                Türkçe
             </button>
         </div>
     );

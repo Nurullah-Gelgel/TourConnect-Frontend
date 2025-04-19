@@ -23,8 +23,8 @@ const ReservationPage = () => {
     
     // IBAN bilgisini burada sabit olarak tanımlıyoruz
     const BANK_IBAN = "TR12 3456 7890 1234 5678 9012 34";
-    const BANK_NAME = "Ziraat Bankası";
-    const BANK_ACCOUNT_NAME = "Tour Connect A.Ş.";
+    const BANK_NAME = t('hotels.reservation.bankName');
+    const BANK_ACCOUNT_NAME = t('hotels.reservation.bankAccountName');
     
     const [formData, setFormData] = useState({
         fullName: '',
@@ -34,7 +34,7 @@ const ReservationPage = () => {
         checkOutDate: '',
         numberOfGuests: 1,
         rooms: [{ type: 'single', quantity: 1 }],
-        paymentMethod: 'bank', // Default'u banka transferi yaptık
+        paymentMethod: 'bank',
         specialRequests: ''
     });
 
@@ -96,6 +96,17 @@ const ReservationPage = () => {
         }
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return ''; // Geçersiz tarih kontrolü
+        return date.toLocaleDateString('tr-TR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -104,8 +115,16 @@ const ReservationPage = () => {
             }
 
             // Tarih kontrolü
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
             const checkIn = new Date(formData.checkInDate);
             const checkOut = new Date(formData.checkOutDate);
+            
+            if (checkIn < today) {
+                throw new Error('Geçmiş bir tarih için rezervasyon yapamazsınız');
+            }
+            
             const numberOfNights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
 
             if (numberOfNights <= 0) {
@@ -190,14 +209,19 @@ const ReservationPage = () => {
                 throw new Error('Sadece JPG, PNG ve PDF dosyaları yüklenebilir');
             }
             
-            
-            
             const result = await paymentService.uploadReceipt(receiptFile, createdPayment.id);
             
             // Eğer result true ise başarılı sayıyoruz
             if (result) {
-                alert('Dekont başarıyla yüklendi. Ödemeniz onaylandıktan sonra rezervasyonunuz tamamlanacaktır.');
-                navigate('/');
+                // Navigate to confirmation page with reservation details
+                navigate('/reservation-confirmation', {
+                    state: {
+                        reservationDetails: {
+                            ...createdReservation,
+                            hotelName: hotel?.hotelName
+                        }
+                    }
+                });
             } else {
                 throw new Error('Dekont yükleme işlemi tamamlanamadı');
             }
@@ -207,8 +231,14 @@ const ReservationPage = () => {
             
             // 403 hatası alındıysa ve dosya yüklendiyse başarılı sayalım
             if (error.response?.status === 403) {
-                alert('Dekont başarıyla yüklendi. Ödemeniz onaylandıktan sonra rezervasyonunuz tamamlanacaktır.');
-                navigate('/');
+                navigate('/reservation-confirmation', {
+                    state: {
+                        reservationDetails: {
+                            ...createdReservation,
+                            hotelName: hotel?.hotelName
+                        }
+                    }
+                });
                 return;
             }
             
@@ -247,28 +277,28 @@ const ReservationPage = () => {
                     <div className="container mx-auto p-4">
                         <div className="bg-white rounded-lg shadow-lg p-6">
                             <h1 className="text-2xl font-bold mb-6">
-                                Rezervasyon Başarıyla Oluşturuldu
+                                {t('hotels.reservation.successTitle')}
                             </h1>
                             
                             <div className="bg-blue-50 p-4 mb-6 rounded-lg">
-                                <p className="font-semibold">PNR Kodunuz: {createdReservation?.pnrCode}</p>
-                                <p>Rezervasyon numaranızı kaybetmeyin, sonraki işlemlerinizde kullanacaksınız.</p>
+                                <p className="font-semibold">{t('hotels.reservation.pnrCode')}: {createdReservation?.pnrCode}</p>
+                                <p>{t('hotels.reservation.pnrNote')}</p>
                             </div>
                             
                             <div className="mb-6">
-                                <h2 className="text-xl font-bold mb-3">Banka Hesap Bilgileri</h2>
+                                <h2 className="text-xl font-bold mb-3">{t('hotels.reservation.bankDetails')}</h2>
                                 <div className="p-4 border rounded-lg space-y-2">
-                                    <p><span className="font-semibold">Banka:</span> {BANK_NAME}</p>
-                                    <p><span className="font-semibold">Hesap Sahibi:</span> {BANK_ACCOUNT_NAME}</p>
+                                    <p><span className="font-semibold">{t('hotels.reservation.bank')}:</span> {BANK_NAME}</p>
+                                    <p><span className="font-semibold">{t('hotels.reservation.accountHolder')}:</span> {BANK_ACCOUNT_NAME}</p>
                                     <p><span className="font-semibold">IBAN:</span> {BANK_IBAN}</p>
-                                    <p><span className="font-semibold">Toplam Tutar:</span> {createdReservation?.totalAmount} TL</p>
-                                    <p><span className="font-semibold">Açıklama:</span> {createdReservation?.pnrCode}</p>
+                                    <p><span className="font-semibold">{t('hotels.reservation.totalAmount')}:</span> {createdReservation?.totalAmount} TL</p>
+                                    <p><span className="font-semibold">{t('hotels.reservation.description')}:</span> {createdReservation?.pnrCode}</p>
                                 </div>
                             </div>
                             
                             <div className="mb-6">
-                                <h2 className="text-xl font-bold mb-3">Ödeme Dekontu Yükleme</h2>
-                                <p className="mb-3">Lütfen ödeme yaptıktan sonra dekontunuzu yükleyin. Ödemeniz onaylandıktan sonra rezervasyonunuz aktif hale gelecektir.</p>
+                                <h2 className="text-xl font-bold mb-3">{t('hotels.reservation.uploadReceipt')}</h2>
+                                <p className="mb-3">{t('hotels.reservation.uploadReceiptNote')}</p>
                                 
                                 <div className="flex flex-col items-center p-4 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50">
                                     <input
@@ -284,13 +314,13 @@ const ReservationPage = () => {
                                             <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                                             </svg>
-                                            <p className="mt-1 text-sm text-gray-600">Dosya seçmek için tıklayın veya sürükleyip bırakın</p>
+                                            <p className="mt-1 text-sm text-gray-600">{t('hotels.reservation.dragAndDrop')}</p>
                                             <button
                                                 type="button"
                                                 onClick={() => fileInputRef.current.click()}
                                                 className="mt-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300"
                                             >
-                                                Dosya Seç
+                                                {t('hotels.reservation.selectFile')}
                                             </button>
                                         </div>
                                     ) : (
@@ -303,7 +333,7 @@ const ReservationPage = () => {
                                                     onClick={() => setReceiptFile(null)}
                                                     className="px-4 py-2 bg-red-100 text-red-600 rounded-md hover:bg-red-200"
                                                 >
-                                                    Dosyayı Kaldır
+                                                    {t('hotels.reservation.removeFile')}
                                                 </button>
                                                 <button
                                                     type="button"
@@ -311,7 +341,7 @@ const ReservationPage = () => {
                                                     className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                                                     disabled={uploadingReceipt}
                                                 >
-                                                    {uploadingReceipt ? 'Yükleniyor...' : 'Dekontu Yükle'}
+                                                    {uploadingReceipt ? t('hotels.reservation.uploading') : t('hotels.reservation.uploadReceipt')}
                                                 </button>
                                             </div>
                                         </div>
@@ -320,11 +350,11 @@ const ReservationPage = () => {
                             </div>
                             
                             <div className="text-gray-700 text-sm mb-6">
-                                <p>Lütfen dikkat:</p>
+                                <p>{t('hotels.reservation.attention')}:</p>
                                 <ul className="list-disc pl-5 mt-2 space-y-1">
-                                    <li>Havale veya EFT işleminde açıklama kısmına PNR kodunuzu yazınız.</li>
-                                    <li>Ödemeniz onaylandıktan sonra e-posta adresinize bilgilendirme gönderilecektir.</li>
-                                    <li>Sorularınız için destek ekibimizle iletişime geçebilirsiniz.</li>
+                                    <li>{t('hotels.reservation.transferNote')}</li>
+                                    <li>{t('hotels.reservation.emailConfirmation')}</li>
+                                    <li>{t('hotels.reservation.supportContact')}</li>
                                 </ul>
                             </div>
                             
@@ -334,7 +364,7 @@ const ReservationPage = () => {
                                     onClick={() => navigate('/')}
                                     className="bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition-colors duration-300"
                                 >
-                                    Ana Sayfaya Dön
+                                    {t('common.backToHome')}
                                 </button>
                             </div>
                         </div>
@@ -350,51 +380,51 @@ const ReservationPage = () => {
             <Navbar />
             <div className="flex-grow bg-gray-100">
                 <div className="container mx-auto p-4">
-                    <div className="bg-white rounded-lg shadow-lg p-6">
-                        <h1 className="text-2xl font-bold mb-6">
+                    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6">
+                        <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
                             {t('hotels.reservation.title')} - {hotel?.hotelName}
                         </h1>
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                                 <div>
-                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.fullName')}</label>
+                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.fullName')}</label>
                                     <input
                                         type="text"
                                         name="fullName"
                                         value={formData.fullName}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.email')}</label>
+                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.email')}</label>
                                     <input
                                         type="email"
                                         name="email"
                                         value={formData.email}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.phone')}</label>
+                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.phone')}</label>
                                     <input
                                         type="tel"
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleInputChange}
                                         required
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.guests')}</label>
+                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.guests')}</label>
                                     <input
                                         type="number"
                                         name="numberOfGuests"
@@ -402,46 +432,47 @@ const ReservationPage = () => {
                                         onChange={handleInputChange}
                                         min="1"
                                         required
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.checkIn')}</label>
+                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.checkIn')}</label>
                                     <input
                                         type="date"
                                         name="checkInDate"
                                         value={formData.checkInDate}
                                         onChange={handleInputChange}
+                                        min={new Date().toISOString().split('T')[0]}
                                         required
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
                                 <div>
-                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.checkOut')}</label>
+                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.checkOut')}</label>
                                     <input
                                         type="date"
                                         name="checkOutDate"
                                         value={formData.checkOutDate}
                                         onChange={handleInputChange}
+                                        min={formData.checkInDate || new Date().toISOString().split('T')[0]}
                                         required
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
                                 </div>
 
-                                <div className="mb-6">
-                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.rooms')}</label>
+                                <div className="sm:col-span-2">
+                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.rooms')}</label>
                                     {formData.rooms.map((room, index) => (
-                                        <div key={index} className="flex gap-4 mb-4">
+                                        <div key={index} className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4">
                                             <select
                                                 value={room.type}
                                                 onChange={(e) => handleRoomChange(index, 'type', e.target.value)}
-                                                className="p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                className="p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
                                             >
                                                 <option value="single">{t('hotels.reservation.roomTypes.single')}</option>
                                                 <option value="double">{t('hotels.reservation.roomTypes.double')}</option>
-                                                
                                             </select>
                                             
                                             <input
@@ -449,15 +480,15 @@ const ReservationPage = () => {
                                                 value={room.quantity}
                                                 onChange={(e) => handleRoomChange(index, 'quantity', parseInt(e.target.value))}
                                                 min="1"
-                                                className="w-24 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder="Adet"
+                                                className="w-full sm:w-24 p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                                placeholder={t('hotels.reservation.roomQuantity')}
                                             />
                                             
                                             {formData.rooms.length > 1 && (
                                                 <button
                                                     type="button"
                                                     onClick={() => handleRemoveRoom(index)}
-                                                    className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+                                                    className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600"
                                                 >
                                                     {t('hotels.reservation.removeRoom')}
                                                 </button>
@@ -474,46 +505,34 @@ const ReservationPage = () => {
                                     </button>
                                 </div>
 
-                                <div>
-                                    <label className="block text-gray-700 mb-2">{t('hotels.reservation.paymentMethod')}</label>
+                                <div className="sm:col-span-2">
+                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.paymentMethod')}</label>
                                     <select
                                         name="paymentMethod"
                                         value={formData.paymentMethod}
                                         onChange={handleInputChange}
-                                        className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     >
-                                        <option value="credit">{t('hotels.reservation.creditCard')}</option>
                                         <option value="bank">{t('hotels.reservation.bankTransfer')}</option>
                                     </select>
                                     
                                     {formData.paymentMethod === 'bank' && (
                                         <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
                                             <p className="text-sm text-yellow-800">
-                                                <strong>Not:</strong> Banka havalesi seçeneğinde, rezervasyon oluşturduktan sonra size IBAN bilgileri gösterilecek ve ödeme dekontunuzu yüklemeniz gerekecektir.
+                                                <strong>{t('common.note')}:</strong> {t('hotels.reservation.bankTransferNote')}
                                             </p>
                                         </div>
                                     )}
                                 </div>
                             </div>
 
-                            <div>
-                                <label className="block text-gray-700 mb-2">{t('hotels.reservation.specialRequests')}</label>
-                                <textarea
-                                    name="specialRequests"
-                                    value={formData.specialRequests}
-                                    onChange={handleInputChange}
-                                    rows="4"
-                                    className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                ></textarea>
-                            </div>
-
-                            <div className="flex justify-between items-center">
-                                <div className="text-lg font-semibold">
+                            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+                                <div className="text-base sm:text-lg font-semibold">
                                     {t('hotels.reservation.advancePayment')}: {hotel?.advancePayment * formData.numberOfGuests} TL
                                 </div>
                                 <button
                                     type="submit"
-                                    className="bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
+                                    className="w-full sm:w-auto bg-[#00A9FF] hover:bg-[#0098e5] text-white px-6 py-3 rounded-lg 
                                              transition-colors duration-300"
                                 >
                                     {t('hotels.reservation.completeReservation')}
