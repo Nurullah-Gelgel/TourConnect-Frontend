@@ -32,6 +32,16 @@ const LanguageSwitcher = () => {
             >
                 Türkçe
             </button>
+            <button
+                onClick={() => changeLanguage('en')}
+                className={`px-3 py-1.5 rounded-lg font-medium transition-all duration-200 ${
+                    i18n.language === 'en' 
+                        ? 'bg-[#00A9FF] text-white shadow-md' 
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+            >
+                English
+            </button>
         </div>
     );
 };
