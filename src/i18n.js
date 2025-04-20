@@ -21,12 +21,17 @@ const resources = {
 // Get saved language preference
 const savedLanguage = localStorage.getItem('preferredLanguage');
 
+// If saved language is English, reset it to Persian
+if (savedLanguage === 'en') {
+  localStorage.setItem('preferredLanguage', 'fa');
+}
+
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: ['fa', 'tr'], // First try Persian, then Turkish if Persian translation is missing
+    fallbackLng: ['fa', 'tr', 'en'], // First try Persian, then Turkish, then English
     lng: savedLanguage || 'fa', // Use Persian as default if no saved preference
     interpolation: {
       escapeValue: false
@@ -36,7 +41,7 @@ i18n
       caches: ['localStorage'],
       lookupLocalStorage: 'preferredLanguage'
     },
-    supportedLngs: ['fa', 'tr'], // Only support Persian and Turkish
+    supportedLngs: ['fa', 'tr', 'en'], // Support all three languages
     load: 'languageOnly',
     debug: process.env.NODE_ENV === 'development'
   });
