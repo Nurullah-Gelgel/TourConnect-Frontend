@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //const BASE_URL = 'https://rahvan.onrender.com/'; // Backend URL'inizin doğru olduğundan emin olun
 //const BASE_URL = 'http://localhost:8080/'; // 
-const BASE_URL = 'http://185.95.165.252:8080/';  // Sunucunun dış IP adresi
+const BASE_URL = 'https://rahvantur.com/';  // Sunucunun dış IP adresi
 // Axios instance oluşturma
 const api = axios.create({
     baseURL: BASE_URL,
