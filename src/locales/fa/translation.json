@@ -6,7 +6,8 @@
     "search": "جستجو",
     "menu": "منو",
     "note": "توجه",
-    "backToHome": "بازگشت به صفحه اصلی"
+    "backToHome": "بازگشت به صفحه اصلی",
+    "backToList": "بازگشت به مکان‌های گردشگری"
   },
   "nav": {
     "home": "صفحه اصلی",
@@ -36,7 +37,8 @@
       "subtitle": "کشف کنید",
       "description": "با تاریخ، فرهنگ و طبیعت بی‌نظیر وان، تجربه‌ای فراموش‌نشدنی داشته باشید",
       "hotelButton": "رزرو هتل",
-      "tourButton": "کشف تورها"
+      "tourButton": "کشف تورها",
+      "placesButton": "کشف مکان‌های گردشگری"
     },
     "search": {
       "city": "شهر",
@@ -48,11 +50,13 @@
     "sections": {
       "popularHotels": "هتل‌های محبوب",
       "popularTours": "تورهای محبوب",
+      "popularPlaces": "مکان‌های گردشگری محبوب",
       "viewAllHotels": "مشاهده همه هتل‌ها",
       "viewAllTours": "مشاهده همه تورها",
+      "viewAllPlaces": "مشاهده همه مکان‌های گردشگری",
       "noHotels": "هنوز هتلی موجود نیست.",
       "noTours": "هنوز توری موجود نیست.",
-      "loading": "در حال بارگذاری...",
+      "noPlaces": "هنوز مکان گردشگری موجود نیست.",
       "error": "خطایی رخ داد",
       "tryAgain": "تلاش مجدد"
     },
@@ -171,7 +175,24 @@
       "checkPnr": "می‌توانید جزئیات رزرو خود را با کد PNR از صفحه اصلی بررسی کنید",
       "checkInRequirements": "هنگام پذیرش، باید کد PNR و کارت شناسایی خود را نشان دهید",
       "checkReservation": "بررسی رزرو من"
-    }
+    },
+    "mapComingSoon": "نقشه به زودی اضافه می‌شود",
+    "reservationCard": {
+      "title": "اطلاعات رزرو",
+      "perNight": "هر شب",
+      "bookNow": "رزرو آنلاین",
+      "freeCancellation": "لغو رایگان",
+      "instantConfirmation": "تایید فوری",
+      "securePayment": "پرداخت امن"
+    },
+    "contact": "تماس از طریق واتس‌اپ",
+    "starRating": "ستاره",
+    "perNight": "هر شب",
+    "book": "رزرو",
+    "hotelInfo": "اطلاعات هتل",
+    "location": "موقعیت",
+    "phone": "تلفن",
+    "address": "آدرس"
   },
   "tours": {
     "title": "تورها",

@@ -22,9 +22,9 @@ const ReservationPage = () => {
     const [showPaymentInfo, setShowPaymentInfo] = useState(false);
     
     // IBAN bilgisini burada sabit olarak tanımlıyoruz
-    const BANK_IBAN = "TR12 3456 7890 1234 5678 9012 34";
-    const BANK_NAME = t('hotels.reservation.bankName');
-    const BANK_ACCOUNT_NAME = t('hotels.reservation.bankAccountName');
+    const BANK_IBAN = "IR16 0160 0000 1113 8445 32";
+    const BANK_NAME = "کشاورزی";
+    const BANK_ACCOUNT_NAME = "ارسلان  شیرب دودکانلو"
     
     const [formData, setFormData] = useState({
         fullName: '',

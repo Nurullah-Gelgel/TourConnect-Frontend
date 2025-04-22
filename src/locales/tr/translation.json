@@ -6,7 +6,8 @@
     "search": "Ara",
     "menu": "Menü",
     "note": "Not",
-    "backToHome": "Ana Sayfaya Dön"
+    "backToHome": "Ana Sayfaya Dön",
+    "backToList": "Turistik Yerlere Dön"
   },
   "nav": {
     "home": "Ana Sayfa",
@@ -169,7 +170,24 @@
       "checkPnr": "Rezervasyon detaylarınızı PNR kodunuz ile Anasayfa'dan sorgulayabilirsiniz",
       "checkInRequirements": "Check-in sırasında PNR kodunuzu ve kimliğinizi göstermeniz gerekmektedir",
       "checkReservation": "Rezervasyonumu Sorgula"
-    }
+    },
+    "mapComingSoon": "Harita yakında eklenecek",
+    "reservationCard": {
+      "title": "Rezervasyon Bilgileri",
+      "perNight": "Gecelik",
+      "bookNow": "Hemen Rezervasyon Yap",
+      "freeCancellation": "Ücretsiz İptal",
+      "instantConfirmation": "Anında Onay",
+      "securePayment": "Güvenli Ödeme"
+    },
+    "contact": "WhatsApp ile iletişime geç",
+    "starRating": "Yıldızlı",
+    "perNight": "Gecelik",
+    "book": "Rezervasyon Yap",
+    "hotelInfo": "Otel Bilgileri",
+    "location": "Konum",
+    "phone": "Telefon",
+    "address": "Adres"
   },
   "tours": {
     "title": "Turlar",
@@ -225,7 +243,8 @@
       "subtitle": "Keşfedin",
       "description": "Tarihi, kültürü ve eşsiz doğasıyla Van'da unutulmaz bir deneyim yaşayın",
       "hotelButton": "Otel Rezervasyonu",
-      "tourButton": "Turları Keşfet"
+      "tourButton": "Turları Keşfet",
+      "placesButton": "Turistik Yerleri Keşfet"
     },
     "search": {
       "city": "Şehir",
@@ -237,11 +256,13 @@
     "sections": {
       "popularHotels": "Popüler Oteller",
       "popularTours": "Popüler Turlar",
+      "popularPlaces": "Popüler Turistik Yerler",
       "viewAllHotels": "Tüm Otelleri Gör",
       "viewAllTours": "Tüm Turları Gör",
-      "noHotels": "Henüz otel bulunmamaktadır.",
-      "noTours": "Henüz tur bulunmamaktadır.",
-      "loading": "Yükleniyor...",
+      "viewAllPlaces": "Tüm Turistik Yerleri Gör",
+      "noHotels": "Henüz otel bulunmuyor.",
+      "noTours": "Henüz tur bulunmuyor.",
+      "noPlaces": "Henüz turistik yer bulunmuyor.",
       "error": "Bir hata oluştu",
       "tryAgain": "Tekrar Dene"
     },

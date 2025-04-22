@@ -6,7 +6,8 @@
       "search": "Search",
       "menu": "Menu",
       "note": "Note",
-      "backToHome": "Back to Home"
+      "backToHome": "Back to Home",
+      "backToList": "Back to Places"
     },
     "nav": {
       "home": "Home",
@@ -169,7 +170,17 @@
         "checkPnr": "You can check your reservation details with your PNR code from the Homepage",
         "checkInRequirements": "You need to show your PNR code and ID during check-in",
         "checkReservation": "Check My Reservation"
-      }
+      },
+      "mapComingSoon": "Map coming soon",
+      "reservationCard": {
+        "title": "Reservation Information",
+        "perNight": "Per Night",
+        "bookNow": "Book Now",
+        "freeCancellation": "Free Cancellation",
+        "instantConfirmation": "Instant Confirmation",
+        "securePayment": "Secure Payment"
+      },
+      "contact": "Contact via WhatsApp"
     },
     "tours": {
       "title": "Tours",
@@ -225,7 +236,8 @@
         "subtitle": "of Van",
         "description": "Experience an unforgettable journey with Van's history, culture, and unique nature",
         "hotelButton": "Book a Hotel",
-        "tourButton": "Explore Tours"
+        "tourButton": "Explore Tours",
+        "placesButton": "Explore Places"
       },
       "search": {
         "city": "City",
@@ -237,11 +249,13 @@
       "sections": {
         "popularHotels": "Popular Hotels",
         "popularTours": "Popular Tours",
+        "popularPlaces": "Popular Tourist Places",
         "viewAllHotels": "View All Hotels",
         "viewAllTours": "View All Tours",
+        "viewAllPlaces": "View All Tourist Places",
         "noHotels": "No hotels available yet.",
         "noTours": "No tours available yet.",
-        "loading": "Loading...",
+        "noPlaces": "No tourist places available yet.",
         "error": "An error occurred",
         "tryAgain": "Try Again"
       },
