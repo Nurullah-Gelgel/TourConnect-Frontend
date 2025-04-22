@@ -103,12 +103,7 @@ const ReservationConfirmationPage = () => {
                             >
                                 {t('common.backToHome')}
                             </button>
-                            <button
-                                onClick={() => navigate('/reservations/search')}
-                                className="w-full sm:w-auto bg-blue-500 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 text-sm sm:text-base"
-                            >
-                                {t('hotels.confirmation.checkReservation')}
-                            </button>
+                            
                         </div>
                     </div>
                 </div>

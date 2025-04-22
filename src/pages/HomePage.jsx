@@ -218,7 +218,7 @@ const HomePage = () => {
                                 {t('home.banner.hotelButton')}
                             </Link>
                             <Link 
-                                to="/tourist-places" 
+                                to="/touristic-places" 
                                 className="bg-[#64CCC5] hover:bg-[#53b5af] text-white px-8 py-3 rounded-lg 
                                           text-lg font-semibold transition duration-300 ease-in-out 
                                           transform hover:scale-105 hover:shadow-lg
