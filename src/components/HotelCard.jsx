@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { FiStar, FiMapPin, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const HotelCard = ({ hotel }) => {
     const { t } = useTranslation();
     const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+    const navigate = useNavigate();
     
     if (!hotel) return null;
 
@@ -20,6 +21,11 @@ const HotelCard = ({ hotel }) => {
     const handleNextPhoto = (e) => {
         e.preventDefault();
         setCurrentPhotoIndex((prev) => (prev === photoUrls.length - 1 ? 0 : prev + 1));
+    };
+
+    const handleReservationClick = (e) => {
+        e.preventDefault();
+        navigate(`/reserve/${hotel.id}`);
     };
 
     const handleWhatsAppClick = (phone) => {
@@ -91,9 +97,17 @@ const HotelCard = ({ hotel }) => {
                             <p className="text-lg font-bold text-blue-600">{hotel.advancePayment} TL</p>
                             <span className="text-sm text-gray-500">{t('hotels.perNight')}</span>
                         </div>
-                        <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                            {t('hotels.details')}
-                        </button>
+                        <div className="flex gap-2">
+                            <button className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors">
+                                {t('hotels.details')}
+                            </button>
+                            <button 
+                                onClick={handleReservationClick}
+                                className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+                            >
+                                {t('hotels.book')}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

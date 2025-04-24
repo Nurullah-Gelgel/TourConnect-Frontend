@@ -134,29 +134,22 @@ const HotelDetailPage = () => {
                             <div className="bg-white rounded-xl shadow-lg p-6">
                                 <h3 className="text-xl font-semibold mb-4 text-gray-800">{t('hotels.photos')}</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    {hotel.photoUrls.map((url, index) => (
+                                    {hotel.photoUrls.slice(1).map((url, index) => (
                                         <div 
                                             key={index} 
                                             className="relative rounded-lg overflow-hidden group cursor-pointer"
-                                            onClick={() => openLightbox(index)}
+                                            onClick={() => openLightbox(index + 1)}
                                         >
-                                            <div className="aspect-[4/3]">
+                                            <div className="aspect-w-4 aspect-h-3">
                                                 <img
                                                     src={url}
-                                                    alt={`${hotel.hotelName} - ${t('hotels.photo')} ${index + 1}`}
+                                                    alt={`${hotel.hotelName} - ${t('hotels.photo')} ${index + 2}`}
                                                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                                                     onError={(e) => {
                                                         console.log('Gallery image load error:', url);
                                                         e.target.src = "/hotel-placeholder.jpg";
                                                     }}
                                                 />
-                                            </div>
-                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <div className="absolute bottom-0 left-0 right-0 p-4">
-                                                    <span className="text-white text-sm">
-                                                        {t('hotels.photo')} {index + 1}
-                                                    </span>
-                                                </div>
                                             </div>
                                         </div>
                                     ))}
@@ -233,19 +226,21 @@ const HotelDetailPage = () => {
                             <div className="flex">
                                 <button
                                     onClick={() => setActiveTab('overview')}
-                                    className={`px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium transition-colors duration-200 ${activeTab === 'overview'
+                                    className={`px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium transition-colors duration-200 ${
+                                        activeTab === 'overview'
                                             ? 'border-b-2 border-blue-500 text-blue-600'
                                             : 'text-gray-500 hover:text-gray-700'
-                                        }`}
+                                    }`}
                                 >
                                     {t('hotels.hotelInfo')}
                                 </button>
                                 <button
                                     onClick={() => setActiveTab('location')}
-                                    className={`px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium transition-colors duration-200 ${activeTab === 'location'
+                                    className={`px-4 sm:px-6 py-3 sm:py-4 text-sm font-medium transition-colors duration-200 ${
+                                        activeTab === 'location'
                                             ? 'border-b-2 border-blue-500 text-blue-600'
                                             : 'text-gray-500 hover:text-gray-700'
-                                        }`}
+                                    }`}
                                 >
                                     {t('hotels.location')}
                                 </button>
@@ -299,6 +294,14 @@ const HotelDetailPage = () => {
                                                 <div className="bg-white rounded-lg p-4">
                                                     <p className="text-sm text-gray-600 mb-1">{t('hotels.perNight')}</p>
                                                     <p className="text-xl sm:text-2xl font-bold text-blue-600">{hotel?.advancePayment} TL</p>
+                                                    <div className="mt-4">
+                                                        <Link 
+                                                            to={`/reserve/${hotel.id}`}
+                                                            className="w-full bg-blue-500 text-white text-center px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors block"
+                                                        >
+                                                            {t('hotels.book')}
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

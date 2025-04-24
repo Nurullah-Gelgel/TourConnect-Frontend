@@ -406,10 +406,13 @@ const HomePage = () => {
                             {popularHotels.map((hotel) => (
                                 <div key={hotel.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
                                     <img 
-                                        src={hotel.photoUrl || "/hotel-placeholder.jpg"} 
+                                        src={Array.isArray(hotel.photoUrls) && hotel.photoUrls.length > 0 
+                                            ? hotel.photoUrls[0] 
+                                            : "/hotel-placeholder.jpg"} 
                                         alt={hotel.hotelName}
                                         className="w-full h-48 object-cover"
                                         onError={(e) => {
+                                            console.log('Image load error:', hotel.photoUrls?.[0]);
                                             e.target.src = "/hotel-placeholder.jpg";
                                         }}
                                     />
