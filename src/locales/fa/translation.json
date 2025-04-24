@@ -202,7 +202,10 @@
     "hotelInfo": "اطلاعات هتل",
     "location": "موقعیت",
     "phone": "تلفن",
-    "address": "آدرس"
+    "address": "آدرس",
+    "photos": "عکس‌ها",
+    "photo": "عکس",
+    "startingFrom": "شروع از"
   },
   "tours": {
     "title": "تورها",

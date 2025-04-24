@@ -191,7 +191,10 @@
     "hotelInfo": "Otel Bilgileri",
     "location": "Konum",
     "phone": "Telefon",
-    "address": "Adres"
+    "address": "Adres",
+    "photos": "Fotoğraflar",
+    "photo": "Fotoğraf",
+    "startingFrom": "Başlangıç Fiyatı"
   },
   "tours": {
     "title": "Turlar",

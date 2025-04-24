@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import Footer from '../components/Footer';
 import Navbar from '../components/Navbar';
 import { hotelService } from '../services/hotelService';
+import { FiMapPin, FiX, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 const HotelDetailPage = () => {
     const { t } = useTranslation();
@@ -12,6 +13,8 @@ const HotelDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeTab, setActiveTab] = useState('overview');
+    const [showLightbox, setShowLightbox] = useState(false);
+    const [activePhotoIndex, setActivePhotoIndex] = useState(0);
 
     useEffect(() => {
         fetchHotelDetails();
@@ -21,19 +24,39 @@ const HotelDetailPage = () => {
         try {
             setLoading(true);
             const data = await hotelService.getHotelById(id);
+            // Ensure photoUrls is an array
+            data.photoUrls = Array.isArray(data.photoUrls) ? data.photoUrls : [];
             setHotel(data);
             setError(null);
         } catch (err) {
-            console.error(t('common.error'), err);
+            console.error('Error fetching hotel details:', err);
             setError(t('common.error'));
         } finally {
             setLoading(false);
         }
     };
+
     const handleWhatsAppClick = (phone) => {
         // Remove any non-numeric characters from phone number
         const cleanPhone = phone.replace(/\D/g, '');
         window.open(`https://wa.me/${cleanPhone}`, '_blank');
+    };
+
+    const handlePrevPhoto = () => {
+        setActivePhotoIndex((prev) => 
+            prev === 0 ? hotel.photoUrls.length - 1 : prev - 1
+        );
+    };
+
+    const handleNextPhoto = () => {
+        setActivePhotoIndex((prev) => 
+            prev === hotel.photoUrls.length - 1 ? 0 : prev + 1
+        );
+    };
+
+    const openLightbox = (index) => {
+        setActivePhotoIndex(index);
+        setShowLightbox(true);
     };
 
     if (loading) {
@@ -71,51 +94,136 @@ const HotelDetailPage = () => {
             <Navbar />
             <div className="flex-grow">
                 {/* Hero Section */}
-                <div className="relative h-[50vh] sm:h-[60vh] md:h-[70vh] w-full">
-                    <div className="absolute inset-0 bg-black/40 z-10" />
-                    <img
-                        src={hotel?.photoUrl || "/hotel-placeholder.jpg"}
-                        alt={hotel?.hotelName}
-                        className="w-full h-full object-cover"
-                        onError={(e) => {
-                            e.target.src = "/hotel-placeholder.jpg";
-                        }}
-                    />
-                    <div className="absolute bottom-0 left-0 right-0 z-20 p-4 sm:p-6 md:p-8 bg-gradient-to-t from-black/80 to-transparent">
-                        <div className="container mx-auto">
-                            <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
-                                <div>
-                                    <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 sm:mb-3">{hotel?.hotelName}</h1>
-                                    <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-white">
-                                        <div className="flex items-center gap-2">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            </svg>
-                                            <span>{hotel?.hotelCity}, {hotel?.district}</span>
-                                        </div>
-                                        <div className="flex items-center gap-1">
-                                            {'⭐'.repeat(hotel?.starRating || 0)}
-                                        </div>
+                <div className="relative">
+                    {/* Main Image */}
+                    <div className="h-[70vh] relative overflow-hidden cursor-pointer" onClick={() => openLightbox(0)}>
+                        <div className="absolute inset-0 bg-black/40 z-10" />
+                        <img
+                            src={hotel?.photoUrls?.[0] || "/hotel-placeholder.jpg"}
+                            alt={hotel?.hotelName}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                                console.log('Main image load error:', hotel?.photoUrls?.[0]);
+                                e.target.src = "/hotel-placeholder.jpg";
+                            }}
+                        />
+                        <div className="absolute bottom-0 left-0 right-0 z-20 p-8 bg-gradient-to-t from-black/80 to-transparent">
+                            <div className="container mx-auto">
+                                <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{hotel?.hotelName}</h1>
+                                <div className="flex flex-wrap items-center gap-4 text-white">
+                                    <div className="flex items-center gap-2">
+                                        <FiMapPin className="w-5 h-5" />
+                                        <span>{hotel?.hotelCity}, {hotel?.district}</span>
                                     </div>
-                                </div>
-                                <div className="w-full sm:w-auto bg-white/10 backdrop-blur-md rounded-xl p-4 sm:p-6 text-white">
-                                    <div className="text-center">
-                                        <p className="text-base sm:text-lg mb-1">{t('hotels.perNight')}</p>
-                                        <p className="text-2xl sm:text-4xl font-bold mb-3 sm:mb-4">{hotel?.advancePayment} TL</p>
-                                        <Link
-                                            to={`/reserve/${hotel?.id}`}
-                                            className="block bg-[#00A9FF] hover:bg-[#0098e5] text-white py-2 sm:py-3 px-6 sm:px-8 rounded-lg 
-                                                     transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
-                                        >
-                                            {t('hotels.book')}
-                                        </Link>
+                                    <div className="flex items-center gap-1">
+                                        {'⭐'.repeat(hotel?.starRating || 0)}
+                                        <span>{t('hotels.starRating')}</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-2xl font-bold">{hotel?.advancePayment} TL</span>
+                                        <span className="text-sm opacity-75">{t('hotels.perNight')}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    {/* Photo Gallery Grid */}
+                    {hotel?.photoUrls && hotel.photoUrls.length > 1 && (
+                        <div className="container mx-auto px-4 -mt-16 relative z-30 mb-8">
+                            <div className="bg-white rounded-xl shadow-lg p-6">
+                                <h3 className="text-xl font-semibold mb-4 text-gray-800">{t('hotels.photos')}</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    {hotel.photoUrls.map((url, index) => (
+                                        <div 
+                                            key={index} 
+                                            className="relative rounded-lg overflow-hidden group cursor-pointer"
+                                            onClick={() => openLightbox(index)}
+                                        >
+                                            <div className="aspect-[4/3]">
+                                                <img
+                                                    src={url}
+                                                    alt={`${hotel.hotelName} - ${t('hotels.photo')} ${index + 1}`}
+                                                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                                    onError={(e) => {
+                                                        console.log('Gallery image load error:', url);
+                                                        e.target.src = "/hotel-placeholder.jpg";
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <div className="absolute bottom-0 left-0 right-0 p-4">
+                                                    <span className="text-white text-sm">
+                                                        {t('hotels.photo')} {index + 1}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
+
+                {/* Lightbox */}
+                {showLightbox && hotel?.photoUrls && (
+                    <div className="fixed inset-0 bg-black/95 z-50">
+                        <button 
+                            className="absolute top-4 right-4 text-white hover:text-gray-300 p-2 z-50"
+                            onClick={() => setShowLightbox(false)}
+                        >
+                            <FiX size={32} />
+                        </button>
+
+                        {/* Navigation Buttons */}
+                        <button
+                            className="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 p-4 rounded-full bg-black/50 hover:bg-black/70 z-50"
+                            onClick={handlePrevPhoto}
+                        >
+                            <FiChevronLeft size={40} />
+                        </button>
+                        <button
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-300 p-4 rounded-full bg-black/50 hover:bg-black/70 z-50"
+                            onClick={handleNextPhoto}
+                        >
+                            <FiChevronRight size={40} />
+                        </button>
+
+                        {/* Main Image Container */}
+                        <div className="absolute inset-0 flex items-center justify-center p-4">
+                            <div className="relative w-full h-full flex items-center justify-center">
+                                <img
+                                    src={hotel.photoUrls[activePhotoIndex]}
+                                    alt={`${hotel.hotelName} - ${t('hotels.photo')} ${activePhotoIndex + 1}`}
+                                    className="max-w-full max-h-full h-auto w-auto object-contain"
+                                    style={{ minHeight: '70vh' }}
+                                    onError={(e) => {
+                                        e.target.src = "/hotel-placeholder.jpg";
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Photo Counter and Navigation Dots */}
+                        <div className="absolute bottom-6 left-0 right-0 flex flex-col items-center gap-4 z-50">
+                            <div className="flex gap-2 bg-black/50 px-4 py-2 rounded-full">
+                                {hotel.photoUrls.map((_, index) => (
+                                    <button
+                                        key={index}
+                                        onClick={() => setActivePhotoIndex(index)}
+                                        className={`w-3 h-3 rounded-full transition-colors ${
+                                            index === activePhotoIndex ? 'bg-white' : 'bg-white/50'
+                                        }`}
+                                    />
+                                ))}
+                            </div>
+                            <div className="bg-black/50 px-4 py-2 rounded-full text-white text-lg">
+                                {activePhotoIndex + 1} / {hotel.photoUrls.length}
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                 {/* Content Section */}
                 <div className="container mx-auto -mt-10 relative z-30 px-4">

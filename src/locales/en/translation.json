@@ -184,7 +184,10 @@
         "instantConfirmation": "Instant Confirmation",
         "securePayment": "Secure Payment"
       },
-      "contact": "Contact via WhatsApp"
+      "contact": "Contact via WhatsApp",
+      "photos": "Photos",
+      "photo": "Photo",
+      "startingFrom": "Starting From"
     },
     "tours": {
       "title": "Tours",

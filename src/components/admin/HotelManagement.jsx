@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { hotelService } from '../../services/hotelService';
-import { FiHome, FiLayout, FiStar, FiMap, FiDollarSign, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiHome, FiLayout, FiStar, FiMap, FiDollarSign, FiEdit, FiTrash2, FiPlus } from 'react-icons/fi';
 
 const HotelManagement = () => {
     const [hotels, setHotels] = useState([]);
     const [selectedHotel, setSelectedHotel] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [newPhotoUrl, setNewPhotoUrl] = useState('');
     const [formData, setFormData] = useState({
         hotelName: '',
         hotelAddress: '',
@@ -13,7 +14,7 @@ const HotelManagement = () => {
         district: '',
         starRating: 1,
         phone: '',
-        photoUrl: '',
+        photoUrls: [],
         apiUrl: '',
         apiKey: '',
         advancePayment: 0.0
@@ -40,6 +41,14 @@ const HotelManagement = () => {
         }));
     };
 
+    const handlePhotoUrlsChange = (e) => {
+        const urls = e.target.value.split('\n').filter(url => url.trim() !== '');
+        setFormData(prev => ({
+            ...prev,
+            photoUrls: urls
+        }));
+    };
+
     const handleEdit = (hotel) => {
         setSelectedHotel(hotel);
         setFormData({
@@ -49,7 +58,7 @@ const HotelManagement = () => {
             district: hotel.district,
             starRating: hotel.starRating,
             phone: hotel.phone,
-            photoUrl: hotel.photoUrl,
+            photoUrls: hotel.photoUrls || [],
             apiUrl: hotel.apiUrl,
             apiKey: hotel.apiKey,
             advancePayment: hotel.advancePayment
@@ -86,9 +95,20 @@ const HotelManagement = () => {
         }
     };
 
+    const handleAddPhotoUrl = () => {
+        if (newPhotoUrl.trim()) {
+            setFormData(prev => ({
+                ...prev,
+                photoUrls: [...prev.photoUrls, newPhotoUrl.trim()]
+            }));
+            setNewPhotoUrl('');
+        }
+    };
+
     const resetForm = () => {
         setIsEditing(false);
         setSelectedHotel(null);
+        setNewPhotoUrl('');
         setFormData({
             hotelName: '',
             hotelAddress: '',
@@ -96,7 +116,7 @@ const HotelManagement = () => {
             district: '',
             starRating: 1,
             phone: '',
-            photoUrl: '',
+            photoUrls: [],
             apiUrl: '',
             apiKey: '',
             advancePayment: 0.0
@@ -252,14 +272,47 @@ const HotelManagement = () => {
                         </div>
 
                         <div className="col-span-2">
-                            <label className="block text-sm font-medium text-gray-700">Photo URL</label>
-                            <input
-                                type="url"
-                                name="photoUrl"
-                                value={formData.photoUrl}
-                                onChange={handleInputChange}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            />
+                            <label className="block text-sm font-medium text-gray-700">Photo URLs</label>
+                            <div className="flex space-x-2 mb-2">
+                                <input
+                                    type="url"
+                                    value={newPhotoUrl}
+                                    onChange={(e) => setNewPhotoUrl(e.target.value)}
+                                    placeholder="Enter photo URL"
+                                    className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleAddPhotoUrl}
+                                    className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                                >
+                                    <FiPlus className="mr-2" /> Add Photo
+                                </button>
+                            </div>
+                            <div className="mt-2 grid grid-cols-4 gap-2">
+                                {formData.photoUrls.map((url, index) => (
+                                    <div key={index} className="relative group">
+                                        <img 
+                                            src={url} 
+                                            alt={`Hotel photo ${index + 1}`} 
+                                            className="h-20 w-20 object-cover rounded"
+                                            onError={(e) => e.target.src = 'placeholder-image-url'}
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                setFormData(prev => ({
+                                                    ...prev,
+                                                    photoUrls: prev.photoUrls.filter((_, i) => i !== index)
+                                                }));
+                                            }}
+                                            className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                                        >
+                                            ×
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
 
                         <div>
@@ -316,6 +369,7 @@ const HotelManagement = () => {
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rating</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Phone</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Photos</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
@@ -328,6 +382,24 @@ const HotelManagement = () => {
                                             {hotel.starRating} <FiStar className="inline text-yellow-400" />
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">{hotel.phone}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="flex space-x-1">
+                                                {hotel.photoUrls?.slice(0, 3).map((url, index) => (
+                                                    <img 
+                                                        key={index}
+                                                        src={url} 
+                                                        alt={`${hotel.hotelName} photo ${index + 1}`}
+                                                        className="h-10 w-10 object-cover rounded"
+                                                        onError={(e) => e.target.src = 'placeholder-image-url'}
+                                                    />
+                                                ))}
+                                                {hotel.photoUrls?.length > 3 && (
+                                                    <div className="h-10 w-10 bg-gray-200 rounded flex items-center justify-center text-sm text-gray-600">
+                                                        +{hotel.photoUrls.length - 3}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </td>
                                         <td className="px-6 py-4 whitespace-nowrap space-x-2">
                                             <button
                                                 onClick={() => handleEdit(hotel)}
