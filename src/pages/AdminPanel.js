@@ -14,13 +14,13 @@ const AdminPanel = () => {
     const [activeTab, setActiveTab] = useState('dashboard');
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    {/*        { id: 'rooms', name: 'Rooms', icon: <FiBox className="w-6 h-6" />  }*/}
     const menuItems = [
         { id: 'dashboard', name: 'Dashboard', icon: <FiPieChart className="w-5 h-5 sm:w-6 sm:h-6" /> },
         { id: 'users', name: 'Users', icon: <FiUsers className="w-5 h-5 sm:w-6 sm:h-6" /> },
         { id: 'places', name: 'Tourist Places', icon: <FiMapPin className="w-5 h-5 sm:w-6 sm:h-6" /> },
         { id: 'tours', name: 'Tours', icon: <FiCompass className="w-5 h-5 sm:w-6 sm:h-6" /> },
         { id: 'hotels', name: 'Hotels', icon: <FiHome className="w-5 h-5 sm:w-6 sm:h-6" /> },
+        { id: 'rooms', name: 'Room Types', icon: <FiBox className="w-5 h-5 sm:w-6 sm:h-6" /> },
         { id: 'reservations', name: 'Reservations', icon: <FiCalendar className="w-5 h-5 sm:w-6 sm:h-6" /> },
         { id: 'reviews', name: 'Reviews', icon: <FiStar className="w-5 h-5 sm:w-6 sm:h-6" /> },
         { id: 'payments', name: 'Payments', icon: <FiCreditCard className="w-5 h-5 sm:w-6 sm:h-6" /> },
@@ -163,7 +163,7 @@ const AdminPanel = () => {
                                 {activeTab === 'places' && <TouristPlaceManagement />}
                                 {activeTab === 'tours' && <TourManagement />}
                                 {activeTab === 'hotels' && <HotelManagement />}
-                                {/*activeTab === 'rooms' && <RoomManagement />*/}
+                                {activeTab === 'rooms' && <RoomManagement />}
                                 {activeTab === 'reservations' && <ReservationManagement />}
                                 {activeTab === 'reviews' && <ReviewManagement />}
                                 {activeTab === 'payments' && <PaymentVerification />}

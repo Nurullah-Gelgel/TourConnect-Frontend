@@ -123,7 +123,9 @@
       "roomTypes": {
         "single": "Tek Kişilik Oda",
         "double": "Çift Kişilik Oda",
-        "suite": "Suit Oda"
+        "suite": "Suit Oda",
+        "triple": "Üç Kişilik Oda",
+        "guard": "Nöbetçi Odası"
       },
       "roomQuantity": "Adet",
       "addRoom": "Oda Ekle",
@@ -150,7 +152,9 @@
       "transferNote": "Havale veya EFT işleminde açıklama kısmına PNR kodunuzu yazınız",
       "emailConfirmation": "Ödemeniz onaylandıktan sonra e-posta adresinize bilgilendirme gönderilecektir",
       "supportContact": "Sorularınız için destek ekibimizle iletişime geçebilirsiniz",
-      "bankTransferNote": "Banka havalesi seçeneğinde, rezervasyon oluşturduktan sonra size IBAN bilgileri gösterilecek ve ödeme dekontunuzu yüklemeniz gerekecektir"
+      "bankTransferNote": "Banka havalesi seçeneğinde, rezervasyon oluşturduktan sonra size IBAN bilgileri gösterilecek ve ödeme dekontunuzu yüklemeniz gerekecektir",
+      "selectRoom": "Oda Tipi Seçin",
+      "pricePerNight": "Gecelik fiyat"
     },
     "confirmation": {
       "noReservation": "Rezervasyon bilgisi bulunamadı",

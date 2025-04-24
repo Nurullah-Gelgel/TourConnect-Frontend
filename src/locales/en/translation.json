@@ -123,7 +123,9 @@
         "roomTypes": {
           "single": "Single Room",
           "double": "Double Room",
-          "suite": "Suite Room"
+          "suite": "Suite Room",
+          "triple": "Triple Room",
+          "guard": "Guard Room"
         },
         "roomQuantity": "Quantity",
         "addRoom": "Add Room",
@@ -150,7 +152,9 @@
         "transferNote": "Please include your PNR code in the description field when making a bank transfer",
         "emailConfirmation": "You will receive an email confirmation once your payment is confirmed",
         "supportContact": "For any questions, please contact our support team",
-        "bankTransferNote": "With bank transfer option, you will be shown IBAN details after creating the reservation and you will need to upload your payment receipt"
+        "bankTransferNote": "With bank transfer option, you will be shown IBAN details after creating the reservation and you will need to upload your payment receipt",
+        "selectRoom": "Select Room Type",
+        "pricePerNight": "Price per night"
       },
       "confirmation": {
         "noReservation": "No reservation information found",

@@ -20,6 +20,7 @@ const ReservationPage = () => {
     const [createdReservation, setCreatedReservation] = useState(null);
     const [createdPayment, setCreatedPayment] = useState(null);
     const [showPaymentInfo, setShowPaymentInfo] = useState(false);
+    const [roomTypes, setRoomTypes] = useState([]);
     
     // IBAN bilgisini burada sabit olarak tanımlıyoruz
     const BANK_IBAN = "IR16 0160 0000 1113 8445 32";
@@ -33,13 +34,20 @@ const ReservationPage = () => {
         checkInDate: '',
         checkOutDate: '',
         numberOfGuests: 1,
-        rooms: [{ type: 'single', quantity: 1 }],
+        rooms: [{ type: '', quantity: 1, pricePerNight: 0 }],
         paymentMethod: 'bank',
         specialRequests: ''
     });
 
     useEffect(() => {
-        fetchHotelDetails();
+        const loadData = async () => {
+            await fetchHotelDetails();
+            await fetchRoomTypes();
+        };
+        
+        if (id) {
+            loadData();
+        }
     }, [id]);
 
     const fetchHotelDetails = async () => {
@@ -56,6 +64,16 @@ const ReservationPage = () => {
         }
     };
 
+    const fetchRoomTypes = async () => {
+        try {
+            const data = await hotelService.getRoomTypesByHotelId(id);
+            setRoomTypes(data || []);
+        } catch (err) {
+            console.error('Error fetching room types:', err);
+            setRoomTypes([]);
+        }
+    };
+
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData(prev => ({
@@ -67,7 +85,7 @@ const ReservationPage = () => {
     const handleAddRoom = () => {
         setFormData(prev => ({
             ...prev,
-            rooms: [...prev.rooms, { type: 'single', quantity: 1 }]
+            rooms: [...prev.rooms, { type: '', quantity: 1, pricePerNight: 0 }]
         }));
     };
 
@@ -83,7 +101,12 @@ const ReservationPage = () => {
             ...prev,
             rooms: prev.rooms.map((room, i) => {
                 if (i === index) {
-                    return { ...room, [field]: value };
+                    const updatedRoom = { ...room, [field]: value };
+                    if (field === 'type') {
+                        const selectedRoomType = roomTypes.find(rt => rt.id === value);
+                        updatedRoom.pricePerNight = selectedRoomType ? selectedRoomType.pricePerNight : 0;
+                    }
+                    return updatedRoom;
                 }
                 return room;
             })
@@ -105,6 +128,16 @@ const ReservationPage = () => {
             month: 'long',
             day: 'numeric'
         });
+    };
+
+    const calculateTotalAmount = () => {
+        const numberOfNights = Math.ceil(
+            (new Date(formData.checkOutDate) - new Date(formData.checkInDate)) / (1000 * 60 * 60 * 24)
+        );
+        
+        return formData.rooms.reduce((total, room) => {
+            return total + (room.pricePerNight * room.quantity * numberOfNights);
+        }, 0);
     };
 
     const handleSubmit = async (e) => {
@@ -132,7 +165,7 @@ const ReservationPage = () => {
             }
 
             // Toplam tutarı advance payment'dan hesapla
-            const totalAmount = hotel.advancePayment * formData.numberOfGuests;
+            const totalAmount = calculateTotalAmount();
 
             const reservationData = {
                 hotelId: hotel.id,
@@ -147,9 +180,9 @@ const ReservationPage = () => {
                 guestEmail: formData.email,
                 guestPhone: formData.phone,
                 specialRequests: formData.specialRequests || "",
-                roomType: formData.rooms[0].type.toUpperCase(),
+                roomType: formData.rooms[0].type,
                 roomCount: parseInt(formData.rooms[0].quantity),
-                advancePayment: parseFloat(hotel?.advancePayment || 0)
+                pricePerNight: formData.rooms[0].pricePerNight
             };
 
             
@@ -464,45 +497,34 @@ const ReservationPage = () => {
 
                                 <div className="sm:col-span-2">
                                     <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.rooms')}</label>
-                                    {formData.rooms.map((room, index) => (
-                                        <div key={index} className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4">
-                                            <select
-                                                value={room.type}
-                                                onChange={(e) => handleRoomChange(index, 'type', e.target.value)}
-                                                className="p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
-                                            >
-                                                <option value="single">{t('hotels.reservation.roomTypes.single')}</option>
-                                                <option value="double">{t('hotels.reservation.roomTypes.double')}</option>
-                                            </select>
-                                            
-                                            <input
-                                                type="number"
-                                                value={room.quantity}
-                                                onChange={(e) => handleRoomChange(index, 'quantity', parseInt(e.target.value))}
-                                                min="1"
-                                                className="w-full sm:w-24 p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                                placeholder={t('hotels.reservation.roomQuantity')}
-                                            />
-                                            
-                                            {formData.rooms.length > 1 && (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => handleRemoveRoom(index)}
-                                                    className="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600"
-                                                >
-                                                    {t('hotels.reservation.removeRoom')}
-                                                </button>
+                                    <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 mb-4">
+                                        <select
+                                            value={formData.rooms[0].type}
+                                            onChange={(e) => handleRoomChange(0, 'type', e.target.value)}
+                                            className="p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 flex-grow"
+                                            required
+                                        >
+                                            <option value="">{t('hotels.reservation.selectRoom')}</option>
+                                            {roomTypes && roomTypes.length > 0 ? (
+                                                roomTypes.map(roomType => (
+                                                    <option key={roomType.id} value={roomType.id}>
+                                                        {roomType.name} - {roomType.pricePerNight} TL {t('hotels.perNight')}
+                                                    </option>
+                                                ))
+                                            ) : (
+                                                <option value="" disabled>Oda tipi bulunamadı</option>
                                             )}
-                                        </div>
-                                    ))}
-                                    
-                                    <button
-                                        type="button"
-                                        onClick={handleAddRoom}
-                                        className="mt-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
-                                    >
-                                        {t('hotels.reservation.addRoom')}
-                                    </button>
+                                        </select>
+                                        
+                                        <input
+                                            type="number"
+                                            value={formData.rooms[0].quantity}
+                                            onChange={(e) => handleRoomChange(0, 'quantity', parseInt(e.target.value))}
+                                            min="1"
+                                            className="w-full sm:w-24 p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                            placeholder={t('hotels.reservation.roomQuantity')}
+                                        />
+                                    </div>
                                 </div>
 
                                 <div className="sm:col-span-2">
@@ -528,7 +550,7 @@ const ReservationPage = () => {
 
                             <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
                                 <div className="text-base sm:text-lg font-semibold">
-                                    {t('hotels.reservation.advancePayment')}: {hotel?.advancePayment * formData.numberOfGuests} TL
+                                    {t('hotels.reservation.total')}: {calculateTotalAmount()} TL
                                 </div>
                                 <button
                                     type="submit"

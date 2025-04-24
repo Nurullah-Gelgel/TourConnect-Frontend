@@ -56,5 +56,50 @@ export const hotelService = {
             console.error('Error deleting hotel:', error);
             throw error;
         }
+    },
+
+    getRoomTypesByHotelId: async (hotelId) => {
+        try {
+            const response = await api.get(`/api/hotel/public/${hotelId}/room-types`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching room types:', error);
+            throw error;
+        }
+    },
+    
+    createRoomType: async (roomTypeData) => {
+        try {
+            const response = await api.post('/api/roomType/createRoomType', roomTypeData, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error creating room type:', error);
+            throw error;
+        }
+    },
+    
+    deleteRoomType: async (roomTypeId) => {
+        try {
+            await api.delete(`/api/roomType/deleteRoomType?id=${roomTypeId}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+            });
+        } catch (error) {
+            console.error('Error deleting room type:', error);
+            throw error;
+        }
     }
+
+
+    
 }; 

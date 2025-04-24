@@ -1,127 +1,171 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { hotelService } from '../../services/hotelService';
 
 const RoomManagement = () => {
-    const [rooms, setRooms] = useState([
-        { id: 1, number: '101', type: 'Standart', status: 'available', price: 500 },
-        { id: 2, number: '102', type: 'Deluxe', status: 'occupied', price: 750 },
-        // Diğer odalar...
-    ]);
-
-    const [showAddRoom, setShowAddRoom] = useState(false);
-    const [newRoom, setNewRoom] = useState({
-        number: '',
-        type: 'Standart',
-        price: ''
+    const [hotels, setHotels] = useState([]);
+    const [roomTypes, setRoomTypes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        hotelId: '',
+        name: '',
+        pricePerNight: 0
     });
+    const [selectedHotel, setSelectedHotel] = useState(null);
 
-    const handleAddRoom = (e) => {
+    // Define fetchRoomTypes before useEffect
+    const fetchRoomTypes = async () => {
+        if (selectedHotel) {
+            try {
+                const data = await hotelService.getRoomTypesByHotelId(selectedHotel);
+                setRoomTypes(data);
+            } catch (error) {
+                console.error('Error fetching room types:', error);
+            }
+        }
+    };
+
+    useEffect(() => {
+        fetchHotels();
+        fetchRoomTypes();
+    }, [selectedHotel]); // Use selectedHotel as a dependency
+
+    const fetchHotels = async () => {
+        try {
+            const data = await hotelService.getAllHotels();
+            setHotels(data);
+        } catch (error) {
+            console.error('Error fetching hotels:', error);
+        }
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        setRooms([...rooms, { ...newRoom, id: Date.now(), status: 'available' }]);
-        setShowAddRoom(false);
-        setNewRoom({ number: '', type: 'Standart', price: '' });
+        setLoading(true);
+        try {
+            console.log('Sending room type data:', formData); // Debug log
+            const response = await hotelService.createRoomType(formData);
+            console.log('Room type created:', response); // Debug log
+            fetchRoomTypes();
+            setFormData({
+                hotelId: formData.hotelId,
+                name: '',
+                pricePerNight: 0
+            });
+        } catch (error) {
+            console.error('Error creating room type:', error);
+            alert('Failed to create room type: ' + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleHotelChange = async (hotelId) => {
+        setSelectedHotel(hotelId);
+        setFormData(prev => ({ ...prev, hotelId }));
+    };
+
+    const handleDeleteRoomType = async (roomTypeId) => {
+        try {
+            await hotelService.deleteRoomType(roomTypeId);
+            fetchRoomTypes(); // Refresh the list after deletion
+        } catch (error) {
+            console.error('Error deleting room type:', error);
+        }
     };
 
     return (
-        <div>
-            <div className="flex justify-between mb-4">
-                <h2 className="text-xl font-semibold">Oda Yönetimi</h2>
-                <button
-                    onClick={() => setShowAddRoom(true)}
-                    className="bg-green-500 text-white px-4 py-2 rounded"
-                >
-                    Yeni Oda Ekle
-                </button>
+        <div className="space-y-6">
+            <h2 className="text-2xl font-bold">Room Type Management</h2>
+
+            {/* Add Room Type Form */}
+            <div className="bg-white p-6 rounded-lg shadow">
+                <h3 className="text-lg font-semibold mb-4">Add New Room Type</h3>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Hotel</label>
+                        <select
+                            value={formData.hotelId}
+                            onChange={(e) => handleHotelChange(e.target.value)}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        >
+                            <option value="">Select Hotel</option>
+                            {hotels.map(hotel => (
+                                <option key={hotel.id} value={hotel.id}>
+                                    {hotel.hotelName}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Room Type Name</label>
+                        <input
+                            type="text"
+                            value={formData.name}
+                            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            required
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700">Price Per Night</label>
+                        <input
+                            type="number"
+                            value={formData.pricePerNight}
+                            onChange={(e) => setFormData(prev => ({ ...prev, pricePerNight: parseFloat(e.target.value) }))}
+                            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            min="0"
+                            step="0.01"
+                            required
+                        />
+                    </div>
+
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                    >
+                        {loading ? 'Adding...' : 'Add Room Type'}
+                    </button>
+                </form>
             </div>
 
-            {/* Yeni Oda Ekleme Formu */}
-            {showAddRoom && (
-                <div className="mb-4 p-4 border rounded">
-                    <form onSubmit={handleAddRoom}>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <input
-                                type="text"
-                                placeholder="Oda Numarası"
-                                value={newRoom.number}
-                                onChange={(e) => setNewRoom({...newRoom, number: e.target.value})}
-                                className="border p-2 rounded"
-                                required
-                            />
-                            <select
-                                value={newRoom.type}
-                                onChange={(e) => setNewRoom({...newRoom, type: e.target.value})}
-                                className="border p-2 rounded"
-                            >
-                                <option value="Standart">Standart</option>
-                                <option value="Deluxe">Deluxe</option>
-                                <option value="Suite">Suite</option>
-                            </select>
-                            <input
-                                type="number"
-                                placeholder="Fiyat"
-                                value={newRoom.price}
-                                onChange={(e) => setNewRoom({...newRoom, price: e.target.value})}
-                                className="border p-2 rounded"
-                                required
-                            />
-                        </div>
-                        <div className="mt-4 flex justify-end gap-2">
-                            <button
-                                type="button"
-                                onClick={() => setShowAddRoom(false)}
-                                className="bg-gray-500 text-white px-4 py-2 rounded"
-                            >
-                                İptal
-                            </button>
-                            <button
-                                type="submit"
-                                className="bg-blue-500 text-white px-4 py-2 rounded"
-                            >
-                                Kaydet
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            )}
-
-            {/* Oda Listesi */}
-            <div className="overflow-x-auto">
-                <table className="min-w-full bg-white">
-                    <thead>
-                        <tr className="bg-gray-100">
-                            <th className="px-4 py-2">Oda No</th>
-                            <th className="px-4 py-2">Tip</th>
-                            <th className="px-4 py-2">Durum</th>
-                            <th className="px-4 py-2">Fiyat</th>
-                            <th className="px-4 py-2">İşlemler</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rooms.map(room => (
-                            <tr key={room.id} className="border-b">
-                                <td className="px-4 py-2 text-center">{room.number}</td>
-                                <td className="px-4 py-2 text-center">{room.type}</td>
-                                <td className="px-4 py-2 text-center">
-                                    <span className={`px-2 py-1 rounded-full text-sm ${
-                                        room.status === 'available' 
-                                            ? 'bg-green-100 text-green-800' 
-                                            : 'bg-red-100 text-red-800'
-                                    }`}>
-                                        {room.status === 'available' ? 'Müsait' : 'Dolu'}
-                                    </span>
-                                </td>
-                                <td className="px-4 py-2 text-center">{room.price} TL</td>
-                                <td className="px-4 py-2 text-center">
-                                    <button className="text-blue-500 hover:text-blue-700 mr-2">
-                                        Düzenle
-                                    </button>
-                                    <button className="text-red-500 hover:text-red-700">
-                                        Sil
-                                    </button>
-                                </td>
+            {/* Room Types List */}
+            <div className="bg-white p-6 rounded-lg shadow">
+                <h3 className="text-lg font-semibold mb-4">Room Types</h3>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hotel</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Room Type</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price Per Night</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {roomTypes.map(roomType => (
+                                <tr key={roomType.id}>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        {hotels.find(h => h.id === roomType.hotelId)?.hotelName}
+                                    </td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{roomType.name}</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">{roomType.pricePerNight} TL</td>
+                                    <td className="px-6 py-4 whitespace-nowrap">
+                                        <button
+                                            onClick={() => handleDeleteRoomType(roomType.id)}
+                                            className="text-red-600 hover:text-red-900"
+                                        >
+                                            Delete
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
