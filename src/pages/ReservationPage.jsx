@@ -136,7 +136,7 @@ const ReservationPage = () => {
         );
         
         return formData.rooms.reduce((total, room) => {
-            return total + (room.pricePerNight * room.quantity * numberOfNights);
+            return total + (room.pricePerNight * room.quantity * numberOfNights * parseInt(formData.numberOfGuests));
         }, 0);
     };
 
