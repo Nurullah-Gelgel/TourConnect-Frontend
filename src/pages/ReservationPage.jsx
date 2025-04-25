@@ -25,15 +25,13 @@ const ReservationPage = () => {
     // IBAN bilgisini burada sabit olarak tanımlıyoruz
     const BANK_IBAN = "IR16 0160 0000 1113 8445 32";
     const BANK_NAME = "کشاورزی";
-    const BANK_ACCOUNT_NAME = "ارسلان  شیرب دودکانلو"
-    
+    const BANK_ACCOUNT_NAME = "ارسلان شیری دودکانلو"
     const [formData, setFormData] = useState({
         fullName: '',
         email: '',
         phone: '',
         checkInDate: '',
         checkOutDate: '',
-        numberOfGuests: 1,
         rooms: [{ type: '', quantity: 1, pricePerNight: 0 }],
         paymentMethod: 'bank',
         specialRequests: ''
@@ -136,7 +134,7 @@ const ReservationPage = () => {
         );
         
         return formData.rooms.reduce((total, room) => {
-            return total + (room.pricePerNight * room.quantity * numberOfNights * parseInt(formData.numberOfGuests));
+            return total + (room.pricePerNight * room.quantity * numberOfNights);
         }, 0);
     };
 
@@ -171,7 +169,6 @@ const ReservationPage = () => {
                 hotelId: hotel.id,
                 status: "PENDING",
                 totalAmount: totalAmount,
-                reservationGuests: parseInt(formData.numberOfGuests),
                 checkIn: formData.checkInDate,
                 checkOut: formData.checkOutDate,
                 reservationCreatedAt: new Date().toISOString().split('T')[0],
@@ -451,19 +448,6 @@ const ReservationPage = () => {
                                         name="phone"
                                         value={formData.phone}
                                         onChange={handleInputChange}
-                                        required
-                                        className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className="block text-gray-700 mb-1 sm:mb-2">{t('hotels.reservation.guests')}</label>
-                                    <input
-                                        type="number"
-                                        name="numberOfGuests"
-                                        value={formData.numberOfGuests}
-                                        onChange={handleInputChange}
-                                        min="1"
                                         required
                                         className="w-full p-2 sm:p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     />
