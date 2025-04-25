@@ -18,9 +18,9 @@ const Navbar = () => {
     const isActive = (path) => location.pathname === path;
 
     const languages = [
-        { code: 'tr', name: 'Türkçe' },
-        { code: 'en', name: 'English' },
-        { code: 'fa', name: 'فارسی' }
+        { code: 'tr', name: 'Türkçe', symbol: 'TR' },
+        { code: 'en', name: 'English', symbol: 'EN' },
+        { code: 'fa', name: 'فارسی', symbol: 'FA' }
     ];
 
     const changeLanguage = (languageCode) => {
@@ -140,7 +140,7 @@ const Navbar = () => {
                                 onClick={() => setIsLanguageOpen(!isLanguageOpen)}
                                 className="flex items-center space-x-2 px-4 py-2 rounded-lg hover:bg-gray-100"
                             >
-                                <span>{currentLanguage.name}</span>
+                                <span className="text-xl">🌐</span>
                                 <svg
                                     className={`w-4 h-4 transition-transform ${isLanguageOpen ? 'rotate-180' : ''}`}
                                     fill="none"
@@ -157,11 +157,12 @@ const Navbar = () => {
                                         <button
                                             key={language.code}
                                             onClick={() => changeLanguage(language.code)}
-                                            className={`w-full text-left px-4 py-2 hover:bg-gray-100 ${
+                                            className={`w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center justify-between ${
                                                 currentLanguage.code === language.code ? 'bg-gray-50 text-blue-600' : ''
                                             }`}
                                         >
-                                            {language.name}
+                                            <span>{language.name}</span>
+                                            <span className="font-medium">{language.symbol}</span>
                                         </button>
                                     ))}
                                 </div>
