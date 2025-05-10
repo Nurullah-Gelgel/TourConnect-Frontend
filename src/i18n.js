@@ -18,21 +18,30 @@ const resources = {
   }
 };
 
-// Get saved language preference
-const savedLanguage = localStorage.getItem('preferredLanguage');
+// Tarayıcının dilini al
+const getBrowserLanguage = () => {
+  const browserLang = navigator.language || navigator.userLanguage;
+  // Dil kodunu 2 karaktere indir (örn: 'tr-TR' -> 'tr')
+  const shortLang = browserLang.split('-')[0];
+  
+  // Desteklenen dilleri kontrol et
+  if (['fa', 'tr', 'en'].includes(shortLang)) {
+    return shortLang;
+  }
+  // Desteklenmeyen dil varsa varsayılan olarak Farsça döndür
+  return 'fa';
+};
 
-// If saved language is English, reset it to Persian
-if (savedLanguage === 'en') {
-  localStorage.setItem('preferredLanguage', 'fa');
-}
+// Kaydedilmiş dil tercihini veya tarayıcı dilini al
+const initialLanguage = localStorage.getItem('preferredLanguage') || getBrowserLanguage();
 
 i18n
   .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: ['fa', 'tr', 'en'], // First try Persian, then Turkish, then English
-    lng: savedLanguage || 'fa', // Use Persian as default if no saved preference
+    fallbackLng: ['fa', 'tr', 'en'],
+    lng: initialLanguage,
     interpolation: {
       escapeValue: false
     },
@@ -41,9 +50,12 @@ i18n
       caches: ['localStorage'],
       lookupLocalStorage: 'preferredLanguage'
     },
-    supportedLngs: ['fa', 'tr', 'en'], // Support all three languages
+    supportedLngs: ['fa', 'tr', 'en'],
     load: 'languageOnly',
-    debug: process.env.NODE_ENV === 'development'
+    debug: process.env.NODE_ENV === 'development',
+    react: {
+      useSuspense: false // Suspense'i devre dışı bırak
+    }
   });
 
 export default i18n; 
