@@ -130,7 +130,7 @@ const Navbar = () => {
                             )}
                         </div>
 
-                        {isUserAuthenticated ? (
+                        {isUserAuthenticated && (
                             <div className="relative">
                                 <button 
                                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
@@ -150,21 +150,6 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                 )}
-                            </div>
-                        ) : (
-                            <div className="flex space-x-2">
-                                <Link 
-                                    to="/login"
-                                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50"
-                                >
-                                    {t('nav.login')}
-                                </Link>
-                                <Link 
-                                    to="/register"
-                                    className="px-3 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600"
-                                >
-                                    {t('nav.register')}
-                                </Link>
                             </div>
                         )}
                     </div>
@@ -248,22 +233,13 @@ const Navbar = () => {
                         </div>
 
                         {/* Kullanıcı Menüsü */}
-                        {isUserAuthenticated ? (
+                        {isUserAuthenticated && (
                             <button 
                                 onClick={handleLogout}
                                 className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
                             >
                                 {t('nav.logout')}
                             </button>
-                        ) : (
-                            <div className="space-y-2">
-                                <Link to="/login" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                                    {t('nav.login')}
-                                </Link>
-                                <Link to="/register" className="block px-3 py-2 rounded-md text-base font-medium bg-blue-500 text-white hover:bg-blue-600">
-                                    {t('nav.register')}
-                                </Link>
-                            </div>
                         )}
                     </div>
                 </div>
