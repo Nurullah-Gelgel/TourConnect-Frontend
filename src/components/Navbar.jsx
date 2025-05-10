@@ -65,54 +65,16 @@ const Navbar = () => {
                         >
                             {t('nav.home')}
                         </Link>
-                        
-                        <div className="relative group">
-                            <Link 
-                                to="/hotels" 
-                                className={`px-3 py-2 rounded-md text-sm font-medium group-hover:bg-blue-50 ${
-                                    isActive('/hotels') ? 'text-blue-600' : 'text-gray-700'
-                                }`}
-                            >
-                                {t('nav.hotels')}
-                            </Link>
-                           {/* <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <div className="py-1">
-                                    <Link to="/hotels/luxury" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                        {t('nav.hotelTypes.luxury')}
-                            </Link>
-                                    <Link to="/hotels/boutique" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                        {t('nav.hotelTypes.boutique')}
-                                    </Link>
-                                    <Link to="/hotels/deals" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                        {t('nav.hotelTypes.deals')}
-                                    </Link>
-                                </div>
-                        </div>
-
-                        <div className="relative group">
-                            {/*<Link 
-                                to="/tours" 
-                                className={`px-3 py-2 rounded-md text-sm font-medium group-hover:bg-blue-50 ${
-                                    isActive('/tours') ? 'text-blue-600' : 'text-gray-700'
-                                }`}
-                            >
-                                {t('nav.tours')}
-                            </Link>*/}
-                            {/*<div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                                <div className="py-1">
-                                    <Link to="/tours/daily" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                        {t('nav.tourTypes.daily')}
-                                    </Link>
-                                    <Link to="/tours/cultural" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                        {t('nav.tourTypes.cultural')}
-                                    </Link>
-                                    <Link to="/tours/nature" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                        {t('nav.tourTypes.nature')}
-                                    </Link>
-                                </div>
-                            </div> */}
-                        </div>
-
+                        <Link 
+                            to="/hotels" 
+                            className={`px-3 py-2 rounded-md text-sm font-medium ${
+                                isActive('/hotels') 
+                                    ? 'bg-blue-500 text-white' 
+                                    : 'text-gray-700 hover:bg-blue-50'
+                            }`}
+                        >
+                            {t('nav.hotels')}
+                        </Link>
                         <Link 
                             to="/touristic-places" 
                             className={`px-3 py-2 rounded-md text-sm font-medium ${
@@ -123,7 +85,6 @@ const Navbar = () => {
                         >
                             {t('nav.places')}
                         </Link>
-
                         <Link 
                             to="/contact" 
                             className={`px-3 py-2 rounded-md text-sm font-medium ${
@@ -169,7 +130,7 @@ const Navbar = () => {
                             )}
                         </div>
 
-                        {isUserAuthenticated && (
+                        {isUserAuthenticated ? (
                             <div className="relative">
                                 <button 
                                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
@@ -180,16 +141,6 @@ const Navbar = () => {
                                 {isProfileDropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                                         <div className="py-1">
-                                         {/*   <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                                {t('nav.profile')}
-                                            </Link>
-                                            <Link to="/favorites" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                                {t('nav.favorites')}
-                                            </Link>
-                                            <Link to="/reservations" className="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50">
-                                                {t('nav.reservations')}
-                                            </Link>*/}
-                                           
                                             <button 
                                                 onClick={handleLogout}
                                                 className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50"
@@ -199,6 +150,21 @@ const Navbar = () => {
                                         </div>
                                     </div>
                                 )}
+                            </div>
+                        ) : (
+                            <div className="flex space-x-2">
+                                <Link 
+                                    to="/login"
+                                    className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-blue-50"
+                                >
+                                    {t('nav.login')}
+                                </Link>
+                                <Link 
+                                    to="/register"
+                                    className="px-3 py-2 rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600"
+                                >
+                                    {t('nav.register')}
+                                </Link>
                             </div>
                         )}
                     </div>
@@ -235,27 +201,69 @@ const Navbar = () => {
                         <Link to="/hotels" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
                             {t('nav.hotels')}
                         </Link>
-                        <Link to="/tours" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                            {t('nav.tours')}
-                        </Link>
                         <Link to="/touristic-places" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
                             {t('nav.places')}
                         </Link>
                         <Link to="/contact" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
                             {t('nav.contact')}
                         </Link>
-                        {isUserAuthenticated && (
-                            <>
-                                <Link to="/profile" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                                    {t('nav.profile')}
+                        
+                        {/* Dil Seçici */}
+                        <div className="px-3 py-2">
+                            <div className="relative">
+                                <button
+                                    onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+                                    className="w-full flex items-center justify-between px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50"
+                                >
+                                    <span className="flex items-center">
+                                        <span className="text-xl mr-2">🌐</span>
+                                        {currentLanguage.name}
+                                    </span>
+                                    <svg
+                                        className={`w-4 h-4 transition-transform ${isLanguageOpen ? 'rotate-180' : ''}`}
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                {isLanguageOpen && (
+                                    <div className="mt-2 py-2 w-full bg-white rounded-lg shadow-xl">
+                                        {languages.map((language) => (
+                                            <button
+                                                key={language.code}
+                                                onClick={() => changeLanguage(language.code)}
+                                                className={`w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center justify-between ${
+                                                    currentLanguage.code === language.code ? 'bg-gray-50 text-blue-600' : ''
+                                                }`}
+                                            >
+                                                <span>{language.name}</span>
+                                                <span className="font-medium">{language.symbol}</span>
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Kullanıcı Menüsü */}
+                        {isUserAuthenticated ? (
+                            <button 
+                                onClick={handleLogout}
+                                className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50"
+                            >
+                                {t('nav.logout')}
+                            </button>
+                        ) : (
+                            <div className="space-y-2">
+                                <Link to="/login" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
+                                    {t('nav.login')}
                                 </Link>
-                                <Link to="/reservations" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                                    {t('nav.reservations')}
+                                <Link to="/register" className="block px-3 py-2 rounded-md text-base font-medium bg-blue-500 text-white hover:bg-blue-600">
+                                    {t('nav.register')}
                                 </Link>
-                                <Link to="/favorites" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-blue-50">
-                                    {t('nav.favorites')}
-                                </Link>
-                            </>
+                            </div>
                         )}
                     </div>
                 </div>
