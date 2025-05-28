@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+//PRod tamm
 //const BASE_URL = 'https://rahvan.onrender.com/'; // Backend URL'inizin doğru olduğundan emin olun
 //const BASE_URL = 'http://localhost:8080/'; // 
 const BASE_URL = window.location.origin;  // Otomatik olarak doğru URL'i alır
