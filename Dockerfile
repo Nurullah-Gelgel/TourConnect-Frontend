@@ -20,6 +20,7 @@ FROM nginx:alpine
 
 # Build dosyalarını Nginx'e kopyala
 COPY --from=builder /app/build /usr/share/nginx/html/
+COPY --from=builder /app/public /usr/share/nginx/html/public
 
 # Nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf

@@ -92,12 +92,9 @@ docker run -d \
 docker pull nginx:latest
 
 # Container'ı başlat
-docker run -d \
-  --name rahvantur-nginx \
-  --network rahvantur-network \
-  -p 80:80 \
-  -p 443:443 \
-  -v $(pwd)/nginx/nginx.conf:/etc/nginx/conf.d/default.conf \
+docker run -d --name rahvantur-nginx --network rahvantur-network -p 80:80 -p 443:443 \
+  -v /root/nginx/conf.d:/etc/nginx/conf.d \
+  -v /etc/letsencrypt:/etc/letsencrypt \
   nginx:latest
 ```
 
