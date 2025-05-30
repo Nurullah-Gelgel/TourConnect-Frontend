@@ -25,6 +25,9 @@ RUN mkdir -p /usr/share/nginx/html && \
 # Build dosyalarını Nginx'e kopyala
 COPY --from=builder /app/build /usr/share/nginx/html/
 
+# Public dosyalarını kopyala
+COPY --from=builder /app/public /usr/share/nginx/html/
+
 # Nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
