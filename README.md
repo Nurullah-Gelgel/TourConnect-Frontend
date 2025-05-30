@@ -1,70 +1,246 @@
-# Getting Started with Create React App
+# TourConnect Projesi
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Bu proje, tur operatörleri ve müşterileri arasında bağlantı kuran bir web uygulamasıdır. React frontend, Spring Boot backend ve PostgreSQL veritabanı kullanılarak geliştirilmiştir.
 
-## Available Scripts
+## Proje Yapısı
 
-In the project directory, you can run:
+```
+tour-connect/
+├── frontend/           # React uygulaması
+├── backend/           # Spring Boot uygulaması
+└── nginx/             # Nginx konfigürasyonları
+```
 
-### `npm start`
+## Gereksinimler
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Docker
+- Node.js 18+
+- Java 17+
+- PostgreSQL 13+
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Kurulum Adımları
 
-### `npm test`
+### 1. Docker Network Oluşturma
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+docker network create rahvantur-network
+```
 
-### `npm run build`
+### 2. PostgreSQL Container'ı Başlatma
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+docker run -d \
+  --name rahvantur-postgres \
+  --network rahvantur-network \
+  -p 5433:5432 \
+  -e POSTGRES_DB=rahvantur \
+  -e POSTGRES_USER=postgres \
+  -e POSTGRES_PASSWORD=your_password \
+  postgres:13
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 3. Backend Container'ı Oluşturma ve Başlatma
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+# Backend dizinine git
+cd backend
 
-### `npm run eject`
+# Maven ile build
+mvn clean package
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+# Docker image oluştur
+docker build -t rahvantur-backend .
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Container'ı başlat
+docker run -d \
+  --name rahvantur-backend \
+  --network rahvantur-network \
+  -p 8080:8080 \
+  -e SPRING_DATASOURCE_URL=jdbc:postgresql://rahvantur-postgres:5432/rahvantur \
+  -e SPRING_DATASOURCE_USERNAME=postgres \
+  -e SPRING_DATASOURCE_PASSWORD=your_password \
+  rahvantur-backend
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 4. Frontend Container'ı Oluşturma ve Başlatma
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+# Frontend dizinine git
+cd frontend
 
-## Learn More
+# Bağımlılıkları yükle
+npm install
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Production build
+npm run build
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Docker image oluştur
+docker build -t rahvantur-frontend .
 
-### Code Splitting
+# Container'ı başlat
+docker run -d \
+  --name rahvantur-frontend \
+  --network rahvantur-network \
+  -p 3000:80 \
+  rahvantur-frontend
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 5. Nginx Container'ı Başlatma
 
-### Analyzing the Bundle Size
+```bash
+# Nginx image'ını çek
+docker pull nginx:latest
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Container'ı başlat
+docker run -d \
+  --name rahvantur-nginx \
+  --network rahvantur-network \
+  -p 80:80 \
+  -p 443:443 \
+  -v $(pwd)/nginx/nginx.conf:/etc/nginx/conf.d/default.conf \
+  nginx:latest
+```
 
-### Making a Progressive Web App
+## Docker Servisleri
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### Frontend (React)
+- Port: 3000
+- Container: rahvantur-frontend
+- Image: rahvantur-frontend
+- Network: rahvantur-network
 
-### Advanced Configuration
+### Backend (Spring Boot)
+- Port: 8080
+- Container: rahvantur-backend
+- Image: rahvantur-backend
+- Network: rahvantur-network
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Database (PostgreSQL)
+- Port: 5433
+- Container: rahvantur-postgres
+- Image: postgres:13
+- Network: rahvantur-network
 
-### Deployment
+### Nginx
+- Port: 80, 443
+- Container: rahvantur-nginx
+- Image: nginx:latest
+- Network: rahvantur-network
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## Nginx Konfigürasyonu
 
-### `npm run build` fails to minify
+Nginx, frontend ve backend servisleri arasında reverse proxy olarak çalışır. Konfigürasyon dosyaları:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `nginx.conf`: Ana Nginx konfigürasyonu
+- `default.conf`: Site-spesifik konfigürasyon
+
+## Docker Komutları
+
+### Container Yönetimi
+
+```bash
+# Container'ları listele
+docker ps
+
+# Container loglarını görüntüle
+docker logs rahvantur-frontend
+docker logs rahvantur-backend
+docker logs rahvantur-nginx
+
+# Container'ı yeniden başlat
+docker restart rahvantur-frontend
+
+# Container'ı durdur
+docker stop rahvantur-frontend
+
+# Container'ı sil
+docker rm rahvantur-frontend
+```
+
+### Image Yönetimi
+
+```bash
+# Image'ları listele
+docker images
+
+# Image'ı sil
+docker rmi rahvantur-frontend
+
+# Image'ı yeniden build et
+docker build -t rahvantur-frontend .
+```
+
+## Sorun Giderme
+
+### Frontend Sorunları
+
+1. Logo ve statik dosyalar yüklenmiyorsa:
+   - Nginx konfigürasyonunu kontrol et
+   - Docker volume'larını kontrol et
+   - Container loglarını incele
+
+2. API bağlantı sorunları:
+   - Network bağlantısını kontrol et
+   - Backend servisinin çalıştığından emin ol
+   - API endpoint'lerini kontrol et
+
+### Backend Sorunları
+
+1. Veritabanı bağlantı sorunları:
+   - PostgreSQL container'ının çalıştığından emin ol
+   - Veritabanı bağlantı bilgilerini kontrol et
+   - Network bağlantısını kontrol et
+
+2. API hataları:
+   - Log dosyalarını kontrol et
+   - API endpoint'lerini test et
+   - CORS ayarlarını kontrol et
+
+## Güvenlik
+
+- Tüm servisler Docker network içinde izole edilmiştir
+- Nginx SSL/TLS konfigürasyonu için sertifika gereklidir
+- API endpoint'leri için authentication gereklidir
+- Veritabanı bağlantıları şifrelenmiştir
+
+## Deployment
+
+### Production Ortamı
+
+1. SSL sertifikalarını hazırla
+2. Environment değişkenlerini ayarla
+3. Container'ları sırasıyla başlat:
+   - PostgreSQL
+   - Backend
+   - Frontend
+   - Nginx
+4. Nginx konfigürasyonunu kontrol et
+5. Log'ları monitör et
+
+### Monitoring
+
+- Docker container logları
+- Nginx access/error logları
+- Backend uygulama logları
+- Veritabanı logları
+
+## Geliştirme
+
+### Frontend Geliştirme
+
+```bash
+cd frontend
+npm install
+npm start
+```
+
+### Backend Geliştirme
+
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+## Lisans
+
+Bu proje özel lisans altında dağıtılmaktadır. Tüm hakları saklıdır.
